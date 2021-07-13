@@ -9,5 +9,6 @@ Integrantes:
 - Yezid Orlando Polanía Reina.
 
 BackLog -> Backlog.xls
+
 Historias de Usuario -> Historias de Usuario.xls
 
