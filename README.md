@@ -8,3 +8,6 @@ Integrantes:
 - Yaned Viviana Sánchez Osorio.
 - Yezid Orlando Polanía Reina.
 
+BackLog -> Backlog.xls
+Historias de Usuario -> Historias de Usuario.xls
+
