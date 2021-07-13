@@ -9,6 +9,7 @@ Integrantes:
 - Yezid Orlando Polanía Reina.
 
 Documentación Scrum:
+
 BackLog -> Backlog.xls
 
 Historias de Usuario -> Historias de Usuario.xls
