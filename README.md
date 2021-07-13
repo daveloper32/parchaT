@@ -8,6 +8,7 @@ Integrantes:
 - Yaned Viviana Sánchez Osorio.
 - Yezid Orlando Polanía Reina.
 
+Documentación Scrum:
 BackLog -> Backlog.xls
 
 Historias de Usuario -> Historias de Usuario.xls
