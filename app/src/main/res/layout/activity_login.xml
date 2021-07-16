@@ -10,7 +10,11 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,10 +87,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/style_redondeo_button"
                 android:fontFamily="sans-serif-smallcaps"
                 android:text="@string/b_login_iniSesion"
-                app:backgroundTint="#FF5328"
-                android:background="@drawable/style_redondeo_button"/>
+                app:backgroundTint="#FF5328" />
 
             <TextView
                 android:id="@+id/tV_login_olvPassw"
