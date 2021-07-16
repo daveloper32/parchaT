@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">ParchaT</string>
+    <!--Start Login Strings-->
+    <string name="imgV_login_logo_contDes">Logo parchaT</string>
+    <string name="eT_login_correo">Correo electrónico</string>
+    <string name="eT_login_password">Contraseña</string>
+    <string name="b_login_iniSesion">Iniciar Sesión</string>
+    <string name="tV_login_olvPassw">¿Olvidaste la contraseña?</string>
+    <string name="tV_login_noMiembro">¿Aún no eres miembro?</string>
+    <string name="tV_login_registrarse">Registrarse</string>
+    <string name="tV_login_otroIniSesion">O puedes iniciar sesión con:</string>
+    <string name="imgB_login_facebook_contDes">Botón Inicio Sesión Facebook</string>
+    <string name="imgB_login_google_contDes">Botón Inicio Sesión Google</string>
+    <!--End Login Strings-->
+
 </resources>
