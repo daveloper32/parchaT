@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">ParchaT</string>
+    <string name="im_logo" >Logo parchaT</string>
+    <string name="et_Usua">Usuario</string>
+    <string name="et_Email">Correo Electrónico</string>
+    <string name="tv_registro">Registrate</string>
+    <string name="et_contra">Contraseña</string>
+    <string name="bt_regis">Registrarse</string>
+    <string name="tv_pregunta">¿Ya tienes cuenta?</string>
+    <string name="tv_sesion">Inicia sesión</string>
+    <string name="tv_regisOp">O puedes registrarte con: </string>
+    <string name="ib_face">facebook</string>
+    <string name="ib_google">google</string>
 </resources>
