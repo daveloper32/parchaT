@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/Fondo"
+    android:background="@drawable/ic_fondo_registro"
     android:padding="20dp"
-    tools:context=".registro">
+    tools:context=".Registro">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_marginTop="20dp"
+        android:orientation="vertical"
         android:paddingLeft="30dp"
         android:paddingRight="30dp">
 
@@ -22,13 +22,14 @@
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/im_logo"
-            app:srcCompat="@drawable/ParchaT" />
+            app:srcCompat="@drawable/ic_logo_parchat" />
 
 
         <TextView
             android:id="@+id/Registro"
             android:layout_width="310dp"
             android:layout_height="45dp"
+            android:fontFamily="sans-serif-smallcaps"
             android:gravity="center"
             android:textColor="#FFFFFF"
             android:textSize="34sp"
@@ -49,20 +50,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:hint="@string/et_Email"
-            android:inputType="textEmailAddress"
             android:fontFamily="sans-serif-smallcaps"
-            android:importantForAutofill="no"/>
+            android:hint="@string/et_Email"
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/contrasena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:hint="@string/et_contra"
-            android:inputType="text"
             android:fontFamily="sans-serif-smallcaps"
-            android:importantForAutofill="no"/>
+            android:hint="@string/et_contra"
+            android:importantForAutofill="no"
+            android:inputType="text" />
 
         <Button
             android:id="@+id/bRegis"
@@ -114,13 +115,13 @@
             android:id="@+id/facebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:layout_marginStart="110dp"
             android:layout_marginLeft="80dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="-36dp"
             android:background="#00FFFFFF"
             android:contentDescription="@string/ib_face"
-            android:src="@drawable/f"/>
+            android:src="@drawable/ic_logo_facebook" />
 
         <ImageButton
             android:id="@+id/google"
@@ -130,7 +131,7 @@
             android:layout_marginLeft="170dp"
             android:background="#00FFFFFF"
             android:contentDescription="@string/ib_google"
-            android:src="@drawable/g" />
+            android:src="@drawable/ic_logo_google" />
 
 
     </LinearLayout>

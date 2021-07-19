@@ -1,3 +1,12 @@
+// Links Importantes:
+// Repositorio Github: https://github.com/Yezid-Polania/aplicaciones-moviles
+// Diseño Adobe: https://xd.adobe.com/view/e6e63823-ecf3-4b1e-93c1-c94003a230d1-b3b5/
+// Paleta de colores:
+// Color azul #233140
+// Naranja #FF5328
+// El círculo que se ve es el color naranja con opacidad 37%
+// Fuente temporal: sans-serif-smallcaps
+
 package com.developers.parchat;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -97,21 +106,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private void OlvidarPassword() {
         //progressBar_Login.setVisibility(View.GONE);
         // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity
-        //Intent deLoginAOlvidePassword = new Intent(Login.this, .class);
+        Intent deLoginAPasswordRecovery = new Intent(Login.this, PasswordRecovery.class);
         // Iniciamos el Activity
-        //startActivity(deLoginAOlvidePassword);
+        startActivity(deLoginAPasswordRecovery);
         // Terminamos el activity Login
-        //Login.this.finish();
+        Login.this.finish();
     }
 
     private void RegistrarNuevoUsuario() {
         //progressBar_Login.setVisibility(View.GONE);
         // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity Registro
-        //Intent deLoginARegistro = new Intent(Login.this, Registro.class);
+        Intent deLoginARegistro = new Intent(Login.this, Registro.class);
         // Iniciamos el Activity Registro
-        //startActivity(deLoginARegistro);
+        startActivity(deLoginARegistro);
         // Terminamos el activity Login
-        //Login.this.finish();
+        Login.this.finish();
     }
 
     private void IniciarSesionFacebook() {
