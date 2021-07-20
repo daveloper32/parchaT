@@ -40,6 +40,11 @@
     <!--End Registro Strings-->
 
     <!--Start PasswordRecovery Strings-->
+    <string name="imgV_passRe_logo_contDes">Logo parchaT</string>
+    <string name="tV_passRe_rePassword">Recuperar contraseña</string>
+    <string name="tV_passRe_ingCorreo">Ingresa el correo asociado a tu cuenta y te enviaremos un link para que cambies tu contraseña.</string>
+    <string name="eT_passRe_correo">Correo electrónico</string>
+    <string name="b_passRe_recuperar">Recuperar</string>
     <!--End PasswordRecovery Strings-->
 
     <!--Start MainActivity Strings-->
