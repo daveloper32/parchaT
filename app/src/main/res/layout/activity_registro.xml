@@ -11,8 +11,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
         android:orientation="vertical"
+        android:layout_marginTop="20dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp">
 
@@ -50,20 +50,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:fontFamily="sans-serif-smallcaps"
             android:hint="@string/et_Email"
-            android:importantForAutofill="no"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:fontFamily="sans-serif-smallcaps"
+            android:importantForAutofill="no"/>
 
         <EditText
             android:id="@+id/contrasena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:fontFamily="sans-serif-smallcaps"
             android:hint="@string/et_contra"
-            android:importantForAutofill="no"
-            android:inputType="text" />
+            android:inputType="text"
+            android:fontFamily="sans-serif-smallcaps"
+            android:importantForAutofill="no"/>
 
         <Button
             android:id="@+id/bRegis"
@@ -115,9 +115,9 @@
             android:id="@+id/facebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:layout_marginStart="110dp"
             android:layout_marginLeft="80dp"
-            android:layout_marginTop="30dp"
             android:layout_marginBottom="-36dp"
             android:background="#00FFFFFF"
             android:contentDescription="@string/ib_face"
