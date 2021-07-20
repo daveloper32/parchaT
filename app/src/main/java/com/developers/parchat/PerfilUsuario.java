@@ -10,5 +10,8 @@ public class PerfilUsuario extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_usuario);
+
+        // Escondemos la barra superior
+        getSupportActionBar().hide();
     }
 }

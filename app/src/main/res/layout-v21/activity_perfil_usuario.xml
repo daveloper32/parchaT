@@ -6,34 +6,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E6233140"
+    android:background="#233140"
     android:paddingBottom="20dp"
     tools:context=".PerfilUsuario">
 
 
     <Toolbar
         android:id="@+id/toolbar"
+        layout="@layout/toolbar_activity_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="4dp"
-        android:background="#233140"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:targetApi="lollipop">
-
-        <ImageView
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            app:srcCompat="@drawable/ic_logo_parchat"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="28dp"
-            tools:srcCompat="@drawable/ic_logo_parchat">
-
-
-        </ImageView>
+        app:layout_constraintTop_toTopOf="parent">
 
     </Toolbar>
 
@@ -127,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="20dp"
                 android:contentDescription="Botón guardar cambios"
                 android:text="Guardar cambios"
                 app:backgroundTint="#FF5328"

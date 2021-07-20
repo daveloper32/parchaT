@@ -141,11 +141,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void VerPerfilUsuario() {
         //progressBar_Login.setVisibility(View.GONE);
         // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity
-        //Intent deMainActivityAPerfilUsuario = new Intent(MainActivity.this, .class);
+        Intent deMainActivityAPerfilUsuario = new Intent(MainActivity.this, PerfilUsuario.class);
         // Iniciamos el Activity
-        //startActivity(deMainActivityAPerfilUsuario);
+        startActivity(deMainActivityAPerfilUsuario);
         // Terminamos el activity MainActivity
-        //MainActivity.this.finish();
+        MainActivity.this.finish();
     }
 
     private void CambiarBusqueda() {
