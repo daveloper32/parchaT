@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="sans-serif-smallcaps"
-                android:text="Perfil de Usuario"
+                android:text="Mi Perfil"
                 android:textColor="#F44336"
                 android:textSize="34sp"
                 android:textStyle="bold" />
@@ -91,32 +91,45 @@
                     android:id="@+id/TextInputEditText_perfil_nombre"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/style_redondeo_edittext"
+                    app:boxStrokeColor="#ABFFFFFF"
                     android:layout_marginBottom="10dp"
-                    android:hint="Nombres y apellidos" />
+                    android:hint="Nombres y apellidos"
+                    android:fontFamily="sans-serif-smallcaps"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
+                android:layout_gravity="center_horizontal"
+                app:startIconDrawable="@android:drawable/ic_dialog_email"
+                app:startIconTint="#A19D9D">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/TextInputEditText_perfil_correo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/style_redondeo_edittext"
+                    app:boxStrokeColor="#ABFFFFFF"
                     android:layout_marginBottom="10dp"
-                    android:hint="Correo electrónico" />
+                    android:hint="Correo electrónico"
+                    android:fontFamily="sans-serif-smallcaps"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal">
+                    android:layout_gravity="center_horizontal"
+                    app:startIconDrawable="@android:drawable/stat_sys_phone_call"
+                    app:startIconTint="#A19D9D">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/TextInputEditText_perfil_celular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Celular" />
+                        android:background="@drawable/style_redondeo_edittext"
+                        app:boxStrokeColor="#ABFFFFFF"
+                        android:hint="Celular"
+                        android:fontFamily="sans-serif-smallcaps"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </com.google.android.material.textfield.TextInputLayout>
