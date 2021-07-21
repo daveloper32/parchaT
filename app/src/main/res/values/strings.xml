@@ -26,17 +26,6 @@
     <string name="tv_regisOp">O puedes registrarte con: </string>
     <string name="ib_face">facebook</string>
     <string name="ib_google">google</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
     <!--End Registro Strings-->
 
     <!--Start PasswordRecovery Strings-->
@@ -62,4 +51,31 @@
     <string name="dM_MainActivity_cerrarSesion">Cerrar Sesión</string>
     <!---End Opciones de menu del menu desplegable Strings-->
     <!--End MainActivity Strings-->
+
+    <!--Start PerfilUsuario Strings-->
+    <string name="b_perfUsuario_atras">Volver</string>
+    <string name="b_perfUsuario_editar">Editar</string>
+    <string name="b_perfUsuario_guardar">Guardar</string>
+    <string name="tV_perfUsuario_titulo">Hola, #User#!</string>
+    <string name="imgV_perfUsuario_fotoUsuario_contDes">Foto de Perfil del Usuario</string>
+    <string name="tV_perfUsuario_cambiarFoto">Cambiar mi foto</string>
+    <string name="eT_perfUsuario_nomCompleto">Nombre completo</string>
+    <string name="eT_perfUsuario_correo">Correo electronico</string>
+    <string name="eT_perfUsuario_celular">Número de teléfono</string>
+    <!--End PerfilUsuario Strings-->
+
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+
 </resources>

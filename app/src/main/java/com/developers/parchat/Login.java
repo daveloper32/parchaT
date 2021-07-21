@@ -7,6 +7,7 @@
 // El círculo que se ve es el color naranja con opacidad 37%
 // Fuente temporal: sans-serif-smallcaps
 
+
 package com.developers.parchat;
 
 import androidx.appcompat.app.AppCompatActivity;

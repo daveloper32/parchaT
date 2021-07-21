@@ -21,8 +21,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
             android:contentDescription="@string/imgV_ActivityMain_fotoUsuario_contDes"
-            android:src="@mipmap/ic_launcher_round"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:src="@drawable/ic_mi_imagen"
+            tools:srcCompat="@drawable/ic_mi_imagen" />
 
 
         <TextView
