@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.ParchaT" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#FF5328</item>
-        <item name="colorPrimaryVariant">#FF5328</item>
+        <item name="colorPrimary">#233140</item>
+        <item name="colorPrimaryVariant">#233140</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -28,8 +28,9 @@
         <!-- Customize your theme here. -->
     </style>
 
-
     <style name="Theme.ParchaT.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.ParchaT.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
 </resources>

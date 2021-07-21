@@ -6,54 +6,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E6233140"
-    android:paddingBottom="20dp"
+    android:background="#3B444E"
     tools:context=".PerfilUsuario">
 
+    <!--<include
 
-    <Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="4dp"
-        android:background="#233140"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:targetApi="lollipop">
-
-        <ImageView
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            app:srcCompat="@drawable/ic_logo_parchat"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="28dp"
-            tools:srcCompat="@drawable/ic_logo_parchat">
-
-
-        </ImageView>
-
-    </Toolbar>
+        android:layout_width="match_parent"
+        layout="@layout/toolbar_perfil_usuario"
+        />-->
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.08">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="20dp"
+
             android:orientation="vertical">
 
             <TextView
@@ -62,93 +41,106 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="sans-serif-smallcaps"
-                android:text="Mi Perfil"
-                android:textColor="#F44336"
+                android:text="@string/tV_perfUsuario_titulo"
+                android:textColor="#C8C4C4"
                 android:textSize="34sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/imageView_perfil_foto"
-                android:layout_width="123dp"
-                android:layout_height="134dp"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgV_perfUsuario_fotoUsuario"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:contentDescription="Subir foto de perfil"
-                app:srcCompat="@drawable/ic_mi_imagen" />
+                android:layout_marginTop="15dp"
+                android:contentDescription="@string/imgV_perfUsuario_fotoUsuario_contDes"
+                android:src="@drawable/ic_mi_imagen"
+                tools:src="@drawable/ic_mi_imagen" />
 
             <TextView
-                android:id="@+id/textView_perfil_foto"
+                android:id="@+id/tV_perfUsuario_cambiarFoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="Subir mi foto de perfil"
-                android:textColor="#ffffff" />
+                android:layout_marginTop="5dp"
+                android:fontFamily="sans-serif-smallcaps"
+                android:text="@string/tV_perfUsuario_cambiarFoto"
+                android:textColor="#C8C4C4" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="300dp"
+
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
+                android:layout_marginTop="12dp"
+                android:background="@drawable/style_redondeo_edittext"
+                app:boxStrokeColor="#ABFFFFFF"
+                app:endIconMode="clear_text"
+                app:endIconTint="#9EE6D5D5"
+                app:hintTextColor="#B0040404"
+                app:startIconDrawable="@android:drawable/ic_menu_myplaces"
+                app:startIconTint="#A19D9D">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/TextInputEditText_perfil_nombre"
+                    android:id="@+id/eT_perfUsuario_nombreCom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/style_redondeo_edittext"
-                    app:boxStrokeColor="#ABFFFFFF"
-                    android:layout_marginBottom="10dp"
-                    android:hint="Nombres y apellidos"
-                    android:fontFamily="sans-serif-smallcaps"/>
+                    android:enabled="false"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:hint="@string/eT_perfUsuario_nomCompleto"
+                    android:inputType="textPersonName"
+                    android:textCursorDrawable="@drawable/style_black_cursor" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="300dp"
+
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/style_redondeo_edittext"
+                app:boxStrokeColor="#ABFFFFFF"
+                app:endIconMode="clear_text"
+                app:endIconTint="#9EE6D5D5"
+                app:hintTextColor="#B0040404"
                 app:startIconDrawable="@android:drawable/ic_dialog_email"
                 app:startIconTint="#A19D9D">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/TextInputEditText_perfil_correo"
+                    android:id="@+id/eT_perfUsuario_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/style_redondeo_edittext"
-                    app:boxStrokeColor="#ABFFFFFF"
-                    android:layout_marginBottom="10dp"
-                    android:hint="Correo electrónico"
-                    android:fontFamily="sans-serif-smallcaps"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    app:startIconDrawable="@android:drawable/stat_sys_phone_call"
-                    app:startIconTint="#A19D9D">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/TextInputEditText_perfil_celular"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/style_redondeo_edittext"
-                        app:boxStrokeColor="#ABFFFFFF"
-                        android:hint="Celular"
-                        android:fontFamily="sans-serif-smallcaps"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
+                    android:enabled="false"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:hint="@string/eT_perfUsuario_correo"
+                    android:inputType="textEmailAddress"
+                    android:textCursorDrawable="@drawable/style_black_cursor" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/Button_perfil_guardar"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="40dp"
-                android:contentDescription="Botón guardar cambios"
-                android:text="Guardar cambios"
-                app:backgroundTint="#FF5328"
-                app:cornerRadius="10dp" />
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/style_redondeo_edittext"
+                app:boxStrokeColor="#ABFFFFFF"
+                app:endIconMode="clear_text"
+                app:endIconTint="#9EE6D5D5"
+                app:hintTextColor="#B0040404"
+                app:startIconDrawable="@android:drawable/stat_sys_phone_call"
+                app:startIconTint="#A19D9D">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/eT_perfUsuario_numero"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:hint="@string/eT_perfUsuario_celular"
+                    android:inputType="number"
+                    android:textCursorDrawable="@drawable/style_black_cursor" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
         </LinearLayout>
     </ScrollView>
