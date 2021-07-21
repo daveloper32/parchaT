@@ -74,7 +74,9 @@ public class Registro extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void InicioSesion(){
-
+        Intent IniALogin = new Intent(Registro.this, Login.class);
+        startActivity(IniALogin);
+        Registro.this.finish();
     }
 
     private void Log_Facebook(){
