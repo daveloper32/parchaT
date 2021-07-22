@@ -16,178 +16,181 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="20dp">
-
-
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="210dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/im_logo"
-            app:srcCompat="@drawable/ic_logo_parchat" />
-
-        <TextView
-            android:id="@+id/Registro"
-            android:layout_width="310dp"
-            android:layout_height="45dp"
-            android:fontFamily="sans-serif-smallcaps"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:textSize="34sp"
-            tools:text="@string/tv_registro" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/Usuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/style_redondeo_edittext"
-                app:boxStrokeColor="#ABFFFFFF"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="sans-serif-smallcaps"
-                android:hint="Nombres y apellidos" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            app:startIconDrawable="@android:drawable/ic_dialog_email"
-            app:startIconTint="#A19D9D">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/Email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/style_redondeo_edittext"
-                app:boxStrokeColor="#ABFFFFFF"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="sans-serif-smallcaps"
-                android:hint="Correo Electrónico" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            app:endIconMode="password_toggle"
-            app:endIconTint="#FFFFFF"
-            app:hintTextColor="#B0000000"
-            app:startIconDrawable="@android:drawable/ic_lock_lock"
-            app:startIconTint="#A19D9D">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/contrasena"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/style_redondeo_edittext"
-                app:boxStrokeColor="#ABFFFFFF"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="sans-serif-smallcaps"
-                android:hint="Contraseña" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <Button
-            android:id="@+id/bRegis"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="1dp"
-            android:fontFamily="sans-serif-smallcaps"
-            android:text="@string/bt_regis"
-            android:textStyle="bold"
-            app:backgroundTint="#FF5328" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="20dp">
+
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="210dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/im_logo"
+                app:srcCompat="@drawable/ic_logo_parchat" />
 
             <TextView
-                android:id="@+id/pregunta"
+                android:id="@+id/Registro"
+                android:layout_width="310dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif-smallcaps"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textSize="34sp"
+                tools:text="@string/tv_registro" />
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:startIconDrawable="@android:drawable/ic_menu_myplaces"
+                app:startIconTint="#A19D9D">
 
-                android:layout_marginBottom="-18dp"
-                android:fontFamily="sans-serif-smallcaps"
-                android:text="@string/tv_pregunta"
-                android:textColor="#ABFFFFFF" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/Usuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/style_redondeo_edittext"
+                    app:boxStrokeColor="#ABFFFFFF"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:hint="Nombres y apellidos" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/sesion"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="160dp"
-                android:layout_marginLeft="160dp"
-                android:fontFamily="sans-serif-smallcaps"
-                android:text="@string/tv_sesion"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:layout_gravity="center_horizontal"
+                app:startIconDrawable="@android:drawable/ic_dialog_email"
+                app:startIconTint="#A19D9D">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/Email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/style_redondeo_edittext"
+                    app:boxStrokeColor="#ABFFFFFF"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:hint="Correo Electrónico" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/posible"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                app:endIconMode="password_toggle"
+                app:endIconTint="#FFFFFF"
+                app:hintTextColor="#B0000000"
+                app:startIconDrawable="@android:drawable/ic_lock_lock"
+                app:startIconTint="#A19D9D">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/contrasena"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/style_redondeo_edittext"
+                    app:boxStrokeColor="#ABFFFFFF"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:hint="Contraseña" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <Button
+                android:id="@+id/bRegis"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="1dp"
                 android:fontFamily="sans-serif-smallcaps"
-                android:text="@string/tv_regisOp"
-                android:textColor="#ABFFFFFF" />
+                android:text="@string/bt_regis"
+                android:textStyle="bold"
+                app:backgroundTint="#FF5328" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/pregunta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginBottom="-18dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:text="@string/tv_pregunta"
+                    android:textColor="#ABFFFFFF" />
+
+                <TextView
+                    android:id="@+id/sesion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="160dp"
+                    android:layout_marginLeft="160dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:text="@string/tv_sesion"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/posible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:text="@string/tv_regisOp"
+                    android:textColor="#ABFFFFFF" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="-36dp"
+                    android:background="#00FFFFFF"
+                    android:contentDescription="@string/ib_face"
+                    android:src="@drawable/ic_logo_facebook" />
+
+                <ImageButton
+                    android:id="@+id/google"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="140dp"
+                    android:layout_marginLeft="140dp"
+                    android:background="#00FFFFFF"
+                    android:contentDescription="@string/ib_google"
+                    android:src="@drawable/ic_logo_google" />
+            </LinearLayout>
+
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:id="@+id/facebook"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
-                android:layout_marginLeft="80dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="-36dp"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/ib_face"
-                android:src="@drawable/ic_logo_facebook" />
-
-            <ImageButton
-                android:id="@+id/google"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="140dp"
-                android:layout_marginLeft="140dp"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/ib_google"
-                android:src="@drawable/ic_logo_google" />
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-</ScrollView>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

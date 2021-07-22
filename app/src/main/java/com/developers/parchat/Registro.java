@@ -9,12 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Registro extends AppCompatActivity implements View.OnClickListener{
 
     private EditText nomYap;
     private EditText email;
     private EditText password;
+    private TextView Registrate;
     private TextView ini_sesion;
     private Button register;
     private ImageButton im_face;
@@ -30,6 +32,7 @@ public class Registro extends AppCompatActivity implements View.OnClickListener{
         nomYap = findViewById(R.id.Usuario);
         email = findViewById(R.id.Email);
         password = findViewById(R.id.contrasena);
+        Registrate =findViewById(R.id.Registro);
         ini_sesion = findViewById(R.id.sesion);
         register = findViewById(R.id.bRegis);
         im_face = findViewById(R.id.facebook);
@@ -68,6 +71,7 @@ public class Registro extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void Registrarse(){
+        Toast.makeText(this, "Hemos enviado un correo para que confirmes tu registro.", Toast.LENGTH_LONG).show();
         Intent RegisALogin = new Intent(Registro.this, Login.class);
         startActivity(RegisALogin);
         Registro.this.finish();

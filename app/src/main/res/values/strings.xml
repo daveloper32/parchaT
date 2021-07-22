@@ -8,7 +8,7 @@
     <string name="b_login_iniSesion">Iniciar Sesión</string>
     <string name="tV_login_olvPassw">¿Olvidaste la contraseña?</string>
     <string name="tV_login_noMiembro">¿Aún no eres miembro?</string>
-    <string name="tV_login_registrarse">Registrarse</string>
+    <string name="tV_login_registrarse">Registrate</string>
     <string name="tV_login_otroIniSesion">O puedes iniciar sesión con:</string>
     <string name="imgB_login_facebook_contDes">Botón Inicio Sesión Facebook</string>
     <string name="imgB_login_google_contDes">Botón Inicio Sesión Google</string>

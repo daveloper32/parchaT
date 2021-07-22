@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3B444E"
+    android:background="@drawable/ic_fondo_user"
     tools:context=".PerfilUsuario">
 
     <!--<include
@@ -46,7 +46,7 @@
                 android:textSize="34sp"
                 android:textStyle="bold" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/imgV_perfUsuario_fotoUsuario"
                 android:layout_width="125dp"
                 android:layout_height="125dp"
@@ -138,6 +138,18 @@
                     android:inputType="number"
                     android:textCursorDrawable="@drawable/style_black_cursor" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/b_login_iniSesion"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/style_redondeo_button"
+                android:fontFamily="sans-serif-smallcaps"
+                android:text="@string/b_perfUsuario_guardar"
+                app:backgroundTint="#FF5328" />
 
 
 
