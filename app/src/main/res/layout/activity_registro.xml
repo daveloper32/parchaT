@@ -41,7 +41,7 @@
                 android:layout_height="45dp"
                 android:fontFamily="sans-serif-smallcaps"
                 android:gravity="center"
-                android:textColor="#000000"
+                android:textColor="#ffffff"
                 android:textSize="34sp"
                 tools:text="@string/tv_registro" />
 
@@ -50,10 +50,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/style_redondeo_edittext"
-                app:endIconMode="clear_text"
                 app:endIconTint="#9E434040"
-                app:hintTextColor="#B0000000">
+                app:hintTextColor="#B0000000"
+                app:startIconDrawable="@android:drawable/ic_menu_myplaces"
+                app:startIconTint="#A19D9D">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/eT_usuario_nomCom"
@@ -72,7 +72,6 @@
                 android:layout_marginTop="5dp"
                 android:layout_gravity="center_horizontal"
                 app:startIconDrawable="@android:drawable/ic_dialog_email"
-                android:background="@drawable/style_redondeo_edittext"
                 app:startIconTint="#A19D9D"
                 app:endIconMode="clear_text"
                 app:endIconTint="#9E434040"
@@ -94,7 +93,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/style_redondeo_edittext"
                 app:endIconMode="password_toggle"
                 app:endIconTint="#A19D9D"
                 app:hintTextColor="#B0000000"
