@@ -1,14 +1,12 @@
 package com.developers.parchat;
 
-import androidx.annotation.NonNull;
-
-import androidx.fragment.app.Fragment;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,9 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.jetbrains.annotations.NotNull;
-
-public class FragmentShowMaps extends Fragment{
+public class FragmentShowMaps extends Fragment {
 
     private GoogleMap mMap;
 
@@ -27,7 +23,7 @@ public class FragmentShowMaps extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Conectamos con el archivo de vista en el cual se desplegara el Fragmento
-        View v = inflater.inflate(R.layout.activity_show_maps, container, false);
+        View v = inflater.inflate(R.layout.fragment_show_maps_activity_main, container, false);
 
         // Hacemos la conexion con el objeto Fragment en el archivo de vista cotenido_fragmet_activity_main
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
@@ -37,7 +33,7 @@ public class FragmentShowMaps extends Fragment{
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             // Cuando ya esta listo para funcionar
             @Override
-            public void onMapReady(@NonNull @NotNull GoogleMap googleMap) {
+            public void onMapReady(@NonNull  GoogleMap googleMap) {
                 // Renombramos googleMap por mMap -> literal es como el obejto del mapa de Maps
                 mMap = googleMap;
                 // Creamos un objeto LatLng y le pasamos las coordenadas de Bogota
@@ -50,7 +46,7 @@ public class FragmentShowMaps extends Fragment{
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(bogota, 11));
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
-                    public void onMapClick(@NonNull @NotNull LatLng latLng) {
+                    public void onMapClick(@NonNull  LatLng latLng) {
                         // Esto es para que la persona pueda clickar y que salga un marcador con una leyenda con latitud y longitud
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(latLng);
@@ -65,5 +61,4 @@ public class FragmentShowMaps extends Fragment{
         });
         return v;
     }
-
 }
