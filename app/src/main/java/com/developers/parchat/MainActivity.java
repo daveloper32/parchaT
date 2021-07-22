@@ -7,8 +7,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +19,9 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     // Creramos los objetos necesarios para conectar con la parte grafica del menu desplegable y la barra
     // de herramientas personalizada
@@ -29,9 +29,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle bAB_MainActivity;
     private Toolbar tB_MainActivity;
     private NavigationView nV_MainActivity;
-
-    //FragmentManager fragmentManager;
-    // FragmentTransaction fragmentTransaction;
 
     // Declaramos Textviews e ImageView circular que aparecen en el header del menu desplegable
     private TextView tV_ActivityMain_nomUsuario, tV_ActivityMain_emailUsuario;
@@ -45,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Hacemos la conexion con la vista de los diferentes objetos de los layouts del Navigation View
         // Toolbar
         tB_MainActivity = findViewById(R.id.tB_MainActivity);
-
+        // Drawer Layout
         dL_MainActivity = findViewById(R.id.dL_MainActivity);
         // NavigationView
         nV_MainActivity = findViewById(R.id.nV_MainActivity_menuLateral);
@@ -74,12 +71,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bAB_MainActivity.setDrawerIndicatorEnabled(true);
         bAB_MainActivity.syncState();
 
-        // Cargamos el fragmento
-        /*fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fL_MainActivity_Contenedor, new FragmentShowMaps());
-        fragmentTransaction.commit();*/
-
         // CArgamos el fragmento con el mapa en el Frame Layout de contenido_fragment_activity_main
         Fragment fragment = new FragmentShowMaps();
         getSupportFragmentManager()
@@ -107,13 +98,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Dejamos preparado los sets para poner el nombre del usuario e imagen
         //tV_ActivityMain_nomUsuario.setText("");
         //tV_ActivityMain_emailUsuario.setText("");
+    }
 
+    @Override
+    public void onClick(View v) {
 
     }
 
-    // Que ocurre cuando se selecciona alguna opcion del Navigation View
     @Override
-    public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull @org.jetbrains.annotations.NotNull MenuItem item) {
         // Obtenemos el id de la opcion selecionada
         int idItem = item.getItemId();
         switch (idItem) {
@@ -134,10 +127,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 CerrarSesion();
                 break;
         }
-
         return false;
     }
-
     private void VerPerfilUsuario() {
         //progressBar_Login.setVisibility(View.GONE);
         // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity

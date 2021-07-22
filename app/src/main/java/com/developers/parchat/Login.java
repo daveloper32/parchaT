@@ -1,3 +1,5 @@
+package com.developers.parchat;
+
 // Links Importantes:
 // Repositorio Github: https://github.com/Yezid-Polania/aplicaciones-moviles
 // Diseño Adobe: https://xd.adobe.com/view/e6e63823-ecf3-4b1e-93c1-c94003a230d1-b3b5/
@@ -7,20 +9,14 @@
 // El círculo que se ve es el color naranja con opacidad 37%
 // Fuente temporal: sans-serif-smallcaps
 
-
-package com.developers.parchat;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
@@ -36,8 +32,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Escondemos la barra superior
-        getSupportActionBar().hide();
 
         // Hacemos puente de conexion con la parte grafica
         // EditText
@@ -91,9 +85,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 IniciarSesionGoogle();
                 break;
         }
-
     }
-
     private void IniciarSesionCorreo() {
         //progressBar_Login.setVisibility(View.GONE);
         // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al MainActivity o de Pagina Principal de la App
@@ -106,9 +98,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private void OlvidarPassword() {
         //progressBar_Login.setVisibility(View.GONE);
-        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity
-        Intent deLoginAPasswordRecovery = new Intent(Login.this, PasswordRecovery.class);
-        // Iniciamos el Activity
+        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity RecuperarPassword
+        Intent deLoginAPasswordRecovery = new Intent(Login.this, RecuperarPassword.class);
+        // Iniciamos el Activity RecuperarPassword
         startActivity(deLoginAPasswordRecovery);
         // Terminamos el activity Login
         Login.this.finish();

@@ -13,14 +13,14 @@ import android.widget.Toast;
 
 public class Registro extends AppCompatActivity implements View.OnClickListener{
 
-    private EditText nomYap;
-    private EditText email;
-    private EditText password;
-    private TextView Registrate;
-    private TextView ini_sesion;
-    private Button register;
-    private ImageButton im_face;
-    private ImageButton im_goo;
+    // Declaramos objetos EditText, TextView, Button y ProgressBar
+    private EditText eT_usuario_nomCom;
+    private EditText eT_usuario_email;
+    private EditText eT_usuario_contrasena;
+    private TextView tV_registro_iniSesion;
+    private Button b_usuario_regis;
+    private ImageButton imgB_registro_facebook;
+    private ImageButton imgB_registro_google;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,44 +29,37 @@ public class Registro extends AppCompatActivity implements View.OnClickListener{
         // Escondemos la barra superior
         getSupportActionBar().hide();
 
-        nomYap = findViewById(R.id.Usuario);
-        email = findViewById(R.id.Email);
-        password = findViewById(R.id.contrasena);
-        Registrate =findViewById(R.id.Registro);
-        ini_sesion = findViewById(R.id.sesion);
-        register = findViewById(R.id.bRegis);
-        im_face = findViewById(R.id.facebook);
-        im_goo = findViewById(R.id.google);
+        eT_usuario_nomCom = findViewById(R.id.eT_usuario_nomCom);
+        eT_usuario_email = findViewById(R.id.eT_usuario_email);
+        eT_usuario_contrasena = findViewById(R.id.eT_usuario_contrasena);
+        tV_registro_iniSesion = findViewById(R.id.tV_registro_iniSesion);
+        b_usuario_regis = findViewById(R.id.b_usuario_regis);
+        imgB_registro_facebook = findViewById(R.id.imgB_registro_facebook);
+        imgB_registro_google = findViewById(R.id.imgB_registro_google);
 
-        register.setOnClickListener(this);
-        ini_sesion.setOnClickListener(this);
-        im_face.setOnClickListener(this);
-        im_goo.setOnClickListener(this);
-
+        b_usuario_regis.setOnClickListener(this);
+        tV_registro_iniSesion .setOnClickListener(this);
+        imgB_registro_facebook.setOnClickListener(this);
+        imgB_registro_google.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View v){
+    public void onClick(View v) {
+        // Obtengo el id del objeto que esta siendo presionado
         int ob_click = v.getId();
-
         switch (ob_click) {
-            case (R.id.bRegis):
+            case (R.id.b_usuario_regis):
                 Registrarse();
                 break;
-
-            case (R.id.sesion):
+            case (R.id.tV_registro_iniSesion):
                 InicioSesion();
                 break;
-
-            case (R.id.facebook):
+            case (R.id.imgB_registro_facebook):
                 Log_Facebook();
                 break;
-
-            case (R.id.google):
+            case (R.id.imgB_registro_google):
                 Log_Google();
                 break;
-
-
         }
     }
 

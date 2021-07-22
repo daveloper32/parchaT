@@ -2,22 +2,18 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dL_MainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/dL_MainActivity">
 
-    <include
-        layout="@layout/toolbar_activity_main"
+    <include layout="@layout/toolbar_main_activity"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </include>
-
+        android:layout_height="wrap_content"/>
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/contenido_fragment_activity_main">
-    </include>
+        layout="@layout/contenido_fragment_activity_main"/>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nV_MainActivity_menuLateral"
@@ -26,8 +22,6 @@
         android:layout_gravity="end"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/header_menu_activity_main"
-        app:menu="@menu/menu_activity_main"
-        />
-
+        app:menu="@menu/menu_activity_main" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -32,15 +32,16 @@
                 app:srcCompat="@drawable/ic_logo_parchat"
                 tools:srcCompat="@drawable/ic_logo_parchat" />
 
+
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/style_redondeo_edittext"
-                app:boxStrokeColor="#ABFFFFFF"
+
                 app:endIconMode="clear_text"
-                app:endIconTint="#9EE6D5D5"
+                app:endIconTint="#9E434040"
                 app:hintTextColor="#B0040404"
                 app:startIconDrawable="@android:drawable/ic_dialog_email"
                 app:startIconTint="#A19D9D">
@@ -50,18 +51,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-smallcaps"
+                    android:background="@drawable/style_redondeo_edittext"
                     android:hint="@string/eT_login_correo"
+                    app:boxStrokeColor="#ABFFFFFF"
                     android:inputType="textEmailAddress"
                     android:textCursorDrawable="@drawable/style_black_cursor" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/style_redondeo_edittext"
-                app:boxStrokeColor="#ABFFFFFF"
+
                 app:endIconMode="password_toggle"
                 app:endIconTint="#FFFFFF"
                 app:hintTextColor="#B0000000"
@@ -74,6 +77,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-smallcaps"
                     android:hint="@string/eT_login_password"
+                    android:background="@drawable/style_redondeo_edittext"
+                    app:boxStrokeColor="#ABFFFFFF"
                     android:inputType="textPassword"
                     android:textColor="#AB000000"
                     android:textColorLink="#E91E63"
@@ -83,7 +88,7 @@
             <Button
                 android:id="@+id/b_login_iniSesion"
                 style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                android:layout_width="250dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"

@@ -16,7 +16,7 @@
 
     <!--Start Registro Strings-->
     <string name="im_logo">Logo parchaT</string>
-    <string name="et_Usua">Usuario</string>
+    <string name="et_nomComp">Nombres y apellidos</string>
     <string name="et_Email">Correo Electrónico</string>
     <string name="tv_registro">Registrate</string>
     <string name="et_contra">Contraseña</string>
@@ -44,6 +44,9 @@
     <string name="tV_ActivityMain_nomUsuario">Nombre Usuario</string>
     <string name="tV_ActivityMain_emailUsuario">Email Usuario</string>
     <!---End Header del menu desplegable Strings-->
+    <!---Start Toolbar Strings-->
+    <string name="imgV_ActivityMain_logo_contDes">Logo parchaT</string>
+    <!---End Toolbar Strings-->
     <!---Start Opciones de menu del menu desplegable Strings-->
     <string name="dM_MainActivity_verPerfil">Ver Perfil</string>
     <string name="dM_MainActivity_cambiarBusqueda">Cambiar Busqueda</string>
@@ -58,24 +61,11 @@
     <string name="b_perfUsuario_guardar">Guardar</string>
     <string name="tV_perfUsuario_titulo">Hola, #User#!</string>
     <string name="imgV_perfUsuario_fotoUsuario_contDes">Foto de Perfil del Usuario</string>
+    <string name="imgV_perfUsuario_logo_contDes">Logo parchaT</string>
     <string name="tV_perfUsuario_cambiarFoto">Cambiar mi foto</string>
     <string name="eT_perfUsuario_nomCompleto">Nombre completo</string>
     <string name="eT_perfUsuario_correo">Correo electronico</string>
     <string name="eT_perfUsuario_celular">Número de teléfono</string>
     <!--End PerfilUsuario Strings-->
-
-
-    <string name="title_activity_main">MainActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-
 
 </resources>

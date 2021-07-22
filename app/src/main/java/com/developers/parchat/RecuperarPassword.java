@@ -1,5 +1,7 @@
 package com.developers.parchat;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,9 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class PasswordRecovery extends AppCompatActivity implements View.OnClickListener {
+public class RecuperarPassword extends AppCompatActivity implements View.OnClickListener{
 
     // Declaramos objetos EditText y Button
     private EditText eT_passRe_correo;
@@ -18,9 +18,7 @@ public class PasswordRecovery extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_password_recovery);
-        // Escondemos la barra superior
-        getSupportActionBar().hide();
+        setContentView(R.layout.activity_recuperar_password);
 
         // Hacemos puente de conexion con la parte grafica
         // EditText
@@ -42,7 +40,6 @@ public class PasswordRecovery extends AppCompatActivity implements View.OnClickL
                 EnviarCorreo();
                 break;
         }
-
     }
 
     private void EnviarCorreo() {
@@ -50,10 +47,10 @@ public class PasswordRecovery extends AppCompatActivity implements View.OnClickL
         // Mostramos un mensaje emergente que informa que se a envida un correo para cambiar la contraseña
         Toast.makeText(this, "¡Revisa tu bandeja de entrada!\r\n\nTe hemos enviado un correo para que puedas restaurar tu contraseña.", Toast.LENGTH_LONG).show();
         // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity Login
-        Intent dePasswordRecoveryALogin = new Intent(PasswordRecovery.this, Login.class);
+        Intent dePasswordRecoveryALogin = new Intent(RecuperarPassword.this, Login.class);
         // Iniciamos el Activity Login
         startActivity(dePasswordRecoveryALogin);
-        // Terminamos el activity PasswordRecovery
-        PasswordRecovery.this.finish();
+        // Terminamos el activity RecuperarPassword
+        RecuperarPassword.this.finish();
     }
 }
