@@ -26,8 +26,7 @@ public class Registro extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
-        // Escondemos la barra superior
-        getSupportActionBar().hide();
+
 
         eT_usuario_nomCom = findViewById(R.id.eT_usuario_nomCom);
         eT_usuario_email = findViewById(R.id.eT_usuario_email);

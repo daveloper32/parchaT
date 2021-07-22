@@ -1,7 +1,9 @@
 package com.developers.parchat;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -51,7 +53,11 @@ public class PerfilUsuario extends AppCompatActivity implements View.OnClickList
         int idPresionado = v.getId();
         switch (idPresionado) {
             case (R.id.imgB_perfUsuario_volver):
-                VolverAMain();
+                if (ComprobarEdit() == true){
+                    MensajeEmergente();
+                } else if (ComprobarEdit() == false) {
+                    VolverAMain();
+                }
                 break;
             case (R.id.imgB_perfUsuario_editar):
                 EditarDatos();
@@ -63,6 +69,14 @@ public class PerfilUsuario extends AppCompatActivity implements View.OnClickList
                 CambiarFoto();
                 break;
 
+        }
+    }
+
+    private Boolean ComprobarEdit() {
+        if (eT_perfUsuario_nombreCom.isEnabled() && eT_perfUsuario_email.isEnabled() && eT_perfUsuario_numero.isEnabled()) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -96,5 +110,33 @@ public class PerfilUsuario extends AppCompatActivity implements View.OnClickList
     }
 
     private void CambiarFoto() {
+    }
+
+    public void MensajeEmergente() {
+        // Creamos un objeto de la clase AlertDialog, para poner en pantalla un mensaje emergente
+        AlertDialog.Builder msg_alertaA4 = new AlertDialog.Builder(PerfilUsuario.this);
+        // COnfiguramos un mensaje para el  AlertDialog
+        msg_alertaA4.setMessage("¿Esta seguro que quiere salir sin guardar los cambios?")
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                // Le damos un nombre al boton positivo del AlertDialog y hacemos un listener para programar la accion del boton
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity Login
+                        VolverAMain();
+                    }
+                })
+                ;
+        // Creamos un titulo para el AlertDialog
+        AlertDialog titulo = msg_alertaA4.create();
+        // Configuramos el mensaje para el titulo
+        titulo.setTitle("Volver");
+        // Mostramos en pantalla el AlertDialog
+        titulo.show();
     }
 }
