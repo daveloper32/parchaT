@@ -38,7 +38,7 @@ public class Registro extends AppCompatActivity implements View.OnClickListener{
         imgB_registro_google = findViewById(R.id.imgB_registro_google);
 
         b_usuario_regis.setOnClickListener(this);
-        tV_registro_iniSesion .setOnClickListener(this);
+        tV_registro_iniSesion.setOnClickListener(this);
         imgB_registro_facebook.setOnClickListener(this);
         imgB_registro_google.setOnClickListener(this);
     }

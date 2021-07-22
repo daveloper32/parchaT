@@ -16,16 +16,16 @@
 
     <!--Start Registro Strings-->
     <string name="im_logo">Logo parchaT</string>
-    <string name="et_nomComp">Nombres y apellidos</string>
-    <string name="et_Email">Correo Electrónico</string>
+    <string name="eT_usuario_nomCom">Nombres y apellidos</string>
+    <string name="eT_usuario_email">Correo Electrónico</string>
     <string name="tv_registro">Registrate</string>
-    <string name="et_contra">Contraseña</string>
-    <string name="bt_regis">Registrarse</string>
+    <string name="eT_usuario_contrasena">Contraseña</string>
+    <string name="b_usuario_regis">Registrarse</string>
     <string name="tv_pregunta">¿Ya tienes cuenta?</string>
-    <string name="tv_sesion">Inicia sesión</string>
+    <string name="tV_registro_iniSesion">Inicia sesión</string>
     <string name="tv_regisOp">O puedes registrarte con: </string>
-    <string name="ib_face">facebook</string>
-    <string name="ib_google">google</string>
+    <string name="imgB_registro_facebook">facebook</string>
+    <string name="imgB_registro_google">google</string>
     <!--End Registro Strings-->
 
     <!--Start PasswordRecovery Strings-->
