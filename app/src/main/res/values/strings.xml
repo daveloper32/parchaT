@@ -36,6 +36,21 @@
     <string name="b_passRe_recuperar">Recuperar</string>
     <!--End PasswordRecovery Strings-->
 
+    <!--Start SeleccionarActividad Strings-->
+    <!---Start Toolbar Strings-->
+    <string name="imgV_SeleccionarActividad_logo_contDes">Logo parchaT</string>
+    <string name="b_SeleccionarActividad_salir">Salir</string>
+    <!---End Toolbar Strings-->
+    <string name="tV_SeleccionarActividad_titulo">¿Que deseas buscar hoy?</string>
+    <string name="tV_SeleccionarActividad_restaurantes">Restaurantes</string>
+    <string name="tV_SeleccionarActividad_musica">Música</string>
+    <string name="tV_SeleccionarActividad_cine">Cine</string>
+    <string name="tV_SeleccionarActividad_areasVerdes">Areas Verdes</string>
+    <string name="tV_SeleccionarActividad_arte">Arte</string>
+    <string name="tV_SeleccionarActividad_farmacia">Farmacias</string>
+    <string name="b_SeleccionarActividad_continuar">Continuar</string>
+    <!--End SeleccionarActividad Strings-->
+
     <!--Start MainActivity Strings-->
     <string name="nV_Abrir_MainActivity">open</string>
     <string name="nV_Cerrar_MainActivity">close</string>
@@ -56,9 +71,11 @@
     <!--End MainActivity Strings-->
 
     <!--Start PerfilUsuario Strings-->
+    <!---Start Toolbar Strings-->
     <string name="b_perfUsuario_atras">Volver</string>
     <string name="b_perfUsuario_editar">Editar</string>
     <string name="b_perfUsuario_guardar">Guardar</string>
+    <!---End Toolbar Strings-->
     <string name="tV_perfUsuario_titulo">Hola, #User#!</string>
     <string name="imgV_perfUsuario_fotoUsuario_contDes">Foto de Perfil del Usuario</string>
     <string name="imgV_perfUsuario_logo_contDes">Logo parchaT</string>

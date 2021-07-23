@@ -88,10 +88,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
     private void IniciarSesionCorreo() {
         //progressBar_Login.setVisibility(View.GONE);
-        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al MainActivity o de Pagina Principal de la App
-        Intent deLoginAMainActivity = new Intent(Login.this, MainActivity.class);
-        // Iniciamos el MainActivity o de Pagina Principal de la App
-        startActivity(deLoginAMainActivity);
+        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity SeleccionarActividad
+        Intent deLoginASeleccionarActividad= new Intent(Login.this, SeleccionarActividad.class);
+        // Iniciamos el Activity SeleccionarActividad
+        startActivity(deLoginASeleccionarActividad);
         // Terminamos el activity Login
         Login.this.finish();
     }
