@@ -141,12 +141,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void CambiarBusqueda() {
         //progressBar_Login.setVisibility(View.GONE);
-        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity
-        //Intent deMainActivityABusquedaSitios = new Intent(MainActivity.this, .class);
-        // Iniciamos el Activity
-        //startActivity(deMainActivityABusquedaSitios);
+        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity SeleccionarActividad
+        Intent deMainActivityASeleccionarActividad = new Intent(MainActivity.this, SeleccionarActividad.class);
+        // Iniciamos el Activity SeleccionarActividad
+        startActivity(deMainActivityASeleccionarActividad);
         // Terminamos el activity MainActivity
-        //MainActivity.this.finish();
+        MainActivity.this.finish();
     }
 
     private void VerConfiguraciones() {

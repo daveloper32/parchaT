@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SeleccionarActividad">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar_seleccionar_actividad"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tV_SeleccionarActividad_titulo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal"
+                    android:text="@string/tV_SeleccionarActividad_titulo"
+                    android:textColor="#514B4B"
+                    android:textSize="24sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/cB_SeleccionarActividad_restaurantes"
+                            android:layout_width="110dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/ic_actividades_comida"
+                            android:button="@null"
+                            android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:freezesText="false"
+                            android:gravity="center_horizontal"
+                            android:textColor="#514B4B" />
+
+                        <TextView
+                            android:id="@+id/tV_SeleccionarActividad_restaurantes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:text="@string/tV_SeleccionarActividad_restaurantes"
+                            android:textColor="#514B4B" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/cB_SeleccionarActividad_musica"
+                            android:layout_width="110dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/ic_actividades_musica"
+                            android:button="@null"
+                            android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:freezesText="false"
+                            android:gravity="center_horizontal"
+                            android:textColor="#514B4B" />
+
+                        <TextView
+                            android:id="@+id/tV_SeleccionarActividad_musica"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:text="@string/tV_SeleccionarActividad_musica"
+                            android:textColor="#514B4B" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/cB_SeleccionarActividad_cine"
+                            android:layout_width="110dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/ic_actividades_cine"
+                            android:button="@null"
+                            android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:freezesText="false"
+                            android:gravity="center_horizontal"
+                            android:textColor="#514B4B" />
+
+                        <TextView
+                            android:id="@+id/tV_SeleccionarActividad_cine"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:text="@string/tV_SeleccionarActividad_cine"
+                            android:textColor="#514B4B" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/cB_SeleccionarActividad_areasVerdes"
+                            android:layout_width="110dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/ic_actividades_zonas_verdes"
+                            android:button="@null"
+                            android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:freezesText="false"
+                            android:gravity="center_horizontal"
+                            android:textColor="#514B4B" />
+
+                        <TextView
+                            android:id="@+id/tV_SeleccionarActividad_areasVerdes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:text="@string/tV_SeleccionarActividad_areasVerdes"
+                            android:textColor="#514B4B" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/cB_SeleccionarActividad_arte"
+                            android:layout_width="110dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/ic_actividades_arte"
+                            android:button="@null"
+                            android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:freezesText="false"
+                            android:gravity="center_horizontal"
+                            android:textColor="#514B4B" />
+
+                        <TextView
+                            android:id="@+id/tV_SeleccionarActividad_arte"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:text="@string/tV_SeleccionarActividad_arte"
+                            android:textColor="#514B4B" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/cB_SeleccionarActividad_farmacia"
+                            android:layout_width="110dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/ic_actividades_farmacia"
+                            android:button="@null"
+                            android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:freezesText="false"
+                            android:gravity="center_horizontal"
+                            android:textColor="#514B4B" />
+
+                        <TextView
+                            android:id="@+id/tV_SeleccionarActividad_farmacia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:text="@string/tV_SeleccionarActividad_farmacia"
+                            android:textColor="#514B4B" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/b_SeleccionarActividad_continuar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="45dp"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="45dp"
+                    android:layout_marginRight="45dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/style_redondeo_button"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:text="@string/b_SeleccionarActividad_continuar"
+                    app:backgroundTint="#FF5328" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
