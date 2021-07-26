@@ -36,12 +36,13 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/tV_perfUsuario_titulo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal"
                     android:text="@string/tV_perfUsuario_titulo"
                     android:textColor="#FF5328"
                     android:textSize="34sp"

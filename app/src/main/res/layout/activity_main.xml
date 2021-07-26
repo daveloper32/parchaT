@@ -10,7 +10,9 @@
     <include layout="@layout/toolbar_main_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
     <include
+        android:id="@+id/header_main_activity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         layout="@layout/contenido_fragment_activity_main"/>

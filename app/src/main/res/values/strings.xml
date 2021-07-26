@@ -12,6 +12,15 @@
     <string name="tV_login_otroIniSesion">O puedes iniciar sesión con:</string>
     <string name="imgB_login_facebook_contDes">Botón Inicio Sesión Facebook</string>
     <string name="imgB_login_google_contDes">Botón Inicio Sesión Google</string>
+    <!---Start Login Errores EditText Strings-->
+    <string name="eT_Error_login_1">¡Ingresa tu e-mail por favor!</string>
+    <string name="eT_Error_login_2">¡Ingresa un e-mail valido!</string>
+    <string name="eT_Error_login_3">¡Ingresa tu contraseña por favor!</string>
+    <!---End Login Errores EditText Strings-->
+    <!---Start Login Mensajes Emergentes Strings-->
+    <string name="msgToast_login_1">!El correo ingresado no esta registrado!</string>
+    <string name="msgToast_login_2">!El correo y/o la contraseña son incorrectos!</string>
+    <!---End Login Mensajes Emergentes Strings-->
     <!--End Login Strings-->
 
     <!--Start Registro Strings-->
@@ -26,6 +35,16 @@
     <string name="tv_regisOp">O puedes registrarte con: </string>
     <string name="imgB_registro_facebook">facebook</string>
     <string name="imgB_registro_google">google</string>
+    <!---Start Login Errores EditText Strings-->
+    <string name="eT_Error_registro_1">¡Ingresa tu nombre completo por favor!</string>
+    <string name="eT_Error_registro_2">¡Ingresa tu e-mail por favor!</string>
+    <string name="eT_Error_registro_3">¡Ingresa un e-mail valido!</string>
+    <string name="eT_Error_registro_4">¡Ingresa tu contraseña por favor!</string>
+    <!---End Login Errores EditText Strings-->
+    <!---Start Login Mensajes Emergentes Strings-->
+    <string name="msgToast_registro_1">¡Registro completado con exito!
+        \n\nHemos enviado un correo para que confirmes tu registro.</string>
+    <!---End Login Mensajes Emergentes Strings-->
     <!--End Registro Strings-->
 
     <!--Start PasswordRecovery Strings-->
@@ -34,6 +53,10 @@
     <string name="tV_passRe_ingCorreo">Ingresa el correo asociado a tu cuenta y te enviaremos un link para que cambies tu contraseña.</string>
     <string name="eT_passRe_correo">Correo electrónico</string>
     <string name="b_passRe_recuperar">Recuperar</string>
+    <!---Start Login Mensajes Emergentes Strings-->
+    <string name="msgToast_passRe_1">¡Revisa tu bandeja de entrada!
+        \n\nTe hemos enviado un correo para que puedas restaurar tu contraseña.</string>
+    <!---End Login Mensajes Emergentes Strings-->
     <!--End PasswordRecovery Strings-->
 
     <!--Start SeleccionarActividad Strings-->
@@ -76,13 +99,25 @@
     <string name="b_perfUsuario_editar">Editar</string>
     <string name="b_perfUsuario_guardar">Guardar</string>
     <!---End Toolbar Strings-->
-    <string name="tV_perfUsuario_titulo">Hola, #User#!</string>
+    <string name="tV_perfUsuario_titulo">Hola, </string>
     <string name="imgV_perfUsuario_fotoUsuario_contDes">Foto de Perfil del Usuario</string>
     <string name="imgV_perfUsuario_logo_contDes">Logo parchaT</string>
     <string name="tV_perfUsuario_cambiarFoto">Cambiar mi foto</string>
     <string name="eT_perfUsuario_nomCompleto">Nombre completo</string>
     <string name="eT_perfUsuario_correo">Correo electronico</string>
     <string name="eT_perfUsuario_celular">Número de teléfono</string>
+    <!---Start Login Mensajes Emergentes Strings-->
+    <string name="msgToast_perfUsuario_1">¡Tus datos han sido actualizados con exito!</string>
+    <string name="msgToast_perfUsuario_2">¡Algo salio mal! Por favor intentalo de nuevo.</string>
+    <string name="msgAlertDiag_perfUsuario_1">¿Esta seguro que quiere salir sin guardar los cambios?</string>
+    <string name="msgAlertDiag_perfUsuario_1_positive">Si</string>
+    <string name="msgAlertDiag_perfUsuario_1_negative">Cancelar</string>
+    <string name="msgAlertDiag_perfUsuario_1_title">Volver</string>
+    <!---End Login Mensajes Emergentes Strings-->
     <!--End PerfilUsuario Strings-->
 
 </resources>
+
+    <!---Start Login Mensajes Emergentes Strings-->
+    <!---End Login Mensajes Emergentes Strings-->
+

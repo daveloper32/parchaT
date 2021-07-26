@@ -2,8 +2,12 @@ package com.developers.parchat;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Patterns;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,19 +31,10 @@ public class Registro extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
 
-
-        eT_usuario_nomCom = findViewById(R.id.eT_usuario_nomCom);
-        eT_usuario_email = findViewById(R.id.eT_usuario_email);
-        eT_usuario_contrasena = findViewById(R.id.eT_usuario_contrasena);
-        tV_registro_iniSesion = findViewById(R.id.tV_registro_iniSesion);
-        b_usuario_regis = findViewById(R.id.b_usuario_regis);
-        imgB_registro_facebook = findViewById(R.id.imgB_registro_facebook);
-        imgB_registro_google = findViewById(R.id.imgB_registro_google);
-
-        b_usuario_regis.setOnClickListener(this);
-        tV_registro_iniSesion.setOnClickListener(this);
-        imgB_registro_facebook.setOnClickListener(this);
-        imgB_registro_google.setOnClickListener(this);
+        // Hacemos la conexion con los objetos de la vista con findViewById
+        ConexionObjetosConVista();
+        // Asignamos los Listeners a los objetos de interaccion del Registro
+        ListenersRegistro();
     }
 
     @Override
@@ -63,10 +58,8 @@ public class Registro extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void Registrarse(){
-        Toast.makeText(this, "Hemos enviado un correo para que confirmes tu registro.", Toast.LENGTH_LONG).show();
-        Intent RegisALogin = new Intent(Registro.this, Login.class);
-        startActivity(RegisALogin);
-        Registro.this.finish();
+        ValidacionCampos();
+
     }
 
     private void InicioSesion(){
@@ -82,4 +75,110 @@ public class Registro extends AppCompatActivity implements View.OnClickListener{
     private void Log_Google(){
 
     }
+
+    private void ValidacionCampos() {
+        // Creamos un par de variables tipo String para obtener lo que se escriba en los EditText
+        String nombreComp, email, password;
+        // Obtenemos lo que hay en cada EditText
+        nombreComp = eT_usuario_nomCom.getText().toString();
+        email = eT_usuario_email.getText().toString();
+        password = eT_usuario_contrasena.getText().toString();
+
+        // Validacion de que se escribio algo en los campos
+        // Nombre
+        if (nombreComp.isEmpty()) {
+            eT_usuario_nomCom.setError(getText(R.string.eT_Error_registro_1));
+            eT_usuario_nomCom.requestFocus();
+            return;
+        }
+        else {
+            // Email
+            if (email.isEmpty()) {
+                eT_usuario_email.setError(getText(R.string.eT_Error_registro_2));
+                eT_usuario_email.requestFocus();
+                return;
+            }
+            else {
+                // Validación extra email -> Se verifica si tiene la estructura de un email
+                // por ejemplo que tenga .com o @
+                Boolean validacionEmail = Patterns.EMAIL_ADDRESS.matcher(email).matches();
+                if (validacionEmail == false) {
+                    eT_usuario_email.setError(getText(R.string.eT_Error_registro_3));
+                    eT_usuario_email.requestFocus();
+                    return;
+                }
+                else {
+                    // Contraseña
+                    if (password.isEmpty()) {
+                        eT_usuario_contrasena.setError(getText(R.string.eT_Error_registro_4));
+                        eT_usuario_contrasena.requestFocus();
+                        return;
+                    }
+                    // Validacion extra contraseña una mayuscula? cuantos caracteres minimo?
+                    // un simbolo como minimo
+                    else {
+                        // Si los edit text no estan vacios
+                        if (!nombreComp.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+                            // Creamos un objeto Shared preferences para guardar datos de usuario
+                            // EL key sera el correo reistrado
+                            SharedPreferences datosUsuarioActual = getSharedPreferences(email,
+                                    Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = datosUsuarioActual.edit();
+                            // Guardamos 4 datos
+                            editor.putString("nombre", nombreComp);
+                            editor.putString("email", email);
+                            editor.putString("password", password);
+                            editor.putString("numero", "");
+                            // HAcemos el commit
+                            editor.commit();
+                            // Limpiarmos los editText
+                            LimpiarCampos();
+                            // Enviamos un mensaje emergente confirmando el registro
+                            Toast.makeText(this, R.string.msgToast_registro_1, Toast.LENGTH_LONG).show();
+                            // VOlvemos a login automaticamente
+                            Intent RegisALogin = new Intent(Registro.this, Login.class);
+                            // Iniciamos el Activity Login
+                            startActivity(RegisALogin);
+                            // Finalizamos Activity Registro
+                            Registro.this.finish();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void LimpiarCampos() {
+        eT_usuario_nomCom.setText("");
+        eT_usuario_email.setText("");
+        eT_usuario_contrasena.setText("");
+    }
+
+    private void ConexionObjetosConVista() {
+        // Hacemos puente de conexion con la parte grafica
+        // EditText
+        eT_usuario_nomCom = findViewById(R.id.eT_usuario_nomCom);
+        eT_usuario_email = findViewById(R.id.eT_usuario_email);
+        eT_usuario_contrasena = findViewById(R.id.eT_usuario_contrasena);
+        //TextView
+        tV_registro_iniSesion = findViewById(R.id.tV_registro_iniSesion);
+        // Button
+        b_usuario_regis = findViewById(R.id.b_usuario_regis);
+        // ImageButton
+        imgB_registro_facebook = findViewById(R.id.imgB_registro_facebook);
+        imgB_registro_google = findViewById(R.id.imgB_registro_google);
+    }
+
+    private void ListenersRegistro() {
+        //Listeners
+        /// Button
+        b_usuario_regis.setOnClickListener(this);
+        // TextView
+        tV_registro_iniSesion.setOnClickListener(this);
+        // ImageButton
+        imgB_registro_facebook.setOnClickListener(this);
+        imgB_registro_google.setOnClickListener(this);
+    }
+
+
 }

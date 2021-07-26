@@ -21,22 +21,10 @@ public class SeleccionarActividad extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seleccionar_actividad);
 
-        // Hacemos puente de conexion con la parte grafica
-        // Checkbox
-        cB_SeleccionarActividad_restaurantes = findViewById(R.id.cB_SeleccionarActividad_restaurantes);
-        cB_SeleccionarActividad_musica = findViewById(R.id.cB_SeleccionarActividad_musica);
-        cB_SeleccionarActividad_cine = findViewById(R.id.cB_SeleccionarActividad_cine);
-        cB_SeleccionarActividad_areasVerdes = findViewById(R.id.cB_SeleccionarActividad_areasVerdes);
-        cB_SeleccionarActividad_arte = findViewById(R.id.cB_SeleccionarActividad_arte);
-        cB_SeleccionarActividad_farmacia = findViewById(R.id.cB_SeleccionarActividad_farmacia);
-        // Button
-        b_SeleccionarActividad_salir = findViewById(R.id.b_SeleccionarActividad_salir);
-        b_SeleccionarActividad_continuar = findViewById(R.id.b_SeleccionarActividad_continuar);
-
-        // Listeners de Button
-        b_SeleccionarActividad_salir.setOnClickListener(this);
-        b_SeleccionarActividad_continuar.setOnClickListener(this);
-
+        // Hacemos la conexion con los objetos de la vista con findViewById
+        ConexionObjetosConVista();
+        // Asignamos los Listeners a los objetos de interaccion del SeleccionarActividad
+        ListenersSeleccionarActividad();
     }
 
     @Override
@@ -67,5 +55,25 @@ public class SeleccionarActividad extends AppCompatActivity implements View.OnCl
         startActivity(deSeleccionarActividadAMainActivity);
         // Terminamos el activity SeleccionarActividad
         SeleccionarActividad.this.finish();
+    }
+
+    private void ConexionObjetosConVista() {
+        // Hacemos puente de conexion con la parte grafica
+        // Checkbox
+        cB_SeleccionarActividad_restaurantes = findViewById(R.id.cB_SeleccionarActividad_restaurantes);
+        cB_SeleccionarActividad_musica = findViewById(R.id.cB_SeleccionarActividad_musica);
+        cB_SeleccionarActividad_cine = findViewById(R.id.cB_SeleccionarActividad_cine);
+        cB_SeleccionarActividad_areasVerdes = findViewById(R.id.cB_SeleccionarActividad_areasVerdes);
+        cB_SeleccionarActividad_arte = findViewById(R.id.cB_SeleccionarActividad_arte);
+        cB_SeleccionarActividad_farmacia = findViewById(R.id.cB_SeleccionarActividad_farmacia);
+        // Button
+        b_SeleccionarActividad_salir = findViewById(R.id.b_SeleccionarActividad_salir);
+        b_SeleccionarActividad_continuar = findViewById(R.id.b_SeleccionarActividad_continuar);
+    }
+
+    private void ListenersSeleccionarActividad() {
+        // Listeners de Button
+        b_SeleccionarActividad_salir.setOnClickListener(this);
+        b_SeleccionarActividad_continuar.setOnClickListener(this);
     }
 }

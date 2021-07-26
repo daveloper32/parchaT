@@ -22,7 +22,6 @@
             android:contentDescription="@string/imgV_ActivityMain_fotoUsuario_contDes"
             android:src="@drawable/ic_mi_imagen" />
 
-
         <TextView
             android:id="@+id/tV_ActivityMain_nomUsuario"
             android:layout_width="match_parent"
