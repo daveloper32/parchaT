@@ -59,7 +59,7 @@ public class FragmentShowMaps extends Fragment {
                     mMap.addMarker(new MarkerOptions().
                             position(restaurantes[x])
                             .title(nomRestaurantes[x])
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_maps_marker_restaurante))
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_mapa_restaurante))
                             .anchor(0.0f, 0.0f));
                 }
                 // Ubicamos la camara de google maps en el primer restaurante
