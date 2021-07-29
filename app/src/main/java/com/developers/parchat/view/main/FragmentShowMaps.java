@@ -41,7 +41,7 @@ public class FragmentShowMaps extends Fragment {
     private String nomRestaurantes[] = {"Tamarine", "Restaurante Peruano - El Indio de Machu Picchu",
             "Restaurante 69 Gauchos",
             "Harry Sasson"};
-    private String dirRestaurantes[] = {"Calle 73 # 8 - 60 Dentro del Hotel JW Marriott Bogotá, Bogotá, Cundinamarca",
+    private String dirRestaurantes[] = {"Calle 73 # 8 - 60, Bogotá, Cundinamarca",
             "Carrera 10 # 72 - 32, Localidad de Chapinero, Bogotá",
             "Calle 69a #10 - 16, Bogotá, Cundinamarca",
             "Carrera 9 # 75 - 70, Bogotá"};
@@ -77,12 +77,7 @@ public class FragmentShowMaps extends Fragment {
                             .title(nomRestaurantes[x])
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_mapa_restaurante))
                             .anchor(0.0f, 0.0f));
-                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(@NonNull @NotNull Marker marker) {
-                            return false;
-                        }
-                    });
+
 
                 }
                 // Ubicamos la camara de google maps en el primer restaurante
