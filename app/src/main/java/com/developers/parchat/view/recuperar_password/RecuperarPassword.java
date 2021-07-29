@@ -1,4 +1,4 @@
-package com.developers.parchat;
+package com.developers.parchat.view.recuperar_password;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.developers.parchat.R;
+import com.developers.parchat.view.login.Login;
 
 public class RecuperarPassword extends AppCompatActivity implements View.OnClickListener{
 

@@ -1,4 +1,4 @@
-package com.developers.parchat;
+package com.developers.parchat.view.main;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.List;
+import com.developers.parchat.R;
 
 public class FragmentShowMaps extends Fragment {
 

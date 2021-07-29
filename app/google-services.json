@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1065982828082",
+    "project_id": "prismatic-petal-320304",
+    "storage_bucket": "prismatic-petal-320304.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065982828082:android:42e6c824c909d3c30e262b",
+        "android_client_info": {
+          "package_name": "com.developers.parchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1065982828082-knncregq0nbkacth46dvmavm217uesnl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDihQEGTP5T7LlWV7VT7jhnULw8UhZ_2Kk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1065982828082-knncregq0nbkacth46dvmavm217uesnl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

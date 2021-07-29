@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/ic_fondo_registro"
     android:padding="20dp"
-    tools:context=".Registro">
+    tools:context=".view.registro.Registro">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -51,6 +51,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_gravity="center_horizontal"
                 app:endIconTint="#9E434040"
+                app:endIconMode="clear_text"
                 app:hintTextColor="#B0000000"
                 app:startIconDrawable="@android:drawable/ic_menu_myplaces"
                 app:startIconTint="#A19D9D">
@@ -61,7 +62,6 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/style_redondeo_edittext"
                     app:boxStrokeColor="#ABFFFFFF"
-
                     android:fontFamily="sans-serif-smallcaps"
                     android:hint="@string/eT_usuario_nomCom" />
             </com.google.android.material.textfield.TextInputLayout>

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/ic_fondo_login"
     android:padding="20dp"
-    tools:context=".Login">
+    tools:context=".view.login.Login">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -35,6 +35,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
 
+                android:id="@+id/tIL_login_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -59,7 +60,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-
+                android:id="@+id/tIL_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"

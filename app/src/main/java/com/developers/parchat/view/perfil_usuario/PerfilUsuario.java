@@ -1,4 +1,4 @@
-package com.developers.parchat;
+package com.developers.parchat.view.perfil_usuario;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.developers.parchat.view.main.MainActivity;
+import com.developers.parchat.R;
 
 public class PerfilUsuario extends AppCompatActivity implements View.OnClickListener {
 

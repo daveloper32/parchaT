@@ -18,8 +18,8 @@
     <string name="eT_Error_login_3">¡Ingresa tu contraseña por favor!</string>
     <!---End Login Errores EditText Strings-->
     <!---Start Login Mensajes Emergentes Strings-->
-    <string name="msgToast_login_1">!El correo ingresado no esta registrado!</string>
-    <string name="msgToast_login_2">!El correo y/o la contraseña son incorrectos!</string>
+    <string name="msgToast_login_1">!El correo ingresado no esta registrado o es incorrecto!</string>
+    <string name="msgToast_login_2">!La contraseña ingresada es incorrecta!</string>
     <!---End Login Mensajes Emergentes Strings-->
     <!--End Login Strings-->
 
@@ -44,6 +44,10 @@
     <!---Start Login Mensajes Emergentes Strings-->
     <string name="msgToast_registro_1">¡Registro completado con exito!
         \n\nHemos enviado un correo para que confirmes tu registro.</string>
+    <string name="msgToast_registro_2">¡El correo ingresado ya se encuentra registrado!
+        </string>
+    <string name="msgToast_registro_3">¡Algo salio mal!
+        \n\nIntenta registrarte de nuevo.</string>
     <!---End Login Mensajes Emergentes Strings-->
     <!--End Registro Strings-->
 

@@ -3,13 +3,12 @@
 // vistaSecundaria = findViewById(R.id.id_include);
 // Objeto objeto = vistaSecundaria.findViewById(R.id.id_objeto);
 
-package com.developers.parchat;
+package com.developers.parchat.view.main;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -21,12 +20,15 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.developers.parchat.view.main.FragmentShowMaps;
+import com.developers.parchat.view.login.Login;
+import com.developers.parchat.view.perfil_usuario.PerfilUsuario;
+import com.developers.parchat.R;
+import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
 import com.google.android.material.navigation.NavigationView;
 
-import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 

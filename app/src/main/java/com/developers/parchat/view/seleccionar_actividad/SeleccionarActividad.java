@@ -1,4 +1,4 @@
-package com.developers.parchat;
+package com.developers.parchat.view.seleccionar_actividad;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import com.developers.parchat.R;
+
+import com.developers.parchat.view.main.MainActivity;
 
 public class SeleccionarActividad extends AppCompatActivity implements View.OnClickListener {
 
