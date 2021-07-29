@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -113,6 +114,10 @@ public class PerfilUsuario extends AppCompatActivity implements View.OnClickList
     }
 
     private void CambiarFoto() {
+        //Creamos un intent para dar la opcion de recorrer la galeria de imagenes
+        //Intent intent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        //intent.setType("image/");
+        //startActivityForResult(intent.createchooser(intent, "Selecciona la Aplicación"), 10);
     }
 
     public void MensajeEmergente() {
