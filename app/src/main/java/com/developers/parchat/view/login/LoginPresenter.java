@@ -4,7 +4,7 @@ package com.developers.parchat.view.login;
 
 import android.util.Patterns;
 
-import com.developers.parchat.model.repository.RepositoryBuscarUsuario;
+import com.developers.parchat.model.repository.RepositoryLoginBuscarUsuario;
 import com.developers.parchat.view.recuperar_password.RecuperarPassword;
 import com.developers.parchat.view.registro.Registro;
 import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
@@ -19,7 +19,7 @@ public class LoginPresenter implements LoginMVP.Presenter {
     // EL constructor va a recibir la vista
     public LoginPresenter(LoginMVP.View vista) {
         this.vista = vista;
-        this.modelo = new RepositoryBuscarUsuario();
+        this.modelo = new RepositoryLoginBuscarUsuario();
         this.modelo.setPresentadorLogin(this, vista.getContext());
 
 

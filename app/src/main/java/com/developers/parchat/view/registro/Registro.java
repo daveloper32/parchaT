@@ -38,7 +38,7 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View, Vie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
-    // Iniciamos los objetos de la vista
+        // Iniciamos los objetos de la vista
         IniciarVista();
 
     }

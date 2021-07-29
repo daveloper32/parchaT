@@ -9,7 +9,7 @@ import com.developers.parchat.view.login.LoginMVP;
 
 import java.util.List;
 
-public class RepositoryBuscarUsuario implements LoginMVP.Model {
+public class RepositoryLoginBuscarUsuario implements LoginMVP.Model {
 
     // Variables modelo MVP
     private LoginMVP.Presenter presentadorLogin;
@@ -44,13 +44,18 @@ public class RepositoryBuscarUsuario implements LoginMVP.Model {
         // Creamos un objeto Shared preferences para guardar el inicio de sesion
         inicioSesionUsuario = context.getSharedPreferences("inicio_sesion",
                 Context.MODE_PRIVATE);
+        // Si el objeto no esta vacio verificamos el valor de saltarLogin
         if (inicioSesionUsuario != null) {
+            // Obtenemos el valor de la clave 'saltarLogin'
             boolean saltarLogin = inicioSesionUsuario.getBoolean("saltarLogin", false);
+            // Si saltar login es true devolvemos un true
             if (saltarLogin) {
                 return true;
+            // SI es false devolvemos false
             } else {
                 return false;
             }
+        // Si el objeto esta vacio devolvemos false
         } else {
             return false;
         }

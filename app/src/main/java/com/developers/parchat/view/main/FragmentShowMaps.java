@@ -41,7 +41,7 @@ public class FragmentShowMaps extends Fragment {
     private String nomRestaurantes[] = {"Tamarine", "Restaurante Peruano - El Indio de Machu Picchu",
             "Restaurante 69 Gauchos",
             "Harry Sasson"};
-    private String dirRestaurantes[] = {"Calle 73 # 8 - 60, Bogotá, Cundinamarca",
+    private String dirRestaurantes[] = {"Calle 73 # 8-60 Dentro del Hotel JW Marriott Bogotá, Bogotá, Cundinamarca",
             "Carrera 10 # 72 - 32, Localidad de Chapinero, Bogotá",
             "Calle 69a #10 - 16, Bogotá, Cundinamarca",
             "Carrera 9 # 75 - 70, Bogotá"};
@@ -66,63 +66,71 @@ public class FragmentShowMaps extends Fragment {
                 // Renombramos googleMap por mMap -> literal es como el obejto del mapa de Maps
                 mMap = googleMap;
 
+                // Creamos un objeto LatLng y le pasamos las coordenadas de Bogota
+                LatLng bogota = new LatLng(4.60971, -74.08175);
+
                 // Recorremos el arreglo de objetos LatLng para ubicar y nombrar marcadores con los restauantes en el mapa
                 for (int x = 0; x < restaurantes.length; x++) {
                     // Creamos un objeto LatLng y le pasamos las coordenadas de x restaurante
                     //restaurantes[x] = new LatLng(coordenadas[0][x], coordenadas[1][x]);
-                    restaurantes[x] = obtenerUbicacion_Direccion(dirRestaurantes[x]);
-                    // Añadimos un marcador al mapa en las coordenadas de x restaurante
-                    mMap.addMarker(new MarkerOptions().
-                            position(restaurantes[x])
-                            .title(nomRestaurantes[x])
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_mapa_restaurante))
-                            .anchor(0.0f, 0.0f));
-
-
+                    restaurantes[x] = obtenerLatLongDeDireccion(dirRestaurantes[x]);
+                    // Solo si el metodo obtenerLatLongDeDireccion nos devuelve las coordenadas
+                    // vamos a dibujar el marcador
+                    if (restaurantes[x] != null) {
+                        // Añadimos un marcador al mapa en las coordenadas de x restaurante
+                        mMap.addMarker(new MarkerOptions().
+                                position(restaurantes[x])
+                                .title(nomRestaurantes[x])
+                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_mapa_restaurante))
+                                .anchor(0.0f, 0.0f));
+                    }
+                    // De lo contrario
+                    else {
+                        // Enviamos un mensaje emergente diciendo que la conexion fallo
+                        Toast.makeText(getContext(),
+                                R.string.msgToast_MainActivity_1,
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
-                // Ubicamos la camara de google maps en el primer restaurante
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(restaurantes[0], 15));
+                // Si el objeto latlong en la posicion 0 del arreglo restaurantes no esta vacio
+                if (restaurantes[0] != null) {
+                    // Ubicamos la camara de google maps en el primer restaurante
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(restaurantes[0], 15));
+                // SI no
+                } else {
+                    // Ubicamos la camara de google maps en la ciudad en que viva
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(bogota, 11));
+                }
+
             }
         });
         return v;
     }
 
-    public LatLng obtenerUbicacion_Direccion(String strAddress) {
-        //Create coder with Activity context - this
-        Geocoder coder = new Geocoder(getContext());
-        List<Address> address;
-        LatLng latLng = null;
+    public LatLng obtenerLatLongDeDireccion(String direccion) {
+        // https://developer.android.com/reference/android/location/Geocoder
+        // Creamos un objeto de la clase Geocoder y le apsamos el contexto
+        Geocoder geocodificador = new Geocoder(getContext());
+        // Creamos una lista de objetos tipo Address
+        List<Address> direccionesEncontradas;
+        // Inicializamos un objeto LatLong nulo
+        LatLng latLng_Direccion = null;
 
         try {
-            //Get latLng from String
-            address = coder.getFromLocationName(strAddress, 5);
-
-            if (address != null) {
-                try {
-                    Address location = address.get(0);
-                    latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                } catch (IndexOutOfBoundsException er) {
-                    Toast.makeText(getContext(), address.toString() + "Direccion no valida" , Toast.LENGTH_SHORT).show();
-                }
+            // Intentamos obtener la latitud y longitud de la direccion ingresada en base a 5 busquedas
+            direccionesEncontradas = geocodificador.getFromLocationName(direccion, 5);
+            if (direccion != null) {
+                //
+                Address direccionEncontrada = direccionesEncontradas.get(0);
+                // EScribimos el objeto tipo LatLng
+                latLng_Direccion = new LatLng(direccionEncontrada.getLatitude(),
+                        direccionEncontrada.getLongitude());
+            } else {
+                return null;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return latLng;
+        return latLng_Direccion;
     }
 }
-
-//
-/*googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-@Override
-public void onMapClick(@NonNull  LatLng latLng) {
-        // Esto es para que la persona pueda clickar y que salga un marcador con una leyenda con latitud y longitud
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title(latLng.latitude+" : "+latLng.longitude);
-        googleMap.clear();
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-        latLng, 11
-        ));
-        }
-        });*/

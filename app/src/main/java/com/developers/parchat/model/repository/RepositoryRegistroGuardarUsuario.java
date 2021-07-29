@@ -7,7 +7,7 @@ import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.login.LoginMVP;
 import com.developers.parchat.view.registro.RegistroMVP;
 
-public class RepositoryGuardarUsuario implements RegistroMVP.Model {
+public class RepositoryRegistroGuardarUsuario implements RegistroMVP.Model {
 
     // Variables modelo MVP
     private RegistroMVP.Presenter presentadorRegistro;

@@ -1,5 +1,8 @@
 package com.developers.parchat.model.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Usuario {
     private String nombreCompleto;
     private String email;
@@ -11,6 +14,12 @@ public class Usuario {
         this.password = password;
     }
 
+    public Usuario(String nombreCompleto, String email, String numeroCel) {
+        this.nombreCompleto = nombreCompleto;
+        this.email = email;
+        this.numeroCel = numeroCel;
+    }
+
     public Usuario(String nombreCompleto, String email, String password, String numeroCel) {
         this.nombreCompleto = nombreCompleto;
         this.email = email;
@@ -20,6 +29,14 @@ public class Usuario {
 
     public String getNombreCompleto() {
         return nombreCompleto;
+    }
+
+    public String getSoloNombre() {
+        List<String> nombreComp = new ArrayList<String>();
+        for (String val : nombreCompleto.split(" ")) {
+            nombreComp.add(val);
+        }
+        return nombreComp.get(0);
     }
 
     public void setNombreCompleto(String nombreCompleto) {
