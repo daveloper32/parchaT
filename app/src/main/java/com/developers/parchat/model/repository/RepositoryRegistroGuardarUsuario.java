@@ -35,8 +35,6 @@ public class RepositoryRegistroGuardarUsuario implements RegistroMVP.Model {
     private SharedPreferences inicioSesionUsuario;
     private SharedPreferences.Editor editor;
 
-    private boolean auth_exitosa, save_in_db_exitosa;
-
     public RepositoryRegistroGuardarUsuario() {
         // Inicializamos la instancia FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
@@ -63,7 +61,6 @@ public class RepositoryRegistroGuardarUsuario implements RegistroMVP.Model {
                         } else {
                             presentadorRegistro.AuthUsuarioFallo();
                         }
-
                     }
                 });
     }
@@ -86,15 +83,6 @@ public class RepositoryRegistroGuardarUsuario implements RegistroMVP.Model {
 
     }
 
-    @Override
-    public boolean isAutenticacionExitosa() {
-        return auth_exitosa;
-    }
-
-    @Override
-    public boolean isUsuarioGuardadoEnDBExitosamente() {
-        return save_in_db_exitosa;
-    }
 
 
 }

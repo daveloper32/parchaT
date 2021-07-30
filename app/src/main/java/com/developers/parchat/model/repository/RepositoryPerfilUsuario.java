@@ -7,12 +7,22 @@ import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.perfil_usuario.PerfilUsuarioDatos;
 import com.developers.parchat.view.perfil_usuario.PerfilUsuarioMVP;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
 
-    // Variables autenticacion Firebase
+    // Declaramos un objeto de la Clase FirebaseAuth
     private FirebaseAuth mAuth;
+    // Declaramos un objeto de la Clase FirebaseUser
+    private FirebaseUser usuarioActual;
+    // Declaramos un objeto de la Clase DatabaseReference
+    private DatabaseReference referenciaUsuario;
+    // Declaramos una variable de tipo String para recibir el id del usuario en la base de datos -> User UID
+    private String IdUsuario;
+    private Usuario datosUsuario;
 
     // Variables modelo MVP PerfilUsuario
     private PerfilUsuarioMVP.Presenter presentadorPerfilUsuario;
@@ -24,7 +34,14 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
     private SharedPreferences.Editor editor;
 
     public RepositoryPerfilUsuario() {
+        // Inicializamos la instancia FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
+        // Buscamos el usuario que este logueado con la clase FirebaseAuth y lo guardamos en un objeto FirebaseUser
+        usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
+        // Inicializamos la instancia FirebaseDatabase
+        referenciaUsuario = FirebaseDatabase.getInstance().getReference("Usuarios");
+        // Obtenemos el Id del usuario
+        IdUsuario = usuarioActual.getUid();
     }
 
     @Override

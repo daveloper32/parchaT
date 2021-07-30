@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.login.LoginMVP;
 import com.developers.parchat.view.login.LoginPresenter;
 import com.developers.parchat.view.main.fragment_maps.FragmentShowMaps;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
         // Le quitamos el titulo que viene por defecto y lo dejamos vacio
         getSupportActionBar().setTitle("");
         // Cargamos el nombre y el correo del usuario que inicio sesion
-        DatosUsuarioEnHeader();
+        presentador.cargarDatosEnHeader();
         // Cargamos el Fragment de Google Maps
         CargarFragmentGoogleMaps();
         // Cargamos la configuracion del NavigationDrawer
@@ -127,17 +128,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
         }
         return false;
     }
-
-
-
-    private void DatosUsuarioEnHeader() {
-
-        // Hacemos sets a los textView para poner el nombre del usuario e imagen
-        tV_ActivityMain_nomUsuario.setText("nombreUsuario");
-        tV_ActivityMain_emailUsuario.setText("");
-
-    }
-
     private void CargarNavigationDrawer() {
 
         // Creamos el botón que nos ayuda a abrir el Navigation View -> deslizable
@@ -179,6 +169,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
     }
 
 
+    @Override
+    public void setDatosEnHeader(Usuario datosUsuario) {
+        // Hacemos sets a los textView para poner el nombre del usuario e imagen
+        tV_ActivityMain_nomUsuario.setText(datosUsuario.getNombreCompleto());
+        tV_ActivityMain_emailUsuario.setText(datosUsuario.getEmail());
+
+    }
 
     @Override
     public void irAlActivityPerfilUsuario(Class<? extends AppCompatActivity> ir_a_PerfilUsuario) {

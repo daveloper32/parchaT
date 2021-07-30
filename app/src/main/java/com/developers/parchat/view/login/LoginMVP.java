@@ -17,8 +17,6 @@ public interface LoginMVP {
         void setPresentadorLogin(Presenter presentador, Context context);
         // Validacion de las credenciales
         void validarConEmailYPasswordUsuario(String email, String password);
-        // Verificamos que el usuario se haya autenticado en firebase
-        boolean isAutenticacionExitosa();
         // Verificamos si el usuario ya habia iniciado sesion previamente en la app
         boolean validarSaltarLogin();
     }

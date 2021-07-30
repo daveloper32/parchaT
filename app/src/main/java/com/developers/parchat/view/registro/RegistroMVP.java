@@ -15,10 +15,6 @@ public interface RegistroMVP {
         // Autenticar y Guardar Usuario
         void autenticarUsuarioNuevo(Usuario usuario);
         void guardarUsuarioNuevoEnBaseDatos(Usuario usuario);
-        // Verificamos que el usuario se haya autenticado en firebase
-        boolean isAutenticacionExitosa();
-        // Verificamos que el usuario se haya guaradado en la base de datos de firebase
-        boolean isUsuarioGuardadoEnDBExitosamente();
 
     }
     // EL presentador recibe los eventos que ocurriran en la vista

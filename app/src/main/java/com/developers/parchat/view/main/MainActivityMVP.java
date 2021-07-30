@@ -6,6 +6,7 @@ import android.content.Context;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.perfil_usuario.PerfilUsuarioDatos;
 
 public interface MainActivityMVP {
@@ -15,7 +16,8 @@ public interface MainActivityMVP {
         // enviamos el presentador y el contexto de la vista
         void setPresentadorMain(Presenter presentadorMain, Context contextoMain);
         // Para obtener los datos del correo que inicio sesion
-        MainActivityDatos getDatosPerfilUsuario(String emailUsuario);
+        void getDatosUsuarioLogueadoFromDB();
+        Usuario getUsuarioLogueado();
         // Cerrar sesion
         void cerrarSesionFirebase();
 
@@ -31,11 +33,16 @@ public interface MainActivityMVP {
         // Que pasa si se presiona en Cerrar Sesion
         void CerrarSesion();
 
+        void obtenerDatosUsuarioLogeadoConExito();
+
+        void obtenerDatosUsuarioLogeadoConFalla();
+
+        void cargarDatosEnHeader();
     }
     // Se obtienen datos e informacion a la vista
     interface View {
 
-
+        void setDatosEnHeader(Usuario datosUsuario);
         // Para hacer el intent e ir a el Activity PerfilUsuario
         void irAlActivityPerfilUsuario(Class<? extends AppCompatActivity> ir_a_PerfilUsuario);
         // Para hacer el intent e ir a el Activity SeleccionarActividad

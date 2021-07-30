@@ -35,7 +35,6 @@ public class RepositoryLoginBuscarUsuario implements LoginMVP.Model {
     private SharedPreferences inicioSesionUsuario;
     private SharedPreferences.Editor editor;
 
-    private boolean auth_exitosa;
 
     public RepositoryLoginBuscarUsuario() {
         // Inicializamos la instancia FirebaseAuth
@@ -66,10 +65,7 @@ public class RepositoryLoginBuscarUsuario implements LoginMVP.Model {
         });
     }
 
-    @Override
-    public boolean isAutenticacionExitosa() {
-        return auth_exitosa;
-    }
+
 
     @Override
     public boolean validarSaltarLogin() {

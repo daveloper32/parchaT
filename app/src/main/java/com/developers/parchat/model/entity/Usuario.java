@@ -9,6 +9,9 @@ public class Usuario {
     private String password;
     private String numeroCel;
 
+    public Usuario() {
+    }
+
     public Usuario(String email, String password) {
         this.email = email;
         this.password = password;
@@ -29,6 +32,14 @@ public class Usuario {
 
     public String getNombreCompleto() {
         return nombreCompleto;
+    }
+
+    public String getSoloNombre() {
+        List<String> nombreComp = new ArrayList<String>();
+        for (String val : nombreCompleto.split(" ")) {
+            nombreComp.add(val);
+        }
+        return nombreComp.get(0);
     }
 
 

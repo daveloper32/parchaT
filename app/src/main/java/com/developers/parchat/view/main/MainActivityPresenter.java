@@ -1,5 +1,6 @@
 package com.developers.parchat.view.main;
 
+import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.model.repository.RepositoryMainActivity;
 import com.developers.parchat.view.login.Login;
 import com.developers.parchat.view.perfil_usuario.PerfilUsuario;
@@ -36,6 +37,22 @@ public class MainActivityPresenter implements MainActivityMVP.Presenter {
     public void CerrarSesion() {
         modelo.cerrarSesionFirebase();
         vista.irAlActivityLogin(Login.class);
+    }
+
+    @Override
+    public void obtenerDatosUsuarioLogeadoConExito() {
+        Usuario usuarioActual = modelo.getUsuarioLogueado();
+        vista.setDatosEnHeader(usuarioActual);
+    }
+
+    @Override
+    public void obtenerDatosUsuarioLogeadoConFalla() {
+
+    }
+
+    @Override
+    public void cargarDatosEnHeader() {
+        modelo.getDatosUsuarioLogueadoFromDB();
     }
 
 }
