@@ -13,15 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 public interface LoginMVP {
 
     interface Model {
-        // Validacion del email
-        boolean validarEmailUsuario(String email);
-        // Validacion de la contraseña
-        boolean validarPasswordUsuario(String email, String password);
-        // enviamos el presentador y el contexto de la vista
+        //
         void setPresentadorLogin(Presenter presentador, Context context);
-        // Guardamos el estado de si se salta o no el login
-        void guardarSaltarLogin(String email);
-        // Validamos si se inicio sesion previamente para pasar al login
+        // Validacion de las credenciales
+        void validarConEmailYPasswordUsuario(String email, String password);
+        // Verificamos que el usuario se haya autenticado en firebase
+        boolean isAutenticacionExitosa();
+        // Verificamos si el usuario ya habia iniciado sesion previamente en la app
         boolean validarSaltarLogin();
     }
 
@@ -37,9 +35,12 @@ public interface LoginMVP {
         void IniciarSesionFacebook();
         // Que pasa si se presiona el boton de google
         void IniciarSesionGoogle();
+        // Validamos si alguien ya inicio sesion
+        void ValidarSaltoDeLogin();
 
-        //
-        boolean ValidarSaltoDeLogin();
+        void InicioSesionExitoso();
+
+        void InicioSesionFallido();
     }
 
     // Se obtienen datos e informacion a la vista
@@ -54,6 +55,12 @@ public interface LoginMVP {
         void showInvalidEmailError();
         // TextInputEditText de password vacio
         void showEmptyPasswordError();
+        // TextInputEditText de password minimo 6 caracteres
+        void showLengthPasswordError();
+        ////
+        void showProgressBar();
+        void hideProgressBar();
+        ////
         // Para hacer el intent e ir a el Activity Registro
         void irAlActivityRegistro(Class<? extends AppCompatActivity> ir_a_Registro);
         // Para hacer el intent e ir a el Activity RecuperarPassword

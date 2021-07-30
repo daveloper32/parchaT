@@ -4,30 +4,39 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.developers.parchat.model.entity.Usuario;
+import com.developers.parchat.view.perfil_usuario.PerfilUsuarioDatos;
 import com.developers.parchat.view.perfil_usuario.PerfilUsuarioMVP;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
 
-    // Variables modelo MVP
+    // Variables autenticacion Firebase
+    private FirebaseAuth mAuth;
+
+    // Variables modelo MVP PerfilUsuario
     private PerfilUsuarioMVP.Presenter presentadorPerfilUsuario;
-    private Context context;
+    private Context contextPerfilUsuario;
 
     // Creamos un objeto SharedPreferences para buscar los datos del Usuario que quiere iniciar sesion
     private SharedPreferences datosUsuarioActual;
     private SharedPreferences inicioSesionUsuario;
     private SharedPreferences.Editor editor;
 
+    public RepositoryPerfilUsuario() {
+        mAuth = FirebaseAuth.getInstance();
+    }
+
     @Override
-    public void setPresentadorPerfilUsuario(PerfilUsuarioMVP.Presenter presentadorPerfilUsuario, Context context) {
+    public void setPresentadorPerfilUsuario(PerfilUsuarioMVP.Presenter presentadorPerfilUsuario, Context contextPerfilUsuario) {
         this.presentadorPerfilUsuario = presentadorPerfilUsuario;
-        this.context = context;
+        this.contextPerfilUsuario = contextPerfilUsuario;
     }
 
     @Override
     public String getEmailSaltarInicioSesion() {
         // Creamos un objeto Shared preferences para guardar el inicio de sesion
-        inicioSesionUsuario = context.getSharedPreferences("inicio_sesion",
+        inicioSesionUsuario = contextPerfilUsuario.getSharedPreferences("inicio_sesion",
                 Context.MODE_PRIVATE);
         // Validamos que no este vacio
         if (inicioSesionUsuario != null) {
@@ -46,9 +55,9 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
     }
 
     @Override
-    public Usuario getDatosPerfilUsuario(String emailUsuario) {
+    public PerfilUsuarioDatos getDatosPerfilUsuario(String emailUsuario) {
         // Creamos un objeto Shared preferences para buscar los datos de usuario
-        datosUsuarioActual = context.getSharedPreferences(emailUsuario,
+        datosUsuarioActual = contextPerfilUsuario.getSharedPreferences(emailUsuario,
                 Context.MODE_PRIVATE);
         // Verificamos que no este vacio
         if (datosUsuarioActual != null) {
@@ -59,7 +68,7 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
             // Obtenemos el numero
             numero = datosUsuarioActual.getString("numero", "");
             // Creamos un objeto tipo Usuario
-            Usuario usuario = new Usuario(nombreUsuario, emailUsuario, numero);
+            PerfilUsuarioDatos usuario = new PerfilUsuarioDatos(nombreUsuario, emailUsuario, numero);
             // Retornamos el obtejo tipo Usuario
             return usuario;
 
@@ -69,9 +78,9 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
     }
 
     @Override
-    public boolean editarDatosUsuario(Usuario usuario_a_editar) {
+    public boolean editarDatosUsuario(PerfilUsuarioDatos usuario_a_editar) {
         // Creamos un objeto Shared preferences para buscar los datos de usuario
-        datosUsuarioActual = context.getSharedPreferences(usuario_a_editar.getEmail(),
+        datosUsuarioActual = contextPerfilUsuario.getSharedPreferences(usuario_a_editar.getEmail(),
                 Context.MODE_PRIVATE);
         if (datosUsuarioActual != null) {
             editor = datosUsuarioActual.edit();

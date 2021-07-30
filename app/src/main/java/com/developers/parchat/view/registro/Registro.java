@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.developers.parchat.R;
@@ -33,6 +34,7 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View, Vie
     private Button b_usuario_regis;
     private ImageButton imgB_registro_facebook;
     private ImageButton imgB_registro_google;
+    private ProgressBar pB_registro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,8 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View, Vie
         // ImageButton
         imgB_registro_facebook = findViewById(R.id.imgB_registro_facebook);
         imgB_registro_google = findViewById(R.id.imgB_registro_google);
+        // ProgressBar
+        pB_registro = findViewById(R.id.pB_registro);
         //Listeners
         /// Button
         b_usuario_regis.setOnClickListener(this);
@@ -106,7 +110,7 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View, Vie
         email = eT_usuario_email.getText().toString().trim();
         password = eT_usuario_contrasena.getText().toString().trim();
         // Guardamos el nombreComp, email y contraseña en un objeto LoginInfoUsuario
-        RegistroDatosUsuario datosUsuario = new RegistroDatosUsuario(nombreComp, email, password);
+        RegistroDatosUsuario datosUsuario = new RegistroDatosUsuario(nombreComp, email, password, "");
         // Retornamos el objeto RegistroDatosUsuario
         return datosUsuario;
     }
@@ -141,6 +145,24 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View, Vie
         eT_usuario_contrasena.setError(getText(R.string.eT_Error_registro_4));
         eT_usuario_contrasena.requestFocus();
         return;
+    }
+
+    @Override
+    public void showLengthPasswordError() {
+        // Mostramos el error en el TextInputLayout
+        eT_usuario_contrasena.setError(getText(R.string.eT_Error_registro_5));
+        eT_usuario_contrasena.requestFocus();
+        return;
+    }
+
+    @Override
+    public void showProgressBar() {
+        pB_registro.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        pB_registro.setVisibility(View.GONE);
     }
 
     @Override

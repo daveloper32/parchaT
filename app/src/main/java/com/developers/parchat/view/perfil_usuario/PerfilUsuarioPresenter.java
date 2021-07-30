@@ -1,11 +1,6 @@
 package com.developers.parchat.view.perfil_usuario;
 
 
-import android.content.Context;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.model.repository.RepositoryPerfilUsuario;
 import com.developers.parchat.view.main.MainActivity;
 
@@ -22,13 +17,13 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
     }
 
     @Override
-    public Usuario BuscarDatosUsuario() {
+    public PerfilUsuarioDatos BuscarDatosUsuario() {
         // Solicitamos al modelo el correo del usuario que inicio sesion
         String emailUsuarioActivo = modelo.getEmailSaltarInicioSesion();
         // Validamos que no nos devuelva un String vacio
         if (!emailUsuarioActivo.isEmpty()) {
             // Solicitamos al modelo los datos del usuario con el email
-            Usuario usuarioActivo = modelo.getDatosPerfilUsuario(emailUsuarioActivo);
+            PerfilUsuarioDatos usuarioActivo = modelo.getDatosPerfilUsuario(emailUsuarioActivo);
             return usuarioActivo;
         }
         else {
@@ -44,7 +39,7 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
         if (vista.isEdicionActivada()){
             // Solicito a la vista la informacion de los cambios del usuario y lo almaceno
             // en un objeto tipo Usuario
-            Usuario usuarioNuevosDatos = vista.getNuevosDatosUsuario();
+            PerfilUsuarioDatos usuarioNuevosDatos = vista.getNuevosDatosUsuario();
             // Validar Campos
             // Validacion de que se escribio algo en los campos
             // Nombre Completo

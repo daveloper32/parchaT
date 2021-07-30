@@ -9,6 +9,7 @@
     tools:context=".view.login.Login">
 
     <ScrollView
+        android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/style_redondeo_edittext"
+                android:textColorHint="#B7000000"
 
                 app:endIconMode="clear_text"
                 app:endIconTint="#9E434040"
@@ -51,12 +53,13 @@
                     android:id="@+id/eT_login_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-smallcaps"
                     android:background="@drawable/style_redondeo_edittext"
+                    android:fontFamily="sans-serif-smallcaps"
                     android:hint="@string/eT_login_correo"
-                    app:boxStrokeColor="#ABFFFFFF"
                     android:inputType="textEmailAddress"
-                    android:textCursorDrawable="@drawable/style_black_cursor" />
+                    android:textCursorDrawable="@drawable/style_black_cursor"
+                    app:boxStrokeColor="#ABFFFFFF"
+                    app:hintTextColor="#B0040404" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -65,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/style_redondeo_edittext"
-
+                android:textColorHint="#B7000000"
                 app:endIconMode="password_toggle"
                 app:endIconTint="#FFFFFF"
                 app:hintTextColor="#B0000000"
@@ -76,14 +79,14 @@
                     android:id="@+id/eT_login_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/style_redondeo_edittext"
                     android:fontFamily="sans-serif-smallcaps"
                     android:hint="@string/eT_login_password"
-                    android:background="@drawable/style_redondeo_edittext"
-                    app:boxStrokeColor="#ABFFFFFF"
                     android:inputType="textPassword"
-                    android:textColor="#AB000000"
                     android:textColorLink="#E91E63"
-                    android:textCursorDrawable="@drawable/style_black_cursor" />
+                    android:textCursorDrawable="@drawable/style_black_cursor"
+                    app:boxStrokeColor="#ABFFFFFF"
+                    app:hintTextColor="#B0040404" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -181,5 +184,16 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/pB_login"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

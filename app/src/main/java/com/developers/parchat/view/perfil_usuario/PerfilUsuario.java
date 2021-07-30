@@ -38,10 +38,8 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         setContentView(R.layout.activity_perfil_usuario);
         // Iniciamos los objetos de la vista
         IniciarVista();
-
         // Cargamos los datos del usuario en los EditText
         CargamosDatosUsuario();
-
     }
 
     private void IniciarVista() {
@@ -76,7 +74,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         int idPresionado = v.getId();
         switch (idPresionado) {
             case (R.id.imgB_perfUsuario_volver):
-                if (ComprobarEdit()){
+                if (isEdicionActivada()){
                     MensajeEmergente(this);
                 } else {
                     irAlActivityMain(MainActivity.class);
@@ -96,15 +94,15 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
     }
 
     @Override
-    public Usuario getNuevosDatosUsuario() {
+    public PerfilUsuarioDatos getNuevosDatosUsuario() {
         // Le solicitamos al presentador que nos entregue los datos de usuario
-        Usuario usuarioActivo = presentador.BuscarDatosUsuario();
+        PerfilUsuarioDatos usuarioActivo = presentador.BuscarDatosUsuario();
         if (usuarioActivo != null) {
             String nombreChanged, numeroChanged;
             nombreChanged = eT_perfUsuario_nombreCom.getText().toString().trim();
             numeroChanged = eT_perfUsuario_numero.getText().toString().trim();
             // El email no lo cambiamos
-            Usuario usuarioNuevosDatos = new Usuario(nombreChanged, usuarioActivo.getEmail(),
+            PerfilUsuarioDatos usuarioNuevosDatos = new PerfilUsuarioDatos(nombreChanged, usuarioActivo.getEmail(),
                     numeroChanged);
             return usuarioNuevosDatos;
         } else {
@@ -126,7 +124,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
     @Override
     public void CargamosDatosUsuario() {
         // Le solicitamos al presentador que nos entregue los datos de usuario
-        Usuario usuarioActivo = presentador.BuscarDatosUsuario();
+        PerfilUsuarioDatos usuarioActivo = presentador.BuscarDatosUsuario();
         // Validamos que el usuario no este vacio
         if (usuarioActivo != null) {
             // Cargamos los datos del usuario en los edit text
@@ -134,15 +132,6 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
             eT_perfUsuario_nombreCom.setText(usuarioActivo.getNombreCompleto());
             eT_perfUsuario_email.setText(usuarioActivo.getEmail());
             eT_perfUsuario_numero.setText(usuarioActivo.getNumeroCel());
-        }
-    }
-
-    @Override
-    public boolean ComprobarEdit() {
-        if (eT_perfUsuario_nombreCom.isEnabled() && eT_perfUsuario_numero.isEnabled()) {
-            return true;
-        } else {
-            return false;
         }
     }
 

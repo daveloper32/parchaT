@@ -17,12 +17,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.developers.parchat.view.main.FragmentShowMaps;
+import com.developers.parchat.view.login.LoginMVP;
+import com.developers.parchat.view.login.LoginPresenter;
+import com.developers.parchat.view.main.fragment_maps.FragmentShowMaps;
 import com.developers.parchat.view.login.Login;
 import com.developers.parchat.view.perfil_usuario.PerfilUsuario;
 import com.developers.parchat.R;
@@ -30,7 +33,12 @@ import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
 import com.google.android.material.navigation.NavigationView;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements MainActivityMVP.View,
+        View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+
+    // Variables modelo MVP
+    private MainActivityMVP.Presenter presentador;
+    private MainActivityMVP.Model modelo;
 
     // Creamos los objetos necesarios para conectar con la parte grafica del menu desplegable y la barra
     // de herramientas personalizada
@@ -50,9 +58,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Iniciamos los objetos de la vista
+        IniciarVista();
 
-        // Hacemos la conexion con los objetos de la vista con findViewById
-        ConexionObjetosConVista();
         // Le pasamos la barra que se creo en toolbar_activity_main
         setSupportActionBar(tB_MainActivity);
         // Le quitamos el titulo que viene por defecto y lo dejamos vacio
@@ -63,8 +71,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CargarFragmentGoogleMaps();
         // Cargamos la configuracion del NavigationDrawer
         CargarNavigationDrawer();
-        // Asignamos los Listeners a los objetos de interaccion del MainActivity
-        ListenersActivityMain();
+
+    }
+
+    private void IniciarVista() {
+        // Inicializamos elpresentador y le pasamos la vista -> this
+        presentador = new MainActivityPresenter(this);
+        // Hacemos la conexion con la vista de los diferentes objetos de los layouts del Navigation View
+        // Toolbar
+        tB_MainActivity = findViewById(R.id.tB_MainActivity);
+        // Drawer Layout
+        dL_MainActivity = findViewById(R.id.dL_MainActivity);
+        // NavigationView
+        nV_MainActivity = findViewById(R.id.nV_MainActivity_menuLateral);
+
+        // Le decimos al objeto View header_main_activity que vaya al navigationViewer
+        // y obtenga la vista del header
+        header_main_activity = nV_MainActivity.getHeaderView(0);
+
+        // Hacemos la conexion de Textviews y ImageView circular del Header
+        tV_ActivityMain_nomUsuario = header_main_activity.findViewById(R.id.tV_ActivityMain_nomUsuario);
+        tV_ActivityMain_emailUsuario = header_main_activity.findViewById(R.id.tV_ActivityMain_emailUsuario);
+        imgV_ActivityMain_fotoUsuario = header_main_activity.findViewById(R.id.imgV_ActivityMain_fotoUsuario);
+
+        //Listener del Navigation View
+        nV_MainActivity.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -79,113 +110,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (idItem) {
             // Si se presiona ver perfil
             case (R.id.dM_MainActivity_verPerfil):
-                VerPerfilUsuario();
+                presentador.VerPerfilUsuario();
                 break;
             // Si se presiona Cambiar busqueda
             case (R.id.dM_MainActivity_cambiarBusqueda):
-                CambiarBusqueda();
+                presentador.CambiarBusqueda();
                 break;
             // Si se presiona ver configuraciones
             case (R.id.dM_MainActivity_config):
-                VerConfiguraciones();
+                presentador.VerConfiguraciones();
                 break;
             // Si se presiona Cerrar Sesión
             case (R.id.dM_MainActivity_cerrarSesion):
-                CerrarSesion();
+                presentador.CerrarSesion();
                 break;
         }
         return false;
     }
 
-    private void VerPerfilUsuario() {
-        //progressBar_Login.setVisibility(View.GONE);
-        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity
-        Intent deMainActivityAPerfilUsuario = new Intent(MainActivity.this, PerfilUsuario.class);
-        // Iniciamos el Activity
-        startActivity(deMainActivityAPerfilUsuario);
-        // Terminamos el activity MainActivity
-        MainActivity.this.finish();
-    }
 
-    private void CambiarBusqueda() {
-        //progressBar_Login.setVisibility(View.GONE);
-        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity SeleccionarActividad
-        Intent deMainActivityASeleccionarActividad = new Intent(MainActivity.this, SeleccionarActividad.class);
-        // Iniciamos el Activity SeleccionarActividad
-        startActivity(deMainActivityASeleccionarActividad);
-        // Terminamos el activity MainActivity
-        MainActivity.this.finish();
-    }
-
-    private void VerConfiguraciones() {
-        //progressBar_Login.setVisibility(View.GONE);
-        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity
-        //Intent deMainActivityAConfiguraciones = new Intent(MainActivity.this, .class);
-        // Iniciamos el Activity
-        //startActivity(deMainActivityAConfiguraciones);
-        // Terminamos el activity MainActivity
-        //MainActivity.this.finish();
-    }
-
-    private void CerrarSesion() {
-        //progressBar_Login.setVisibility(View.GONE);
-        // Creamos un objeto Shared preferences para guardar el inicio de sesion
-        SharedPreferences inicioSesionUsuario = getSharedPreferences("inicio_sesion",
-                Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = inicioSesionUsuario.edit();
-        // Guardamos 3 datos
-        editor.putString("email", "");
-        editor.putBoolean("saltarLogin", false);
-        // HAcemos el commit
-        editor.commit();
-        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity Login
-        Intent deMainActivityALogin = new Intent(MainActivity.this, Login.class);
-        // Iniciamos el Activity Login
-        startActivity(deMainActivityALogin);
-        // Terminamos el activity MainActivity
-        MainActivity.this.finish();
-    }
-
-    private void ConexionObjetosConVista() {
-        // Hacemos la conexion con la vista de los diferentes objetos de los layouts del Navigation View
-        // Toolbar
-        tB_MainActivity = findViewById(R.id.tB_MainActivity);
-        // Drawer Layout
-        dL_MainActivity = findViewById(R.id.dL_MainActivity);
-        // NavigationView
-        nV_MainActivity = findViewById(R.id.nV_MainActivity_menuLateral);
-    }
 
     private void DatosUsuarioEnHeader() {
-        // Le decimos al objeto View header_main_activity que vaya al navigationViewer
-        // y obtenga la vista del header
-        header_main_activity = nV_MainActivity.getHeaderView(0);
 
-        // Hacemos la conexion de Textviews y ImageView circular del Header
-        tV_ActivityMain_nomUsuario = header_main_activity.findViewById(R.id.tV_ActivityMain_nomUsuario);
-        tV_ActivityMain_emailUsuario = header_main_activity.findViewById(R.id.tV_ActivityMain_emailUsuario);
-        imgV_ActivityMain_fotoUsuario = header_main_activity.findViewById(R.id.imgV_ActivityMain_fotoUsuario);
-
-        // Creamos objeto SharedPreferences para buscar el email del usuario que ingreso
-        SharedPreferences inicioSesionUsuario = getSharedPreferences("inicio_sesion",
-                Context.MODE_PRIVATE);
-
-        // Si el objeto no es nulo o esta vacio procedemos a cargar los datos en el header
-        if (inicioSesionUsuario != null) {
-            // Obtenemos el email del usuario
-            emailUsuario = inicioSesionUsuario.getString("email", "");
-            // COnfirmamos que nos obtenga el email del usuario
-            if (!emailUsuario.isEmpty()) {
-                // Creamos un objeto Shared preferences para ver los datos del usuario
-                SharedPreferences datosUsuarioActual = getSharedPreferences(emailUsuario,
-                        Context.MODE_PRIVATE);
-                // Obtenemos el nombre del usuario
-                nombreUsuario = datosUsuarioActual.getString("nombre", "");
-                // Hacemos sets a los textView para poner el nombre del usuario e imagen
-                tV_ActivityMain_nomUsuario.setText(nombreUsuario);
-                tV_ActivityMain_emailUsuario.setText(emailUsuario);
-            }
-        }
+        // Hacemos sets a los textView para poner el nombre del usuario e imagen
+        tV_ActivityMain_nomUsuario.setText("nombreUsuario");
+        tV_ActivityMain_emailUsuario.setText("");
 
     }
 
@@ -229,8 +178,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .commit();
     }
 
-    private void ListenersActivityMain() {
-        //Listener del Navigation View
-        nV_MainActivity.setNavigationItemSelectedListener(this);
+
+
+    @Override
+    public void irAlActivityPerfilUsuario(Class<? extends AppCompatActivity> ir_a_PerfilUsuario) {
+        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity
+        Intent deMainActivityAPerfilUsuario = new Intent(MainActivity.this, ir_a_PerfilUsuario);
+        // Iniciamos el Activity
+        startActivity(deMainActivityAPerfilUsuario);
+        // Terminamos el activity MainActivity
+        MainActivity.this.finish();
+    }
+
+    @Override
+    public void irAlActivitySeleccionarActividad(Class<? extends AppCompatActivity> ir_a_SeleccionarActividad) {
+        //progressBar_Login.setVisibility(View.GONE);
+        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity SeleccionarActividad
+        Intent deMainActivityASeleccionarActividad = new Intent(MainActivity.this, ir_a_SeleccionarActividad);
+        // Iniciamos el Activity SeleccionarActividad
+        startActivity(deMainActivityASeleccionarActividad);
+        // Terminamos el activity MainActivity
+        MainActivity.this.finish();
+    }
+
+    @Override
+    public void irAlActivityLogin(Class<? extends AppCompatActivity> ir_a_Login) {
+        //progressBar_Login.setVisibility(View.GONE);
+        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity Login
+        Intent deMainActivityASeleccionarActividad = new Intent(MainActivity.this, ir_a_Login);
+        // Iniciamos el Activity Login
+        startActivity(deMainActivityASeleccionarActividad);
+        // Terminamos el activity Login
+        MainActivity.this.finish();
+    }
+
+    @Override
+    public Context getContext() {
+        return MainActivity.this;
     }
 }

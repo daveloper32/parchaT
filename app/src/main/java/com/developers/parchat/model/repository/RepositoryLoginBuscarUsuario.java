@@ -4,90 +4,81 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.login.LoginMVP;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.annotations.NotNull;
 
 import java.util.List;
 
 public class RepositoryLoginBuscarUsuario implements LoginMVP.Model {
 
-    // Variables modelo MVP
+    // Declaramos un objeto de la Clase FirebaseAuth
+    private FirebaseAuth mAuth;
+    // Declaramos un objeto de la Clase DatabaseReference
+    private DatabaseReference mDatabase;
+
+    // Variables modelo MVP Login
     private LoginMVP.Presenter presentadorLogin;
-    private Context context;
+    private Context contextLogin;
 
     // Creamos un objeto SharedPreferences para buscar los datos del Usuario que quiere iniciar sesion
     private SharedPreferences datosUsuarioActual;
     private SharedPreferences inicioSesionUsuario;
     private SharedPreferences.Editor editor;
 
-    @Override
-    public void setPresentadorLogin(LoginMVP.Presenter presentadorLogin, Context context) {
-        this.presentadorLogin = presentadorLogin;
-        this.context = context;
+    private boolean auth_exitosa;
+
+    public RepositoryLoginBuscarUsuario() {
+        // Inicializamos la instancia FirebaseAuth
+        mAuth = FirebaseAuth.getInstance();
+        // Inicializamos la instancia FirebaseDatabase
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
-    public void guardarSaltarLogin(String email) {
-        // Creamos un objeto Shared preferences para guardar el inicio de sesion
-        inicioSesionUsuario = context.getSharedPreferences("inicio_sesion",
-                Context.MODE_PRIVATE);
-        editor = inicioSesionUsuario.edit();
-        // Guardamos 2 datos
-        editor.putString("email", email);
-        editor.putBoolean("saltarLogin", true);
-        // HAcemos el commit
-        editor.commit();
+    public void setPresentadorLogin(LoginMVP.Presenter presentadorLogin, Context contextLogin) {
+        this.presentadorLogin = presentadorLogin;
+        this.contextLogin = contextLogin;
+    }
+
+    @Override
+    public void validarConEmailYPasswordUsuario(String email, String password) {
+        // Usamos el metodo de FirebaseAuth para ingresar con email y contraseña
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                // Verificamos si logro ingresar
+                if (task.isSuccessful()) {
+                    presentadorLogin.InicioSesionExitoso();
+                } else {
+                    presentadorLogin.InicioSesionFallido();
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean isAutenticacionExitosa() {
+        return auth_exitosa;
     }
 
     @Override
     public boolean validarSaltarLogin() {
-        // Creamos un objeto Shared preferences para guardar el inicio de sesion
-        inicioSesionUsuario = context.getSharedPreferences("inicio_sesion",
-                Context.MODE_PRIVATE);
-        // Si el objeto no esta vacio verificamos el valor de saltarLogin
-        if (inicioSesionUsuario != null) {
-            // Obtenemos el valor de la clave 'saltarLogin'
-            boolean saltarLogin = inicioSesionUsuario.getBoolean("saltarLogin", false);
-            // Si saltar login es true devolvemos un true
-            if (saltarLogin) {
-                return true;
-            // SI es false devolvemos false
-            } else {
-                return false;
-            }
-        // Si el objeto esta vacio devolvemos false
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean validarEmailUsuario(String email) {
-        datosUsuarioActual = context.getSharedPreferences(email,
-                Context.MODE_PRIVATE);
-        String buscarEmail;
-        buscarEmail = datosUsuarioActual.getString("email", "");
-
-        if (buscarEmail.isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
-
-    }
-
-    @Override
-    public boolean validarPasswordUsuario(String email, String password) {
-        datosUsuarioActual = context.getSharedPreferences(email,
-                Context.MODE_PRIVATE);
-        String buscarEmail, buscarPassword;
-        buscarEmail = datosUsuarioActual.getString("email", "");
-        buscarPassword = datosUsuarioActual.getString("password", "");
-
-        if (buscarEmail.equals(email) && buscarPassword.equals(password)) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
             return true;
         } else {
             return false;
         }
     }
+
 }

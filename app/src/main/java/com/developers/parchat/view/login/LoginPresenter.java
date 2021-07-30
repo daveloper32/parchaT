@@ -4,6 +4,7 @@ package com.developers.parchat.view.login;
 
 import android.util.Patterns;
 
+import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.model.repository.RepositoryLoginBuscarUsuario;
 import com.developers.parchat.view.recuperar_password.RecuperarPassword;
 import com.developers.parchat.view.registro.Registro;
@@ -55,29 +56,16 @@ public class LoginPresenter implements LoginMVP.Presenter {
         }
         // Validacion extra contraseña una mayuscula? cuantos caracteres minimo?
         // un simbolo como minimo
+        if (credentialsUsuario.getPassword().length() < 6 ) {
+            vista.showLengthPasswordError();
+            return;
+        }
 
         // Verificamos en el modelo si usuario y contraseña existen y/o son validos
+        modelo.validarConEmailYPasswordUsuario(credentialsUsuario.getEmail(), credentialsUsuario.getPassword());
 
-
-        // Primero verificamos que el correo este registrado
-        if (modelo.validarEmailUsuario(credentialsUsuario.getEmail())) {
-        // Si esta registrado validamos la contraseña
-            if (modelo.validarPasswordUsuario(credentialsUsuario.getEmail(),
-                    credentialsUsuario.getPassword())){
-                // Guardardamos el inicio de sesion
-                modelo.guardarSaltarLogin(credentialsUsuario.getEmail());
-                // SI la contraseña esta bien, significa que tanto correo como contraseña estan correctas
-                // por tanto vamos al Activity Seleccionar Actividad
-                vista.irAlActivitySeleccionarActividad(SeleccionarActividad.class);
-                // SI la contraseña no fue ingresada correctamente desplegamos un mensaje emergente
-                // diciendo que la contraseña es incorrecta
-            } else {
-                vista.showToastPasswordError();
-            }
-        // SI no esta registrado desplegamos un mensaje emergente diciendo que el correo ingresado no esta registrado
-        } else {
-            vista.showToastEmailNotFound();
-        }
+        // Mostramos el ProgressBar
+        vista.showProgressBar();
     }
 
     @Override
@@ -104,7 +92,24 @@ public class LoginPresenter implements LoginMVP.Presenter {
     }
 
     @Override
-    public boolean ValidarSaltoDeLogin() {
-        return modelo.validarSaltarLogin();
+    public void ValidarSaltoDeLogin() {
+        if(modelo.validarSaltarLogin()){
+            vista.irAlActivitySeleccionarActividad(SeleccionarActividad.class);
+        }
     }
+
+    @Override
+    public void InicioSesionExitoso() {
+        // Vamos al activity SeleccionarACtividad
+        vista.irAlActivitySeleccionarActividad(SeleccionarActividad.class);
+        // Escondemos el ProgressBar
+        vista.hideProgressBar();
+    }
+
+    @Override
+    public void InicioSesionFallido() {
+        vista.showToastPasswordError();
+    }
+
+
 }

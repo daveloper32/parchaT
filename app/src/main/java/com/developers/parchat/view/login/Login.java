@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +44,7 @@ public class Login extends AppCompatActivity implements LoginMVP.View, View.OnCl
     private TextView tV_login_olvPassw, tV_login_registrarse;
     private Button b_login_iniSesion;
     private ImageButton imgB_login_facebook, imgB_login_google;
-    //private ProgressBar;
+    private ProgressBar pB_login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class Login extends AppCompatActivity implements LoginMVP.View, View.OnCl
         imgB_login_facebook = findViewById(R.id.imgB_login_facebook);
         imgB_login_google = findViewById(R.id.imgB_login_google);
         // ProgressBar
-        // = findViewById(R.id.);
+        pB_login = findViewById(R.id.pB_login);
 
         // Listeners de Button
         b_login_iniSesion.setOnClickListener(this);
@@ -118,9 +119,7 @@ public class Login extends AppCompatActivity implements LoginMVP.View, View.OnCl
     @Override
     protected void onStart() {
         super.onStart();
-        if (presentador.ValidarSaltoDeLogin()) {
-            irAlActivitySeleccionarActividad(SeleccionarActividad.class);
-        }
+        presentador.ValidarSaltoDeLogin();
     }
 
     @Override
@@ -183,6 +182,22 @@ public class Login extends AppCompatActivity implements LoginMVP.View, View.OnCl
     @Override
     public Context getContext() {
         return Login.this;
+    }
+
+
+    @Override
+    public void showLengthPasswordError() {
+        Toast.makeText(this, R.string.eT_Error_login_4, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showProgressBar() {
+        pB_login.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        pB_login.setVisibility(View.GONE);
     }
 
     @Override

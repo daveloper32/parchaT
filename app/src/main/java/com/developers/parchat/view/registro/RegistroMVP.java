@@ -12,10 +12,14 @@ public interface RegistroMVP {
     interface Model {
         // enviamos el presentador y el contexto de la vista
         void setPresentadorRegistro(RegistroMVP.Presenter presentador, Context context);
-        // Verificar que correo no este registrado
-        boolean buscarCorreo(String email);
-        // Guardar Usuario
-        void guardarUsuarioNuevo(Usuario usuario);
+        // Autenticar y Guardar Usuario
+        void autenticarUsuarioNuevo(Usuario usuario);
+        void guardarUsuarioNuevoEnBaseDatos(Usuario usuario);
+        // Verificamos que el usuario se haya autenticado en firebase
+        boolean isAutenticacionExitosa();
+        // Verificamos que el usuario se haya guaradado en la base de datos de firebase
+        boolean isUsuarioGuardadoEnDBExitosamente();
+
     }
     // EL presentador recibe los eventos que ocurriran en la vista
     interface Presenter {
@@ -27,6 +31,12 @@ public interface RegistroMVP {
         void Log_Facebook();
         // Que pasa si se presiona el boton de google
         void Log_Google();
+        ///
+        void AuthUsuarioExitosa();
+        void AuthUsuarioFallo();
+        ///
+        void SaveUsuarioInDBExitosa();
+        void SaveUsuarioInDBFallo();
     }
     // Se obtienen datos e informacion a la vista
     interface View {
@@ -41,6 +51,12 @@ public interface RegistroMVP {
         void showInvalidEmailError();
         // TextInputEditText de password vacio
         void showEmptyPasswordError();
+        // TextInputEditText de password ayor a 6 caracteres
+        void showLengthPasswordError();
+        //
+        void showProgressBar();
+        void hideProgressBar();
+        //
         // Para hacer el intent e ir a el Activity Login
         void irAlActivityLogin(Class<? extends AppCompatActivity> ir_a_Login);
         // Mostrar un mensaje emergente que confirme el registro
@@ -51,6 +67,7 @@ public interface RegistroMVP {
         void showToastErrorRegistrarUsuarioNuevo();
         // Obtenemos el contexto de la vista para poder acceder a los SharedPreferences
         Context getContext();
+
 
 
     }

@@ -1,4 +1,4 @@
-package com.developers.parchat.view.main;
+package com.developers.parchat.view.main.fragment_maps;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -38,10 +38,10 @@ public class FragmentShowMaps extends Fragment {
     private double coordenadas[][] = {{4.596205, 4.596744, 4.597280, 4.596704},
             {-74.069449, -74.070033, -74.069721, -74.069411}};
     // Creamos e inicializamos un arreglo tipo String con los nombres de los restaurantes
-    private String nomRestaurantes[] = {"Tamarine", "Restaurante Peruano - El Indio de Machu Picchu",
+    private String nomRestaurantes[] = {"Crepes & Waffles Calle 73", "Restaurante Peruano - El Indio de Machu Picchu",
             "Restaurante 69 Gauchos",
             "Harry Sasson"};
-    private String dirRestaurantes[] = {"Calle 73 # 8-60 Dentro del Hotel JW Marriott Bogotá, Bogotá, Cundinamarca",
+    private String dirRestaurantes[] = {"Carrera 9, Cl. 73 # 73 - 33, Bogotá",
             "Carrera 10 # 72 - 32, Localidad de Chapinero, Bogotá",
             "Calle 69a #10 - 16, Bogotá, Cundinamarca",
             "Carrera 9 # 75 - 70, Bogotá"};
@@ -119,7 +119,7 @@ public class FragmentShowMaps extends Fragment {
         try {
             // Intentamos obtener la latitud y longitud de la direccion ingresada en base a 5 busquedas
             direccionesEncontradas = geocodificador.getFromLocationName(direccion, 5);
-            if (direccion != null) {
+            if (!direccionesEncontradas.isEmpty()) {
                 //
                 Address direccionEncontrada = direccionesEncontradas.get(0);
                 // EScribimos el objeto tipo LatLng

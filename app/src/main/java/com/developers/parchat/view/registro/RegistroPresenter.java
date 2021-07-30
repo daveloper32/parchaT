@@ -50,6 +50,10 @@ public class RegistroPresenter implements RegistroMVP.Presenter {
             vista.showEmptyPasswordError();
             return;
         }
+        if (datosUsuario.getPassword().length() < 6 ) {
+            vista.showLengthPasswordError();
+            return;
+        }
         // Validacion extra contraseña una mayuscula? cuantos caracteres minimo?
         // un simbolo como minimo
 
@@ -60,24 +64,12 @@ public class RegistroPresenter implements RegistroMVP.Presenter {
         // SI el objeto usuarioAGuardar no esta vacio
         if (usuarioAGuardar != null) {
             // Llamamos al modelo para guardar los datos del usuario
-            // Verificamos que el correo no este registrado
-            if (!modelo.buscarCorreo(datosUsuario.getEmail())) {
-                // Guardamos el usuario
-                modelo.guardarUsuarioNuevo(usuarioAGuardar);
-                // Si todo sale bien vamos al Activity Seleccionar Actividad
-                vista.irAlActivityLogin(Login.class);
-                // Mostramos un mensaje confirmando el registro
-                vista.showToastRegistroConfirm();
-            // Si esta registrado mostramos mensaje informando
-            } else {
-                // Mostrar un mensaje emergente que diga que el correo ingresado ya se encuentra registrado
-                vista.showToastCorreoYaRegistrado();
-            }
-        // SI esta vacio mandamos mensaje de error
-        } else {
-            // Mostrar un mensaje emergente de error
-            vista.showToastErrorRegistrarUsuarioNuevo();
+            // Guardamos el usuario
+            modelo.autenticarUsuarioNuevo(usuarioAGuardar);
+            // Mostramos ProgressBar
+            vista.showProgressBar();
         }
+
     }
 
     @Override
@@ -94,5 +86,36 @@ public class RegistroPresenter implements RegistroMVP.Presenter {
     @Override
     public void Log_Google() {
 
+    }
+
+    @Override
+    public void AuthUsuarioExitosa() {
+        // Obtenemos datos
+        RegistroDatosUsuario datosUsuario =  vista.getRegistroDatosUsuario();
+        // COnvertimos a Usuario
+        Usuario usuario = new Usuario(datosUsuario.getNombreCompleto(),
+                datosUsuario.getEmail(), datosUsuario.getPassword(), "");
+        // Guardarmos en RealTimeDatabase
+        modelo.guardarUsuarioNuevoEnBaseDatos(usuario);
+    }
+
+    @Override
+    public void AuthUsuarioFallo() {
+        vista.showToastErrorRegistrarUsuarioNuevo();
+    }
+
+    @Override
+    public void SaveUsuarioInDBExitosa() {
+        // Si todo sale bien vamos al Activity Seleccionar Actividad
+        vista.irAlActivityLogin(Login.class);
+        // Ocultamos ProgressBar
+        vista.hideProgressBar();
+        // Mostramos un mensaje confirmando el registro
+        vista.showToastRegistroConfirm();
+    }
+
+    @Override
+    public void SaveUsuarioInDBFallo() {
+        vista.showToastErrorRegistrarUsuarioNuevo();
     }
 }
