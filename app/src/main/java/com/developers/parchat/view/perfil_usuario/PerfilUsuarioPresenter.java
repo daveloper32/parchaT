@@ -16,22 +16,11 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
         this.modelo.setPresentadorPerfilUsuario(this, vista.getContext());
     }
 
+
     @Override
-    public PerfilUsuarioDatos BuscarDatosUsuario() {
-        // Solicitamos al modelo el correo del usuario que inicio sesion
-        String emailUsuarioActivo = modelo.getEmailSaltarInicioSesion();
-        // Validamos que no nos devuelva un String vacio
-        if (!emailUsuarioActivo.isEmpty()) {
-            // Solicitamos al modelo los datos del usuario con el email
-            PerfilUsuarioDatos usuarioActivo = modelo.getDatosPerfilUsuario(emailUsuarioActivo);
-            return usuarioActivo;
-        }
-        else {
-            return null;
-        }
+    public void CargarDatosUsuario() {
+        modelo.getDatosUsuarioLogueadoFromDB();
     }
-
-
 
     @Override
     public void GuardarDatos() {
@@ -54,13 +43,8 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
             }
 
             // Guardo y confirmo si se guardo
-            boolean confirmoSaveDatos = modelo.editarDatosUsuario(usuarioNuevosDatos);
-            if (confirmoSaveDatos) {
-                vista.showToastDatosGuardadosConExito();
-                vista.irAlActivityMain(MainActivity.class);
-            } else {
-                vista.showToastErrorDatosGuardados();
-            }
+            modelo.editarDatosUsuario(usuarioNuevosDatos);
+
         } else {
             vista.showToastErrorActivarEdicionDatos();
         }
@@ -71,5 +55,29 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
     @Override
     public void CambiarFoto() {
 
+    }
+
+    @Override
+    public void obtenerDatosUsuarioLogeadoConExito() {
+        // Le solicitamos al presentador que nos entregue los datos de usuario
+        PerfilUsuarioDatos usuarioActivo = modelo.getDatosPerfilUsuario();
+        vista.CargamosDatosUsuario(usuarioActivo);
+    }
+
+    @Override
+    public void obtenerDatosUsuarioLogeadoConFalla() {
+        vista.showToastErrorCargarDatos();
+    }
+
+    @Override
+    public void actualizarDatosUsuarioLogeadoConFalla() {
+        vista.showToastErrorDatosGuardados();
+
+    }
+
+    @Override
+    public void actualizarDatosUsuarioLogeadoConExito() {
+        vista.showToastDatosGuardadosConExito();
+        vista.irAlActivityMain(MainActivity.class);
     }
 }

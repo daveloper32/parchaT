@@ -39,7 +39,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         // Iniciamos los objetos de la vista
         IniciarVista();
         // Cargamos los datos del usuario en los EditText
-        CargamosDatosUsuario();
+        presentador.CargarDatosUsuario();
     }
 
     private void IniciarVista() {
@@ -95,19 +95,16 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
 
     @Override
     public PerfilUsuarioDatos getNuevosDatosUsuario() {
-        // Le solicitamos al presentador que nos entregue los datos de usuario
-        PerfilUsuarioDatos usuarioActivo = presentador.BuscarDatosUsuario();
-        if (usuarioActivo != null) {
-            String nombreChanged, numeroChanged;
-            nombreChanged = eT_perfUsuario_nombreCom.getText().toString().trim();
-            numeroChanged = eT_perfUsuario_numero.getText().toString().trim();
-            // El email no lo cambiamos
-            PerfilUsuarioDatos usuarioNuevosDatos = new PerfilUsuarioDatos(nombreChanged, usuarioActivo.getEmail(),
-                    numeroChanged);
-            return usuarioNuevosDatos;
-        } else {
-            return usuarioActivo;
-        }
+
+        String nombreChanged, emailNotChanged, numeroChanged;
+        nombreChanged = eT_perfUsuario_nombreCom.getText().toString().trim();
+        emailNotChanged = eT_perfUsuario_email.getText().toString().trim();
+        numeroChanged = eT_perfUsuario_numero.getText().toString().trim();
+        // El email no lo cambiamos
+        PerfilUsuarioDatos usuarioNuevosDatos = new PerfilUsuarioDatos(nombreChanged, emailNotChanged,
+                numeroChanged);
+        return usuarioNuevosDatos;
+
     }
 
     @Override
@@ -122,9 +119,8 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
     }
 
     @Override
-    public void CargamosDatosUsuario() {
-        // Le solicitamos al presentador que nos entregue los datos de usuario
-        PerfilUsuarioDatos usuarioActivo = presentador.BuscarDatosUsuario();
+    public void CargamosDatosUsuario(PerfilUsuarioDatos usuarioActivo) {
+
         // Validamos que el usuario no este vacio
         if (usuarioActivo != null) {
             // Cargamos los datos del usuario en los edit text
@@ -191,21 +187,28 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
     }
 
     @Override
+    public void showToastErrorCargarDatos() {
+        // Le decimos al usuario que sus datos no han sido cargados con exito
+        Toast.makeText(this, R.string.msgToast_perfUsuario_1, Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
     public void showToastDatosGuardadosConExito() {
         // Le decimos al usuario que sus datos han sido guardados con exito
-        Toast.makeText(this, R.string.msgToast_perfUsuario_1, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.msgToast_perfUsuario_2, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void showToastErrorDatosGuardados() {
         // Le decimos al usuario que sus datos han sido guardados con exito
-        Toast.makeText(this, R.string.msgToast_perfUsuario_3, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.msgToast_perfUsuario_4, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void showToastErrorActivarEdicionDatos() {
         // Le decimos al usuario que para guardar de presionar el lapiz para editar y guardar
-        Toast.makeText(this, R.string.msgToast_perfUsuario_2, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.msgToast_perfUsuario_3, Toast.LENGTH_LONG).show();
     }
 
     @Override

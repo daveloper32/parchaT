@@ -3,13 +3,25 @@ package com.developers.parchat.model.repository;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
+
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.perfil_usuario.PerfilUsuarioDatos;
 import com.developers.parchat.view.perfil_usuario.PerfilUsuarioMVP;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
@@ -51,64 +63,82 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
     }
 
     @Override
-    public String getEmailSaltarInicioSesion() {
-        // Creamos un objeto Shared preferences para guardar el inicio de sesion
-        inicioSesionUsuario = contextPerfilUsuario.getSharedPreferences("inicio_sesion",
-                Context.MODE_PRIVATE);
-        // Validamos que no este vacio
-        if (inicioSesionUsuario != null) {
-            // Obtenemos el email del usuario
-            String email = inicioSesionUsuario.getString("email", "");
-            // Validamos que la variable String email no este vacia
-            if (!email.isEmpty()) {
-                return email;
-            }
-            else {
-                return "";
-            }
-        } else {
-            return "";
-        }
+    public void getDatosUsuarioLogueadoFromDB() {
+        // Le pasamos el id del usuario a la referencia en la base de datos para obtener los datos del usuario
+        referenciaUsuario.child(IdUsuario)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                        // Creamos un objeto de la clase Usuario para recibir el objeto con los datos
+                        // del usuario en la base de datos
+                        datosUsuario = snapshot.getValue(Usuario.class);
+                        // Verificamos que lo haya encontrado -> Si el objeto Usuario no esta vacio
+                        if (datosUsuario != null) {
+                            presentadorPerfilUsuario.obtenerDatosUsuarioLogeadoConExito();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                        presentadorPerfilUsuario.obtenerDatosUsuarioLogeadoConFalla();
+                    }
+                });
     }
 
     @Override
-    public PerfilUsuarioDatos getDatosPerfilUsuario(String emailUsuario) {
-        // Creamos un objeto Shared preferences para buscar los datos de usuario
-        datosUsuarioActual = contextPerfilUsuario.getSharedPreferences(emailUsuario,
-                Context.MODE_PRIVATE);
-        // Verificamos que no este vacio
-        if (datosUsuarioActual != null) {
-            // Creamos variables para recibir los datos del usuario
-            String nombreUsuario, numero;
-            // Obtenemos el nombre
-            nombreUsuario = datosUsuarioActual.getString("nombre", "");
-            // Obtenemos el numero
-            numero = datosUsuarioActual.getString("numero", "");
-            // Creamos un objeto tipo Usuario
-            PerfilUsuarioDatos usuario = new PerfilUsuarioDatos(nombreUsuario, emailUsuario, numero);
-            // Retornamos el obtejo tipo Usuario
-            return usuario;
-
+    public PerfilUsuarioDatos getDatosPerfilUsuario() {
+        if (datosUsuario != null) {
+            PerfilUsuarioDatos datosUsuarioActual = new PerfilUsuarioDatos(
+                    datosUsuario.getNombreCompleto(), datosUsuario.getEmail(),
+                    datosUsuario.getNumeroCel());
+            return datosUsuarioActual;
         } else {
             return null;
         }
     }
 
     @Override
-    public boolean editarDatosUsuario(PerfilUsuarioDatos usuario_a_editar) {
-        // Creamos un objeto Shared preferences para buscar los datos de usuario
-        datosUsuarioActual = contextPerfilUsuario.getSharedPreferences(usuario_a_editar.getEmail(),
-                Context.MODE_PRIVATE);
-        if (datosUsuarioActual != null) {
-            editor = datosUsuarioActual.edit();
-            // Guardamos 2 datos
-            editor.putString("nombre", usuario_a_editar.getNombreCompleto());
-            editor.putString("numero", usuario_a_editar.getNumeroCel());
-            // HAcemos el commit
-            editor.commit();
-            return true;
-        } else {
-            return false;
-        }
+    public void editarDatosUsuario(PerfilUsuarioDatos usuario_a_editar) {
+        // Le pasamos el id del usuario a la referencia en la base de datos para obtener los datos del usuario
+        referenciaUsuario.child(IdUsuario)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                        // Creamos un objeto de la clase Usuario para recibir el objeto con los datos
+                        // del usuario en la base de datos
+                        datosUsuario = snapshot.getValue(Usuario.class);
+                        // Verificamos que lo haya encontrado -> Si el objeto Usuario no esta vacio
+                        if (datosUsuario != null) {
+                            Map<String, Object> childUpdates = new HashMap<>();
+                            childUpdates.put(IdUsuario + "/nombreCompleto/",usuario_a_editar.getNombreCompleto());
+                            childUpdates.put(IdUsuario + "/email/",usuario_a_editar.getEmail());
+                            childUpdates.put(IdUsuario + "/numeroCel/",usuario_a_editar.getNumeroCel());
+
+                            actualizarDatosUsuarioLogeadoConExito(childUpdates);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                        presentadorPerfilUsuario.actualizarDatosUsuarioLogeadoConFalla();
+                    }
+                });
     }
+
+    @Override
+    public void actualizarDatosUsuarioLogeadoConExito(Map<String, Object> childUpdates) {
+        referenciaUsuario.updateChildren(childUpdates)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        presentadorPerfilUsuario.actualizarDatosUsuarioLogeadoConExito();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                presentadorPerfilUsuario.actualizarDatosUsuarioLogeadoConFalla();
+            }
+        });
+    }
+
 }

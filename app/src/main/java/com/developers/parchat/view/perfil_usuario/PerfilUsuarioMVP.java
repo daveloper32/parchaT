@@ -4,26 +4,38 @@ import android.content.Context;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Map;
+
 public interface PerfilUsuarioMVP {
 
     interface Model {
         // Enviamos el presentador y el contexto de la vista
         void setPresentadorPerfilUsuario(PerfilUsuarioMVP.Presenter presentador, Context context);
         // Par obtener el email que tiene la sesion inciada
-        String getEmailSaltarInicioSesion();
+        void getDatosUsuarioLogueadoFromDB();
         // Para obtener los datos del correo que inicio sesion
-        PerfilUsuarioDatos getDatosPerfilUsuario(String emailUsuario);
+        PerfilUsuarioDatos getDatosPerfilUsuario();
         // Para editar datos del usuario que tiene sesion inciada
-        boolean editarDatosUsuario(PerfilUsuarioDatos usuario_a_editar);
+        void editarDatosUsuario(PerfilUsuarioDatos usuario_a_editar);
+        void actualizarDatosUsuarioLogeadoConExito(Map<String,Object> childUpdates);        
+        
     }
     // EL presentador recibe los eventos que ocurriran en la vista
     interface Presenter {
-        // Primero obtengo los datos del usuario a registrar (nombre completo, correo, password)
-        PerfilUsuarioDatos BuscarDatosUsuario();
+        // Buscar el usuario para cargar Datos
+        void CargarDatosUsuario();
         // Que pasa si se presiona el boton GuardarDatos
         void GuardarDatos();
         // Que pasa si se presiona el text Cambiar foto
         void CambiarFoto();
+
+        void obtenerDatosUsuarioLogeadoConExito();
+
+        void obtenerDatosUsuarioLogeadoConFalla();
+
+        void actualizarDatosUsuarioLogeadoConFalla();
+
+        void actualizarDatosUsuarioLogeadoConExito();
     }
     // Se obtienen datos e informacion a la vista
     interface View {
@@ -32,7 +44,7 @@ public interface PerfilUsuarioMVP {
         // Para verificar si se presiono el boton edicion o lapiz
         boolean isEdicionActivada();
         // Para cargar los datos de usuario que inicio sesion en los edittext
-        void CargamosDatosUsuario();
+        void CargamosDatosUsuario(PerfilUsuarioDatos usuarioActivo);
         // Que pasa si se presiona el boton Lapiz o editar
         void EditarDatos();
         // Mostramos errores de validación, si aplica
@@ -42,6 +54,8 @@ public interface PerfilUsuarioMVP {
         void showEmptyNumeroError();
         // Mostrar mensaje de advertencia con dos opciones cancelar o si -> para confirmaciond e no guardar datos
         void MensajeEmergente(Context context);
+        // Mostrar un mensaje emergente Le decimos al usuario que sus datos no han sido guardados con exito
+        void showToastErrorCargarDatos();
         // Mostrar un mensaje emergente Le decimos al usuario que sus datos han sido guardados con exito
         void showToastDatosGuardadosConExito();
         // Mostrar un mensaje emergente Le decimos al usuario que sus datos no han sido guardados con exito

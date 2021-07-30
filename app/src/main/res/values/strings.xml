@@ -121,9 +121,11 @@
     <string name="eT_Error_perfUsuario_2">¡Ingresa tu número de celular por favor!</string>
     <!---End Login Errores EditText Strings-->
     <!---Start Login Mensajes Emergentes Strings-->
-    <string name="msgToast_perfUsuario_1">¡Tus datos han sido actualizados con exito!</string>
-    <string name="msgToast_perfUsuario_2">¡Error! Debes activar el modo edición para guardar.</string>
-    <string name="msgToast_perfUsuario_3">¡Algo salio mal!
+    <string name="msgToast_perfUsuario_1">¡Algo salio mal!\n\n
+        Tus datos no han sido encontrados, revisa tu conexión a internet y vuelve a intentarlo.</string>
+    <string name="msgToast_perfUsuario_2">¡Tus datos han sido actualizados con exito!</string>
+    <string name="msgToast_perfUsuario_3">¡Error! Debes activar el modo edición para guardar.</string>
+    <string name="msgToast_perfUsuario_4">¡Algo salio mal!
         \n\nIntenta guardar tus datos de nuevo.</string>
     <string name="msgAlertDiag_perfUsuario_1">¿Esta seguro que quiere salir sin guardar los cambios?</string>
     <string name="msgAlertDiag_perfUsuario_1_positive">Si</string>
