@@ -10,7 +10,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import com.developers.parchat.view.main.BottomSheetDialog_InfoLugar;
+import com.developers.parchat.view.main.MainActivity;
+import com.developers.parchat.view.main.MainActivityMVP;
+import com.developers.parchat.view.main.MainActivityPresenter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,9 +29,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+
 import com.developers.parchat.R;
 
-public class FragmentShowMaps extends Fragment {
+public class FragmentShowMaps extends Fragment  {
+
+    // Variables modelo MVP
+    private MainActivityMVP.View vista;
 
     private GoogleMap mMap;
 
@@ -51,12 +61,16 @@ public class FragmentShowMaps extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Conectamos con el archivo de vista en el cual se desplegara el Fragmento
         View v = inflater.inflate(R.layout.fragment_show_maps_activity_main, container, false);
 
         // Hacemos la conexion con el objeto Fragment en el archivo de vista cotenido_fragmet_activity_main
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mapView_ActivityMain);
+
+
 
         // Que pasa cuando se carga el mapa en la app
         mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -101,6 +115,28 @@ public class FragmentShowMaps extends Fragment {
                     // Ubicamos la camara de google maps en la ciudad en que viva
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(bogota, 11));
                 }
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(@NonNull @NotNull Marker marker) {
+                        String tituloMarcador = marker.getTitle();
+                        String direccion = null;
+                        try {
+                            direccion = obtenerDireccionDeLatLong(marker.getPosition());
+                            ((MainActivity)getActivity()).iniciarBottomSheetDialog(tituloMarcador, direccion);
+                        } catch (IOException e) {
+                            ((MainActivity)getActivity()).iniciarBottomSheetDialog(tituloMarcador, "No disponible en este momento.");
+                            e.printStackTrace();
+                        }
+
+                        //Toast.makeText(getContext(), tituloMarcador, Toast.LENGTH_SHORT).show();
+                        // Llamamos al metodo iniciarBottomSheetDialog del Main Activity
+                        // para abrir el BottomSheetDialog
+
+                        //vista.iniciarBottomSheetDialog(tituloMarcador);
+
+                        return false;
+                    }
+                });
 
             }
         });
@@ -132,5 +168,22 @@ public class FragmentShowMaps extends Fragment {
             e.printStackTrace();
         }
         return latLng_Direccion;
+    }
+
+    public String obtenerDireccionDeLatLong(LatLng latLng) throws IOException {
+        //https://www.tabnine.com/code/java/classes/android.location.Geocoder
+        String direccionAproximada;
+
+        Geocoder gcd = new Geocoder(getContext(), Locale.getDefault());
+
+        List<Address> addresses = gcd.getFromLocation(latLng.latitude,
+                latLng.longitude, 3);
+
+        if (!addresses.isEmpty()){
+            direccionAproximada = addresses.get(0).getAddressLine(0);
+            return direccionAproximada;
+        } else {
+            return "Direccion no encontrada :(";
+        }
     }
 }

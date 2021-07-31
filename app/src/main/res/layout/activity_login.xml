@@ -59,7 +59,8 @@
                     android:inputType="textEmailAddress"
                     android:textCursorDrawable="@drawable/style_black_cursor"
                     app:boxStrokeColor="#ABFFFFFF"
-                    app:hintTextColor="#B0040404" />
+                    app:hintTextColor="#B0040404"
+                    android:textColor="#9E000000"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -86,7 +87,8 @@
                     android:textColorLink="#E91E63"
                     android:textCursorDrawable="@drawable/style_black_cursor"
                     app:boxStrokeColor="#ABFFFFFF"
-                    app:hintTextColor="#B0040404" />
+                    app:hintTextColor="#B0040404"
+                    android:textColor="#9E000000"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
     private de.hdodenhof.circleimageview.CircleImageView imgV_perfUsuario_fotoUsuario;
     private TextView tV_perfUsuario_titulo, tV_perfUsuario_cambiarFoto;
     private EditText eT_perfUsuario_nombreCom, eT_perfUsuario_email, eT_perfUsuario_numero;
+    private ProgressBar pB_registro;
 
     private String nombreUsuario, email, numero;
 
@@ -60,6 +62,8 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         eT_perfUsuario_nombreCom = findViewById(R.id.eT_perfUsuario_nombreCom);
         eT_perfUsuario_email = findViewById(R.id.eT_perfUsuario_email);
         eT_perfUsuario_numero = findViewById(R.id.eT_perfUsuario_numero);
+        // ProgressBar
+        pB_registro = findViewById(R.id.pB_perfilUsuario);
 
         // Listeners
         imgB_perfUsuario_volver.setOnClickListener(this);
@@ -224,6 +228,16 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
     @Override
     public Context getContext() {
         return PerfilUsuario.this;
+    }
+
+    @Override
+    public void showProgressBar() {
+        pB_registro.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        pB_registro.setVisibility(View.GONE);
     }
 
 }

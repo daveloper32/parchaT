@@ -66,7 +66,8 @@
                     android:fontFamily="sans-serif-smallcaps"
                     android:hint="@string/eT_usuario_nomCom"
                     android:inputType="textPersonName"
-                    app:boxStrokeColor="#ABFFFFFF" />
+                    app:boxStrokeColor="#ABFFFFFF"
+                    android:textColor="#9E000000"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -90,7 +91,8 @@
                     android:hint="@string/eT_usuario_email"
 
                     android:inputType="textEmailAddress"
-                    app:boxStrokeColor="#ABFFFFFF" />
+                    app:boxStrokeColor="#ABFFFFFF"
+                    android:textColor="#9E000000"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -113,7 +115,7 @@
                     android:background="@drawable/style_redondeo_edittext"
                     android:fontFamily="sans-serif-smallcaps"
                     android:hint="@string/eT_usuario_contrasena"
-
+                    android:textColor="#9E000000"
                     android:inputType="textPassword"
                     app:boxStrokeColor="#ABFFFFFF" />
             </com.google.android.material.textfield.TextInputLayout>

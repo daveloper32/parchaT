@@ -38,9 +38,12 @@ public interface MainActivityMVP {
         void obtenerDatosUsuarioLogeadoConFalla();
 
         void cargarDatosEnHeader();
+
     }
     // Se obtienen datos e informacion a la vista
     interface View {
+
+        void iniciarBottomSheetDialog(String nombreSitio, String direccion);
 
         void setDatosEnHeader(Usuario datosUsuario);
         // Para hacer el intent e ir a el Activity PerfilUsuario

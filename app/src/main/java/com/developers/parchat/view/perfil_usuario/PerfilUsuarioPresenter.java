@@ -44,6 +44,7 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
 
             // Guardo y confirmo si se guardo
             modelo.editarDatosUsuario(usuarioNuevosDatos);
+            vista.showProgressBar();
 
         } else {
             vista.showToastErrorActivarEdicionDatos();
@@ -61,7 +62,9 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
     public void obtenerDatosUsuarioLogeadoConExito() {
         // Le solicitamos al presentador que nos entregue los datos de usuario
         PerfilUsuarioDatos usuarioActivo = modelo.getDatosPerfilUsuario();
+        vista.showProgressBar();
         vista.CargamosDatosUsuario(usuarioActivo);
+        vista.hideProgressBar();
     }
 
     @Override
@@ -77,6 +80,7 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
 
     @Override
     public void actualizarDatosUsuarioLogeadoConExito() {
+        vista.hideProgressBar();
         vista.showToastDatosGuardadosConExito();
         vista.irAlActivityMain(MainActivity.class);
     }

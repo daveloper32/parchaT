@@ -14,6 +14,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/ic_fondo_passwordrecovery"
@@ -74,10 +75,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:background="@drawable/style_redondeo_edittext"
+                    android:textColorHint="#000000"
                     app:boxStrokeColor="#ABFFFFFF"
                     app:endIconMode="clear_text"
                     app:endIconTint="#9EE6D5D5"
-                    android:textColorHint="#000000"
                     app:hintTextColor="#B0040404"
                     app:startIconDrawable="@android:drawable/ic_menu_myplaces"
                     app:startIconTint="#A19D9D">
@@ -91,6 +92,7 @@
                         android:fontFamily="sans-serif-smallcaps"
                         android:hint="@string/eT_perfUsuario_nomCompleto"
                         android:inputType="textPersonName"
+                        android:textColor="#9E000000"
                         android:textCursorDrawable="@drawable/style_black_cursor" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,10 +102,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/style_redondeo_edittext"
+                    android:textColorHint="#000000"
                     app:boxStrokeColor="#ABFFFFFF"
                     app:endIconMode="clear_text"
                     app:endIconTint="#9EE6D5D5"
-                    android:textColorHint="#000000"
                     app:hintTextColor="#B0040404"
                     app:startIconDrawable="@android:drawable/ic_dialog_email"
                     app:startIconTint="#A19D9D">
@@ -117,6 +119,7 @@
                         android:fontFamily="sans-serif-smallcaps"
                         android:hint="@string/eT_perfUsuario_correo"
                         android:inputType="textEmailAddress"
+                        android:textColor="#9E000000"
                         android:textCursorDrawable="@drawable/style_black_cursor" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -144,6 +147,7 @@
                         android:fontFamily="sans-serif-smallcaps"
                         android:hint="@string/eT_perfUsuario_celular"
                         android:inputType="number"
+                        android:textColor="#9E000000"
                         android:textCursorDrawable="@drawable/style_black_cursor" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,14 +156,25 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
                     android:contentDescription="@string/imgV_perfUsuario_logo_contDes"
                     app:srcCompat="@drawable/ic_logo_parchat"
-                    tools:srcCompat="@drawable/ic_logo_parchat"
-                    android:layout_marginBottom="20dp"/>
+                    tools:srcCompat="@drawable/ic_logo_parchat" />
 
 
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pB_perfilUsuario"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -47,13 +47,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
     private ActionBarDrawerToggle bAB_MainActivity;
     private Toolbar tB_MainActivity;
     private NavigationView nV_MainActivity;
+    private BottomSheetDialog_InfoLugar bSD_infoLugar;
     // Creamos un objeto tipo View para acceder alos objetos del header del main activity
     private View header_main_activity;
     // Declaramos Textviews e ImageView circular que aparecen en el header del menu desplegable
     private TextView tV_ActivityMain_nomUsuario, tV_ActivityMain_emailUsuario;
     private de.hdodenhof.circleimageview.CircleImageView imgV_ActivityMain_fotoUsuario;
-    // Declaramos 2 variables de tipo String para recibir el nombre y email del usuario que inicio sesion
-    private String emailUsuario, nombreUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
         // Drawer Layout
         dL_MainActivity = findViewById(R.id.dL_MainActivity);
         // NavigationView
-        nV_MainActivity = findViewById(R.id.nV_MainActivity_menuLateral);
+        nV_MainActivity = findViewById(R.id.nV_MainActivity_menuLateral);        //
+
 
         // Le decimos al objeto View header_main_activity que vaya al navigationViewer
         // y obtenga la vista del header
@@ -168,6 +168,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
                 .commit();
     }
 
+
+    @Override
+    public void iniciarBottomSheetDialog(String nombreSitio, String direccion) {
+        BottomSheetDialog_InfoLugar bSD_infoLugar = new BottomSheetDialog_InfoLugar(nombreSitio, direccion);
+        bSD_infoLugar.show(getSupportFragmentManager(), "TAG");
+
+    }
 
     @Override
     public void setDatosEnHeader(Usuario datosUsuario) {

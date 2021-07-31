@@ -66,5 +66,9 @@ public interface PerfilUsuarioMVP {
         void irAlActivityMain(Class<? extends AppCompatActivity> ir_a_ActivityMain);
         // Obtenemos el contexto de la vista para poder acceder a los SharedPreferences
         Context getContext();
+
+        void showProgressBar();
+
+        void hideProgressBar();
     }
 }
