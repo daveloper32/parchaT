@@ -11,7 +11,7 @@
     android:paddingBottom="15dp">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgV_main_activity_lugar"
         android:layout_width="113dp"
         android:layout_height="95dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,7 +27,7 @@
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toEndOf="@+id/imgV_main_activity_lugar"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView

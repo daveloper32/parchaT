@@ -19,7 +19,7 @@ import com.google.firebase.database.annotations.NotNull;
 
 import java.util.List;
 
-public class RepositoryLoginBuscarUsuario implements LoginMVP.Model {
+public class RepositoryLogin implements LoginMVP.Model {
 
     // Declaramos un objeto de la Clase FirebaseAuth
     private FirebaseAuth mAuth;
@@ -30,13 +30,8 @@ public class RepositoryLoginBuscarUsuario implements LoginMVP.Model {
     private LoginMVP.Presenter presentadorLogin;
     private Context contextLogin;
 
-    // Creamos un objeto SharedPreferences para buscar los datos del Usuario que quiere iniciar sesion
-    private SharedPreferences datosUsuarioActual;
-    private SharedPreferences inicioSesionUsuario;
-    private SharedPreferences.Editor editor;
 
-
-    public RepositoryLoginBuscarUsuario() {
+    public RepositoryLogin() {
         // Inicializamos la instancia FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
         // Inicializamos la instancia FirebaseDatabase
@@ -65,8 +60,6 @@ public class RepositoryLoginBuscarUsuario implements LoginMVP.Model {
         });
     }
 
-
-
     @Override
     public boolean validarSaltarLogin() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -76,5 +69,4 @@ public class RepositoryLoginBuscarUsuario implements LoginMVP.Model {
             return false;
         }
     }
-
 }

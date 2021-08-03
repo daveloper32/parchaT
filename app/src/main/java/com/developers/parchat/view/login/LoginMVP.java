@@ -8,6 +8,7 @@ import android.content.Context;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.developers.parchat.model.entity.Usuario;
 
 
 public interface LoginMVP {
@@ -44,7 +45,7 @@ public interface LoginMVP {
     // Se obtienen datos e informacion a la vista
     interface View {
         // Primero obtengo las credenciales (correo, password)
-        LoginCredentialsUsuario getLoginCredentialsUsuario();
+        Usuario getLoginCredentialsUsuario();
 
         // Mostramos errores de validación, si aplica
         // TextInputEditText de email vacio

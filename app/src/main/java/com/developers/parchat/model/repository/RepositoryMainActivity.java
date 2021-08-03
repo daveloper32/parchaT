@@ -5,8 +5,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.developers.parchat.model.entity.Usuario;
-import com.developers.parchat.view.login.LoginMVP;
-import com.developers.parchat.view.main.MainActivityDatos;
 import com.developers.parchat.view.main.MainActivityMVP;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

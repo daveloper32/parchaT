@@ -15,22 +15,18 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.developers.parchat.model.entity.Usuario;
-import com.developers.parchat.view.login.LoginMVP;
-import com.developers.parchat.view.login.LoginPresenter;
 import com.developers.parchat.view.main.fragment_maps.FragmentShowMaps;
-import com.developers.parchat.view.login.Login;
-import com.developers.parchat.view.perfil_usuario.PerfilUsuario;
+import  com.developers.parchat.view.main.bt_st_dlg_ifo_lugar.BottomSheetDialog_InfoLugar;
+
 import com.developers.parchat.R;
-import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
+
 import com.google.android.material.navigation.NavigationView;
 
 
@@ -170,11 +166,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
 
 
     @Override
-    public void iniciarBottomSheetDialog(String nombreSitio, String direccion) {
-        BottomSheetDialog_InfoLugar bSD_infoLugar = new BottomSheetDialog_InfoLugar(nombreSitio, direccion);
+    public void iniciarBottomSheetDialog(String nombreSitio, String direccion, String sitioWeb, String urlImagen) {
+        bSD_infoLugar = new BottomSheetDialog_InfoLugar(nombreSitio, direccion, sitioWeb, urlImagen);
         bSD_infoLugar.show(getSupportFragmentManager(), "TAG");
 
     }
+
 
     @Override
     public void setDatosEnHeader(Usuario datosUsuario) {

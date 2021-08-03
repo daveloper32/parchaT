@@ -98,14 +98,14 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
     }
 
     @Override
-    public PerfilUsuarioDatos getNuevosDatosUsuario() {
+    public Usuario getNuevosDatosUsuario() {
 
         String nombreChanged, emailNotChanged, numeroChanged;
         nombreChanged = eT_perfUsuario_nombreCom.getText().toString().trim();
         emailNotChanged = eT_perfUsuario_email.getText().toString().trim();
         numeroChanged = eT_perfUsuario_numero.getText().toString().trim();
         // El email no lo cambiamos
-        PerfilUsuarioDatos usuarioNuevosDatos = new PerfilUsuarioDatos(nombreChanged, emailNotChanged,
+        Usuario usuarioNuevosDatos = new Usuario(nombreChanged, emailNotChanged,
                 numeroChanged);
         return usuarioNuevosDatos;
 
@@ -123,7 +123,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
     }
 
     @Override
-    public void CargamosDatosUsuario(PerfilUsuarioDatos usuarioActivo) {
+    public void CargamosDatosUsuario(Usuario usuarioActivo) {
 
         // Validamos que el usuario no este vacio
         if (usuarioActivo != null) {

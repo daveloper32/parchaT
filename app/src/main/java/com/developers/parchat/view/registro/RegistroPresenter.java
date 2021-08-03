@@ -3,7 +3,7 @@ package com.developers.parchat.view.registro;
 import android.util.Patterns;
 
 import com.developers.parchat.model.entity.Usuario;
-import com.developers.parchat.model.repository.RepositoryRegistroGuardarUsuario;
+import com.developers.parchat.model.repository.RepositoryRegistro;
 import com.developers.parchat.view.login.Login;
 
 public class RegistroPresenter implements RegistroMVP.Presenter {
@@ -14,7 +14,7 @@ public class RegistroPresenter implements RegistroMVP.Presenter {
 
     public RegistroPresenter(RegistroMVP.View vista) {
         this.vista = vista;
-        this.modelo = new RepositoryRegistroGuardarUsuario();
+        this.modelo = new RepositoryRegistro();
         this.modelo.setPresentadorRegistro(this, vista.getContext());
     }
 
@@ -22,7 +22,7 @@ public class RegistroPresenter implements RegistroMVP.Presenter {
     public void Registrarse() {
         // Solicito a la vista la informacion del registro del usuario y lo almaceno
         // en un objeto tipo RegistroDatosUsuario
-        RegistroDatosUsuario datosUsuario =  vista.getRegistroDatosUsuario();
+        Usuario datosUsuario =  vista.getRegistroDatosUsuario();
 
         // Procedemos a hacer la validacion de datos
 
@@ -69,7 +69,6 @@ public class RegistroPresenter implements RegistroMVP.Presenter {
             // Mostramos ProgressBar
             vista.showProgressBar();
         }
-
     }
 
     @Override
@@ -91,7 +90,7 @@ public class RegistroPresenter implements RegistroMVP.Presenter {
     @Override
     public void AuthUsuarioExitosa() {
         // Obtenemos datos
-        RegistroDatosUsuario datosUsuario =  vista.getRegistroDatosUsuario();
+        Usuario datosUsuario =  vista.getRegistroDatosUsuario();
         // COnvertimos a Usuario
         Usuario usuario = new Usuario(datosUsuario.getNombreCompleto(),
                 datosUsuario.getEmail(), datosUsuario.getPassword(), "");

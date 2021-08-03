@@ -18,7 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.annotations.NotNull;
 
-public class RepositoryRegistroGuardarUsuario implements RegistroMVP.Model {
+public class RepositoryRegistro implements RegistroMVP.Model {
 
     // Declaramos un objeto de la Clase FirebaseAuth
     private FirebaseAuth mAuth;
@@ -30,12 +30,7 @@ public class RepositoryRegistroGuardarUsuario implements RegistroMVP.Model {
     private RegistroMVP.Presenter presentadorRegistro;
     private Context contextRegistro;
 
-    // Creamos un objeto SharedPreferences para buscar los datos del Usuario que quiere iniciar sesion
-    private SharedPreferences datosUsuarioActual;
-    private SharedPreferences inicioSesionUsuario;
-    private SharedPreferences.Editor editor;
-
-    public RepositoryRegistroGuardarUsuario() {
+    public RepositoryRegistro() {
         // Inicializamos la instancia FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
         // Inicializamos la instancia FirebaseDatabase
@@ -80,9 +75,5 @@ public class RepositoryRegistroGuardarUsuario implements RegistroMVP.Model {
                 }
             }
         });
-
     }
-
-
-
 }

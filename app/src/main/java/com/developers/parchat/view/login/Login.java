@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.developers.parchat.R;
 
+import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -123,14 +124,14 @@ public class Login extends AppCompatActivity implements LoginMVP.View, View.OnCl
     }
 
     @Override
-    public LoginCredentialsUsuario getLoginCredentialsUsuario() {
+    public Usuario getLoginCredentialsUsuario() {
         // Creamos un par de variables tipo String para obtener lo que se escriba en los EditText
         String email, password;
         // Obtenemos lo que hay en cada EditText
         email = eT_login_email.getText().toString().trim();
         password = eT_login_password.getText().toString().trim();
         // Guardamos el email y contraseña en un objeto LoginInfoUsuario
-        LoginCredentialsUsuario credentialsUsuario = new LoginCredentialsUsuario(email, password);
+        Usuario credentialsUsuario = new Usuario(email, password);
         // Retornamos el objeto LoginCredentialsoUsuario
         return credentialsUsuario;
     }

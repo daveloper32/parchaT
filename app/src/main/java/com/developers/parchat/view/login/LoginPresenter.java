@@ -5,7 +5,7 @@ package com.developers.parchat.view.login;
 import android.util.Patterns;
 
 import com.developers.parchat.model.entity.Usuario;
-import com.developers.parchat.model.repository.RepositoryLoginBuscarUsuario;
+import com.developers.parchat.model.repository.RepositoryLogin;
 import com.developers.parchat.view.recuperar_password.RecuperarPassword;
 import com.developers.parchat.view.registro.Registro;
 import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
@@ -20,18 +20,15 @@ public class LoginPresenter implements LoginMVP.Presenter {
     // EL constructor va a recibir la vista
     public LoginPresenter(LoginMVP.View vista) {
         this.vista = vista;
-        this.modelo = new RepositoryLoginBuscarUsuario();
+        this.modelo = new RepositoryLogin();
         this.modelo.setPresentadorLogin(this, vista.getContext());
-
-
-
     }
 
     @Override
     public void IniciarSesionCorreo() {
         // Solicito a la vista la informacion del login del usuario y lo almaceno
         // en un objeto tipo LoginCredentialsUsuario
-        LoginCredentialsUsuario credentialsUsuario =  vista.getLoginCredentialsUsuario();
+        Usuario credentialsUsuario =  vista.getLoginCredentialsUsuario();
 
         // Procedemos a hacer la validacion de datos
 

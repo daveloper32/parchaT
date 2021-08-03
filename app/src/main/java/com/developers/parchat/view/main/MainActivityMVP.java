@@ -7,7 +7,6 @@ import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.developers.parchat.model.entity.Usuario;
-import com.developers.parchat.view.perfil_usuario.PerfilUsuarioDatos;
 
 public interface MainActivityMVP {
 
@@ -43,7 +42,7 @@ public interface MainActivityMVP {
     // Se obtienen datos e informacion a la vista
     interface View {
 
-        void iniciarBottomSheetDialog(String nombreSitio, String direccion);
+        void iniciarBottomSheetDialog(String nombreSitio, String direccion, String sitioWeb, String urlImagen);
 
         void setDatosEnHeader(Usuario datosUsuario);
         // Para hacer el intent e ir a el Activity PerfilUsuario

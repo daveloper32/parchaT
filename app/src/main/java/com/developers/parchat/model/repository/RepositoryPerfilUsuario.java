@@ -1,12 +1,10 @@
 package com.developers.parchat.model.repository;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
 import com.developers.parchat.model.entity.Usuario;
-import com.developers.parchat.view.perfil_usuario.PerfilUsuarioDatos;
 import com.developers.parchat.view.perfil_usuario.PerfilUsuarioMVP;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,11 +38,6 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
     private PerfilUsuarioMVP.Presenter presentadorPerfilUsuario;
     private Context contextPerfilUsuario;
 
-    // Creamos un objeto SharedPreferences para buscar los datos del Usuario que quiere iniciar sesion
-    private SharedPreferences datosUsuarioActual;
-    private SharedPreferences inicioSesionUsuario;
-    private SharedPreferences.Editor editor;
-
     public RepositoryPerfilUsuario() {
         // Inicializamos la instancia FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
@@ -77,7 +70,6 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
                             presentadorPerfilUsuario.obtenerDatosUsuarioLogeadoConExito();
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull @NotNull DatabaseError error) {
                         presentadorPerfilUsuario.obtenerDatosUsuarioLogeadoConFalla();
@@ -86,9 +78,9 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
     }
 
     @Override
-    public PerfilUsuarioDatos getDatosPerfilUsuario() {
+    public Usuario getDatosPerfilUsuario() {
         if (datosUsuario != null) {
-            PerfilUsuarioDatos datosUsuarioActual = new PerfilUsuarioDatos(
+            Usuario datosUsuarioActual = new Usuario(
                     datosUsuario.getNombreCompleto(), datosUsuario.getEmail(),
                     datosUsuario.getNumeroCel());
             return datosUsuarioActual;
@@ -98,7 +90,7 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
     }
 
     @Override
-    public void editarDatosUsuario(PerfilUsuarioDatos usuario_a_editar) {
+    public void editarDatosUsuario(Usuario usuario_a_editar) {
         // Le pasamos el id del usuario a la referencia en la base de datos para obtener los datos del usuario
         referenciaUsuario.child(IdUsuario)
                 .addListenerForSingleValueEvent(new ValueEventListener() {

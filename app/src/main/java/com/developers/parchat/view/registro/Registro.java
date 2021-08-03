@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.developers.parchat.R;
+import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.login.Login;
 import com.developers.parchat.view.login.LoginPresenter;
 import com.google.android.material.textfield.TextInputEditText;
@@ -102,7 +103,7 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View, Vie
     }
 
     @Override
-    public RegistroDatosUsuario getRegistroDatosUsuario() {
+    public Usuario getRegistroDatosUsuario() {
         // Creamos un par de variables tipo String para obtener lo que se escriba en los TextInputLayout
         String nombreComp, email, password;
         // Obtenemos lo que hay en cada TextInputLayout
@@ -110,7 +111,7 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View, Vie
         email = eT_usuario_email.getText().toString().trim();
         password = eT_usuario_contrasena.getText().toString().trim();
         // Guardamos el nombreComp, email y contraseña en un objeto LoginInfoUsuario
-        RegistroDatosUsuario datosUsuario = new RegistroDatosUsuario(nombreComp, email, password, "");
+        Usuario datosUsuario = new Usuario(nombreComp, email, password, "");
         // Retornamos el objeto RegistroDatosUsuario
         return datosUsuario;
     }

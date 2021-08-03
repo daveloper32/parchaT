@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.developers.parchat.model.entity.Usuario;
+
 import java.util.Map;
 
 public interface PerfilUsuarioMVP {
@@ -14,9 +16,9 @@ public interface PerfilUsuarioMVP {
         // Par obtener el email que tiene la sesion inciada
         void getDatosUsuarioLogueadoFromDB();
         // Para obtener los datos del correo que inicio sesion
-        PerfilUsuarioDatos getDatosPerfilUsuario();
+        Usuario getDatosPerfilUsuario();
         // Para editar datos del usuario que tiene sesion inciada
-        void editarDatosUsuario(PerfilUsuarioDatos usuario_a_editar);
+        void editarDatosUsuario(Usuario usuario_a_editar);
         void actualizarDatosUsuarioLogeadoConExito(Map<String,Object> childUpdates);        
         
     }
@@ -40,11 +42,11 @@ public interface PerfilUsuarioMVP {
     // Se obtienen datos e informacion a la vista
     interface View {
         // Se obtinen los cambios en los datos del usuario
-        PerfilUsuarioDatos getNuevosDatosUsuario();
+        Usuario getNuevosDatosUsuario();
         // Para verificar si se presiono el boton edicion o lapiz
         boolean isEdicionActivada();
         // Para cargar los datos de usuario que inicio sesion en los edittext
-        void CargamosDatosUsuario(PerfilUsuarioDatos usuarioActivo);
+        void CargamosDatosUsuario(Usuario usuarioActivo);
         // Que pasa si se presiona el boton Lapiz o editar
         void EditarDatos();
         // Mostramos errores de validación, si aplica

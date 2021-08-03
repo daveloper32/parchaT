@@ -1,6 +1,7 @@
 package com.developers.parchat.view.perfil_usuario;
 
 
+import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.model.repository.RepositoryPerfilUsuario;
 import com.developers.parchat.view.main.MainActivity;
 
@@ -28,7 +29,7 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
         if (vista.isEdicionActivada()){
             // Solicito a la vista la informacion de los cambios del usuario y lo almaceno
             // en un objeto tipo Usuario
-            PerfilUsuarioDatos usuarioNuevosDatos = vista.getNuevosDatosUsuario();
+            Usuario usuarioNuevosDatos = vista.getNuevosDatosUsuario();
             // Validar Campos
             // Validacion de que se escribio algo en los campos
             // Nombre Completo
@@ -61,7 +62,7 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
     @Override
     public void obtenerDatosUsuarioLogeadoConExito() {
         // Le solicitamos al presentador que nos entregue los datos de usuario
-        PerfilUsuarioDatos usuarioActivo = modelo.getDatosPerfilUsuario();
+        Usuario usuarioActivo = modelo.getDatosPerfilUsuario();
         vista.showProgressBar();
         vista.CargamosDatosUsuario(usuarioActivo);
         vista.hideProgressBar();

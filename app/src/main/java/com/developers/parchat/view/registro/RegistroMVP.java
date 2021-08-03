@@ -37,7 +37,7 @@ public interface RegistroMVP {
     // Se obtienen datos e informacion a la vista
     interface View {
         // Primero obtengo los datos del usuario a registrar (nombre completo, correo, password)
-        RegistroDatosUsuario getRegistroDatosUsuario();
+        Usuario getRegistroDatosUsuario();
         // Mostramos errores de validación, si aplica
         // TextInputEditText de nombre completo vacio
         void showEmptyNombreCompletoError();
