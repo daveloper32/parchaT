@@ -4,9 +4,7 @@ Recomendación de Sitios Turisticos, Restaurantes o de Actividades Varias al air
 
 Integrantes:
 - David Esteban Hernández Garzón.
-- Wilgen Omar Navarro Martelo.
 - Yaned Viviana Sánchez Osorio.
-- Yezid Orlando Polanía Reina.
 
 Documentación Scrum:
 
