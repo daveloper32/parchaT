@@ -6,7 +6,9 @@ import android.content.Context;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.developers.parchat.model.entity.InfoLugar;
 import com.developers.parchat.model.entity.Usuario;
+import com.google.firebase.database.DatabaseError;
 
 public interface MainActivityMVP {
 
@@ -19,6 +21,9 @@ public interface MainActivityMVP {
         Usuario getUsuarioLogueado();
         // Cerrar sesion
         void cerrarSesionFirebase();
+        // Crear COnfiguracion Inicial si no se tiene
+        void crearConfiguracionesIniciales();
+
 
     }
     // EL presentador recibe los eventos que ocurriran en la vista
@@ -38,20 +43,27 @@ public interface MainActivityMVP {
 
         void cargarDatosEnHeader();
 
+        void configuracionesIniciales();
+
     }
     // Se obtienen datos e informacion a la vista
     interface View {
 
-        void iniciarBottomSheetDialog(String nombreSitio, String direccion, String sitioWeb, String urlImagen);
+        void iniciarBottomSheetDialog(InfoLugar infoLugar);
 
         void setDatosEnHeader(Usuario datosUsuario);
+
+        void getPermisosUbicacion();
         // Para hacer el intent e ir a el Activity PerfilUsuario
         void irAlActivityPerfilUsuario(Class<? extends AppCompatActivity> ir_a_PerfilUsuario);
         // Para hacer el intent e ir a el Activity SeleccionarActividad
         void irAlActivitySeleccionarActividad(Class<? extends AppCompatActivity> ir_a_SeleccionarActividad);
         // Para hacer el intent e ir a el Activity Login
         void irAlActivityLogin(Class<? extends AppCompatActivity> ir_a_Login);
+        // Para hacer el intent e ir a el Activity Configuraciones
+        void irAlActivityConfiguraciones(Class<? extends AppCompatActivity> ir_a_Configuraciones);
         // Obtenemos el contexto de la vista para poder acceder a los SharedPreferences
         Context getContext();
+
     }
 }

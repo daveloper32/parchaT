@@ -1,6 +1,7 @@
 package com.developers.parchat.model.repository;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
@@ -27,6 +28,10 @@ public class RepositoryMainActivity implements MainActivityMVP.Model {
     // Declaramos una variable de tipo String para recibir el id del usuario en la base de datos -> User UID
     private String IdUsuario;
     private Usuario datosUsuario;
+
+    // Creamos un objeto SharedPreferences para guardar datos iniciales o por defecto de COnfiguracion del Usuario
+    private SharedPreferences datosConfiguracion;
+    private SharedPreferences.Editor editor;
 
     // Variables modelo MVP Login
     private MainActivityMVP.Presenter presentadorMain;
@@ -81,5 +86,24 @@ public class RepositoryMainActivity implements MainActivityMVP.Model {
     public void cerrarSesionFirebase() {
         // Usamos el metodo de FirebaseAuth para cerrar sesión
         mAuth.signOut();
+    }
+
+    @Override
+    public void crearConfiguracionesIniciales() {
+        // Creamos un objeto Shared preferences para guardar las configuraciones de usuario
+        // EL key sera configuracionesUsuario
+        datosConfiguracion = contextMain.getSharedPreferences("configuracionesUsuario",
+                Context.MODE_PRIVATE);
+        editor = datosConfiguracion.edit();
+        if (!datosConfiguracion.contains("modoBusquedaGPS")) {
+            // Guardamos 3 datos
+            editor.putBoolean("modoBusquedaGPS", true);
+            editor.putBoolean("modoBusquedaMarker", false);
+            editor.putString("rangoBusquedaKm", "0.5");
+            editor.putInt("valorSBRangoBusquedaKm", 2);
+            // Hacemos el commit
+            editor.commit();
+        }
+
     }
 }

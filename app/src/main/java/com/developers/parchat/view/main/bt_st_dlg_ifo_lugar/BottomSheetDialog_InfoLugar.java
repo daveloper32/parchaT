@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.developers.parchat.R;
+import com.developers.parchat.model.entity.InfoLugar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.squareup.picasso.Picasso;
 
@@ -22,12 +23,10 @@ public class BottomSheetDialog_InfoLugar extends BottomSheetDialogFragment {
     private TextView tV_bsd_main_activity_nombreLugar, tV_bsd_main_activity_direccion;
     private String nombreLugar, direccion, sitioWeb, urlImagen;
     private ImageView imgV_main_activity_lugar;
+    private InfoLugar infoLugar;
 
-    public BottomSheetDialog_InfoLugar(String nombreLugar, String direccion, String sitioWeb, String urlImagen) {
-        this.nombreLugar = nombreLugar;
-        this.direccion = direccion;
-        this.sitioWeb = sitioWeb;
-        this.urlImagen = urlImagen;
+    public BottomSheetDialog_InfoLugar(InfoLugar infoLugar) {
+        this.infoLugar = infoLugar;
     }
 
 
@@ -42,12 +41,25 @@ public class BottomSheetDialog_InfoLugar extends BottomSheetDialogFragment {
         tV_bsd_main_activity_nombreLugar = view.findViewById(R.id.tV_bsd_main_activity_nomLugar);
         tV_bsd_main_activity_direccion = view.findViewById(R.id.tV_bsd_main_activity_direccion);
         imgV_main_activity_lugar = view.findViewById(R.id.imgV_main_activity_lugar);
+        if (infoLugar != null) {
+            nombreLugar = infoLugar.getNombre();
+            direccion = infoLugar.getDireccion();
+            sitioWeb = infoLugar.getSitioweb();
+            urlImagen = infoLugar.getUrlimagen();
+        } else {
+            nombreLugar = "No disponible";
+            direccion = "No disponible en este momento";
+            sitioWeb = "";
+            urlImagen = "";
+        }
+
         tV_bsd_main_activity_nombreLugar.setText(nombreLugar);
         tV_bsd_main_activity_direccion.setText(direccion);
         Picasso.get()
                 .load(urlImagen)
                 .error(R.mipmap.ic_mapa_restaurante)
                 .into(imgV_main_activity_lugar);
+
         return view;
 
     }

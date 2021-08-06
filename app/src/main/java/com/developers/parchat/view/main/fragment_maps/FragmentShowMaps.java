@@ -1,8 +1,18 @@
 package com.developers.parchat.view.main.fragment_maps;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +20,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -18,6 +31,8 @@ import com.developers.parchat.view.main.bt_st_dlg_ifo_lugar.BottomSheetDialog_In
 import com.developers.parchat.view.main.MainActivity;
 import com.developers.parchat.view.main.MainActivityMVP;
 import com.developers.parchat.view.main.MainActivityPresenter;
+import com.developers.parchat.view.registro.RegistroMVP;
+import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -27,6 +42,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -37,6 +55,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import com.developers.parchat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,30 +66,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class FragmentShowMaps extends Fragment {
+public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.View {
+
+    // Variables modelo MVP
+    FragmentShowMapsMVP.Presenter presentador;
+    MainActivityMVP.View vistaMainActivity;
 
     // Creamos un objeto LatLng y le pasamos las coordenadas de Bogota
     LatLng bogota = new LatLng(4.60971, -74.08175);
 
     private GoogleMap mMap;
 
+    private boolean modoBusquedaGPS, modoBusquedaMarcador;
 
-    private Marker marcadorPosicion;
-
-    // Declaramos un objeto de la Clase DatabaseReference
-    private DatabaseReference mDatabase, geoFireDatabase;
-    private GeoFire geoFire;
-
-    private static final String TAG = "CargarLugares";
-
-    private List<InfoLugar> lugares;
-    private List<LatLng> latLngsLugares;
-
-    private List<String> lugaresGeoQueryResult;
+    private Marker marcadorGPS, marcadorPosicion;
+    private LatLng latLngUbicacionUsuario, latLngUbicacionMarker;
+    private Circle rangoMapa;
 
     private List<Marker> marcadoresMapa;
-    private LatLng latLngUbicacionUsuario;
 
+    private static final int PERMISSION_REQUEST = 12345;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,149 +98,242 @@ public class FragmentShowMaps extends Fragment {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mapView_ActivityMain);
 
-        // Inicializamos la instancia FirebaseDatabase
-        mDatabase = FirebaseDatabase.getInstance().
-                getReference("SitiosParchaT/Bogota/InfoSitios/Restaurantes");
-        geoFireDatabase = FirebaseDatabase.getInstance().
-                getReference("SitiosParchaT/Bogota/GeoFire/Restaurantes");
-        geoFire = new GeoFire(geoFireDatabase);
+        IniciarVista(mapFragment);
 
-        //4.653848659303366, -74.05495626444139
+        return v;
+    }
 
+    private void IniciarVista(SupportMapFragment mapFragment) {
 
-
+        vistaMainActivity = new MainActivity();
+        // Inicializamos el presentador
+        rangoMapa = null;
+        presentador = new FragmentShowMapsPresenter(this, "Restaurantes");
+        latLngUbicacionMarker = null;
+        marcadoresMapa = new ArrayList<>();
 
         // Que pasa cuando se carga el mapa en la app
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             // Cuando ya esta listo para funcionar
+            @SuppressLint("MissingPermission")
             @Override
             public void onMapReady(@NonNull GoogleMap googleMap) {
                 // Renombramos googleMap por mMap -> literal es como el obejto del mapa de Maps
                 mMap = googleMap;
+                // Activamos parametros de intereccion con el mapa
+                // Zoom in & Zoom out
                 mMap.getUiSettings().setZoomControlsEnabled(true);
 
-                lugares = new ArrayList<>();
-                latLngsLugares = new ArrayList<>();
-                lugaresGeoQueryResult = new ArrayList<>();
-                marcadoresMapa = new ArrayList<>();
-                latLngUbicacionUsuario = null;
-
-                LatLng cargaInicial = new LatLng(4.657160262597251, -74.05605940861399);
-
-                // Marcador inicial
-                marcadorPosicion = mMap.addMarker(new MarkerOptions()
-                        .position(cargaInicial)
-                        .title(4.657 + ", " + -74.056)
-                        .visible(true));
-                latLngUbicacionUsuario = cargaInicial;
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cargaInicial, 15));
-                setQueryOnUsuario(cargaInicial
-                        ,0.5);
+                modoBusquedaGPS = presentador.getModoBusquedaGPSActualizado();
+                modoBusquedaMarcador = presentador.getModoBusquedaMarkerActualizado();
 
 
-                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                    @Override
-                    public boolean onMarkerClick(@NonNull @NotNull Marker marker) {
-                        String tituloMarcador = marker.getTitle();
-                        String direccion = null;
 
-                        InfoLugar infoLugarSeleccionado = getInfoLugarSeleccionado(tituloMarcador);
-                        if (infoLugarSeleccionado != null) {
-                            //direccion = obtenerDireccionDeLatLong(marker.getPosition());
-                            direccion = infoLugarSeleccionado.getDireccion();
-                            ((MainActivity) getActivity()).iniciarBottomSheetDialog(tituloMarcador, direccion
-                                    , infoLugarSeleccionado.getSitioweb(), infoLugarSeleccionado.getUrlimagen());
-                        } else {
-                            ((MainActivity) getActivity()).iniciarBottomSheetDialog(tituloMarcador, "No disponible en este momento.", "", "");
-                        }
-                        return false;
-                    }
-                });
+                // Modo GPS ACtivo
+                if (modoBusquedaGPS && !modoBusquedaMarcador) {
+                    //mMap.setMyLocationEnabled(true);
+                    verificarGPSEncendido();
+                    CargarMiUbicacion();
+                    // Si se presiona un marcador -> Mostramos informacion del sitio en un Bottom Sheet Dialog
+                    AbrirBSDdeInformacionSitio();
+                    NuevaBusquedaEnMiUbicacion();
 
-                mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                    @Override
-                    public void onMapLongClick(@NonNull @NotNull LatLng latLngUsuario) {
 
-                        lugaresGeoQueryResult.clear();
-
-                        if (marcadorPosicion != null) {
-                            marcadorPosicion.remove();
-                        }
-                        marcadorPosicion = mMap.addMarker(new MarkerOptions()
-                                .position(latLngUsuario)
-                                .title(latLngUsuario.latitude + ", " + latLngUsuario.longitude)
-                                .visible(true));
-                        // Hacemos la busqueda de los sitios cercanos en un radio x de kilometros
-                        latLngUbicacionUsuario = latLngUsuario;
-                        setQueryOnUsuario(latLngUsuario, 0.4);
-                    }
-                });
-            }
-        });
-        return v;
-    }
-
-    private void borrarMarcadoresMapa() {
-        // Borramos todos los marcadores que esten en el mapa
-        for (int x = 0; x < marcadoresMapa.size(); x++) {
-            Marker marker = marcadoresMapa.get(x);
-            marker.remove();
-        }
-        // Desocupamos la lista de marcadores
-        marcadoresMapa.clear();
-    }
-
-    private void setQueryOnUsuario(@NonNull LatLng latLngUsuario, double radioEnKm) {
-
-        // creates a new query around [37.7832, -122.4056] with a radius of 0.6 kilometers
-        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(latLngUsuario.latitude,
-                latLngUsuario.longitude), radioEnKm);
-        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-            @Override
-            public void onKeyEntered(String key, GeoLocation location) {
-
-                lugaresGeoQueryResult.add(key);
-
-            }
-
-            @Override
-            public void onKeyExited(String key) {
-                //Toast.makeText(getContext(), "Bien Geofire, onKeyExited", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onKeyMoved(String key, GeoLocation location) {
-
-            }
-
-            @Override
-            public void onGeoQueryReady() {
-                //Toast.makeText(getContext(), "All initial data has been loaded and events have been fired!", Toast.LENGTH_LONG).show();
-                if (lugaresGeoQueryResult.size() != 0) {
-                    buscarSitiosCercanos(lugaresGeoQueryResult);
-                    for (int x = 0; x < lugaresGeoQueryResult.size(); x++) {
-                        Log.d("Lugar Encontrado", "#" + (x + 1) + " -> " + lugaresGeoQueryResult.get(x));
-                    }
-                } else {
-                    borrarMarcadoresMapa();
-                    lugares.clear();
-                    latLngsLugares.clear();
-                    Toast.makeText(getContext(), "No encontramos ningun sitio cerca a ti :c, intenta aumentar el rango de busqueda.", Toast.LENGTH_SHORT).show();
                 }
-                // Se buscan los sitios cercanos en la base de datos
-
-
-            }
-
-            @Override
-            public void onGeoQueryError(DatabaseError error) {
-                Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_LONG).show();
+                // Modo Marker Activo
+                if (!modoBusquedaGPS && modoBusquedaMarcador) {
+                    //mMap.setMyLocationEnabled(false);
+                    // Marcador Inicial
+                    LatLng cargaUbicacionInicial = new LatLng(4.657160262597251, -74.05605940861399);
+                    CargarMarcadorUbicacionInicial(cargaUbicacionInicial);
+                    // Si se presiona un marcador -> Mostramos informacion del sitio en un Bottom Sheet Dialog
+                    AbrirBSDdeInformacionSitio();
+                    // Hacemos una nueva busqueda y despliegue de marcadores donde sea que la persona agregue un marcador
+                    NuevaBusquedaAlDarClickSobreElMapa();
+                }
             }
         });
     }
 
-    private void addMarkersSitiosCercanos(LatLng latLngUsuario, List<InfoLugar> infoLugarList, List<LatLng> latLngLugarList) {
+    private void addMarkerMiUbicacion(LatLng miUbicacionGPS) {
+        if (marcadorGPS != null) {
+            marcadorGPS.remove();
+        }
+        marcadorGPS = mMap.addMarker(new MarkerOptions()
+                .position(miUbicacionGPS)
+                .title("¡Mi Ubicación!")
+                .visible(true));
+        mMap.animateCamera(CameraUpdateFactory
+                .newCameraPosition(new CameraPosition.Builder()
+                        .target(miUbicacionGPS)
+                        .zoom(presentador.getZoomMapaSegunRangoBusquedaKm())
+                        .build()
+                )
+        );
+    }
 
+    private void actualizarMiUbicacion(Location location) {
+        if (location != null) {
+            LatLng latLngMiUbicacion = new LatLng(location.getLatitude(),
+                    location.getLongitude());
+            latLngUbicacionUsuario = latLngMiUbicacion;
+            addMarkerMiUbicacion(latLngMiUbicacion);
+        }
+    }
+
+    LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(@NonNull Location location) {
+            actualizarMiUbicacion(location);
+            NuevaBusquedaEnMiUbicacion();
+        }
+    };
+
+    private void CargarMiUbicacion() {
+
+        if (ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[] {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.INTERNET,
+                    Manifest.permission.ACCESS_WIFI_STATE
+            }, PERMISSION_REQUEST);
+            return;
+        }
+        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        actualizarMiUbicacion(location);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                15000, 0, locationListener);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST) {
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getContext()
+                            ,R.string.msgToast_MainActivity_3
+                            , Toast.LENGTH_LONG)
+                            .show();
+                    irAlActivitySeleccionarActividad(SeleccionarActividad.class);
+                }
+            }
+
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void verificarGPSEncendido() {
+        // Le solicitamos al LocationManager que verifique el tome el servicio de localizacion
+        final LocationManager manager = (LocationManager) getContext().getSystemService(
+                Context.LOCATION_SERVICE);
+        // Verificamos si esta encendido o no
+        // Si no esta encendido lanzamos en pantalla un AlertDialog
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+            builder.setMessage(R.string.msgAlertDiag_MainActivity_1)
+                    .setPositiveButton(R.string.msgAlertDiag_MainActivity_1_positive,
+                            (dialog, id) -> startActivity(
+                                    new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                            ))
+                    .setNegativeButton(R.string.msgAlertDiag_MainActivity_1_negative,
+                            (dialog, id) -> {
+                                irAlActivitySeleccionarActividad(SeleccionarActividad.class);
+                                dialog.cancel();
+                            })
+                    .setCancelable(false);
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+    }
+
+
+
+
+    private void CargarMarcadorUbicacionInicial(LatLng cargaUbicacionInicial) {
+        // Marcador inicial
+        marcadorPosicion = mMap.addMarker(new MarkerOptions()
+                .position(cargaUbicacionInicial)
+                .title("¡Estas aquí!")
+                .visible(true));
+        //
+        latLngUbicacionMarker = cargaUbicacionInicial;
+        rangoMapa = mMap.addCircle(new CircleOptions()
+                .center(latLngUbicacionMarker)
+                .radius(presentador.getRangoDeBusquedaEnMActualizado())
+                .strokeColor(R.color.orange)
+                .fillColor(R.color.orange_dif));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cargaUbicacionInicial, 15));
+        // Le decimos al presentador que busque Sitios Cercanos al Marcador
+        presentador.busquedaSitiosCercanosAMarcador();
+    }
+
+    private void AbrirBSDdeInformacionSitio() {
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull @NotNull Marker marker) {
+                String tituloMarcador = marker.getTitle();
+
+                if (!tituloMarcador.equals("¡Estas aquí!") && !tituloMarcador.equals("¡Mi Ubicación!")) {
+                    String direccion = null;
+
+                    InfoLugar infoLugarSeleccionado = presentador.getInfoLugarSeleccionadoEnMapa(tituloMarcador);
+                    if (infoLugarSeleccionado != null) {
+                        ((MainActivity) getActivity())
+                                .iniciarBottomSheetDialog(
+                                        infoLugarSeleccionado
+                                );
+                    } else {
+                        ((MainActivity) getActivity())
+                                .iniciarBottomSheetDialog(null);
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    private void NuevaBusquedaAlDarClickSobreElMapa() {
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(@NonNull @NotNull LatLng latLngUsuario) {
+                if (marcadorPosicion != null) {
+                    marcadorPosicion.remove();
+                }
+                marcadorPosicion = mMap.addMarker(new MarkerOptions()
+                        .position(latLngUsuario)
+                        .title("¡Estas aquí!")
+                        .visible(true));
+                mMap.animateCamera(CameraUpdateFactory
+                        .newCameraPosition(new CameraPosition.Builder()
+                                .target(latLngUsuario)
+                                .zoom(presentador.getZoomMapaSegunRangoBusquedaKm())
+                                .build()
+                        )
+                );
+                // Hacemos la busqueda de los sitios cercanos en un radio x de kilometros
+                //
+                latLngUbicacionMarker = latLngUsuario;
+                presentador.busquedaSitiosCercanosAMarcador();
+            }
+        });
+    }
+
+    private void  NuevaBusquedaEnMiUbicacion() {
+        presentador.busquedaSitiosCercanosAUsuario();
+    }
+
+    @Override
+    public void addMarkersSitiosCercanos(LatLng latLngUsuario, List<InfoLugar> infoLugarList, List<LatLng> latLngLugarList) {
+
+        // Escondemos el circle del rango anterior
+        if (rangoMapa != null) {
+            rangoMapa.setVisible(false);
+        }
         // Recorremos el arreglo de objetos LatLng para ubicar y nombrar marcadores con los restauantes en el mapa
         for (int x = 0; x < latLngLugarList.size(); x++) {
             // Creamos un objeto LatLng y le pasamos las coordenadas de x restaurante
@@ -248,16 +356,33 @@ public class FragmentShowMaps extends Fragment {
             }
             // De lo contrario
             else {
-                // Enviamos un mensaje emergente diciendo que la conexion fallo
-                Toast.makeText(getContext(),
-                        R.string.msgToast_MainActivity_1,
-                        Toast.LENGTH_LONG).show();
+                if (getContext() != null) {
+                    // Enviamos un mensaje emergente diciendo que la conexion fallo
+                    Toast.makeText(getContext(),
+                            R.string.msgToast_MainActivity_1,
+                            Toast.LENGTH_LONG).show();
+                }
             }
         }
+        presentador.agregarListaDeMarcadoresEnMapa(marcadoresMapa);
         // Si el objeto latlong en la posicion 0 del arreglo restaurantes no esta vacio
         if (latLngUsuario != null) {
-            // Ubicamos la camara de google maps en el primer restaurante
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngUsuario, 15));
+            if (getContext() != null) {
+                rangoMapa = mMap.addCircle(new CircleOptions()
+                        .center(latLngUsuario)
+                        .radius(presentador.getRangoDeBusquedaEnMActualizado())
+                        .strokeColor(getContext().getResources().getColor(R.color.orange))
+                        .fillColor(getContext().getResources().getColor(R.color.orange_dif)));
+                // Ubicamos la camara de google maps en el primer restaurante
+                //mMap.moveCame#FF5328ra(CameraUpdateFactory.newLatLngZoom(latLngUsuario, 15));
+                mMap.animateCamera(CameraUpdateFactory
+                        .newCameraPosition(new CameraPosition.Builder()
+                                .target(latLngUsuario)
+                                .zoom(presentador.getZoomMapaSegunRangoBusquedaKm())
+                                .build()
+                        )
+                );
+            }
             // SI no
         } else {
             // Ubicamos la camara de google maps en la ciudad en que viva
@@ -265,96 +390,60 @@ public class FragmentShowMaps extends Fragment {
         }
     }
 
-    private void buscarSitiosCercanos(List<String> lugaresQueryGeoFire) {
-
-        borrarMarcadoresMapa();
-        lugares.clear();
-        latLngsLugares.clear();
-
-        // Obtenemos la informacion de los lugares que arrojo el Query
-        // de la base de datos
-
-            mDatabase.get()
-                    .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (DataSnapshot snapshot : task.getResult().getChildren()) {
-                                    InfoLugar infoLugar = snapshot.getValue(InfoLugar.class);
-                                    if (infoLugar != null) {
-                                        for (int x = 0; x < lugaresQueryGeoFire.size(); x++) {
-                                            String nomlugarQueryGeoFire = lugaresQueryGeoFire.get(x);
-                                            String nomlugarDB = infoLugar.getNombre();
-                                            if (nomlugarQueryGeoFire.equals(nomlugarDB)) {
-                                                addASitiosCercanos(infoLugar);
-                                            }
-                                        }
-                                    }
-                                }
-                                if ((lugares.size()) == lugaresQueryGeoFire.size()) {
-                                    getSitiosCercanosConExito();
-                                }
-                            } else {
-                                getSitiosCercanosConFalla();
-                            }
-                        }
-                    });
-
-
-    }
-
-    private void getSitiosCercanosConFalla() {
-
-    }
-
-    private void getSitiosCercanosConExito() {
-        // Obtenemos las listas de objetos InfoLugar y LataLong
-        LatLng latLngUsuario = getLatLongUsuario();
-        List<InfoLugar> infoLugarList = getListInfoLugarDeSitiosCercanos();
-        List<LatLng> latLngLugarList = getListLatLongDeDeSitiosCercanos();
-        if (infoLugarList != null && latLngLugarList != null) {
-            if (infoLugarList.size() != 0 && latLngLugarList.size() != 0) {
-                if (latLngUsuario != null) {
-                    addMarkersSitiosCercanos(latLngUsuario, infoLugarList, latLngLugarList);
-                }
-            }
-        }
-    }
-
-    private void addASitiosCercanos(InfoLugar infoLugar) {
-        // Añado el lugar a una lista de lugares tipo InfoLugar
-        lugares.add(infoLugar);
-        // Añado latitud y longitud del lugar que se recibio a lista tipo LatLong
-        LatLng latLngLugar = infoLugar.getLatLong();
-        if (latLngLugar != null) {
-            latLngsLugares.add(latLngLugar);
-        }
-    }
-
-    private LatLng getLatLongUsuario() {
+    @Override
+    public LatLng getUsuarioPosition() {
         return latLngUbicacionUsuario;
     }
 
-    private List<InfoLugar> getListInfoLugarDeSitiosCercanos(){
-        return lugares;
+    @Override
+    public LatLng getMarkerPosition() {
+        return latLngUbicacionMarker;
     }
 
-    private List<LatLng> getListLatLongDeDeSitiosCercanos(){
-        return latLngsLugares;
-    }
-
-
-    private InfoLugar getInfoLugarSeleccionado(String tituloMarcador) {
-        InfoLugar lugar = null;
-        for (int x = 0; x < lugares.size(); x++) {
-            lugar = lugares.get(x);
-            if (lugar.getNombre().equals(tituloMarcador)) {
-                break;
-            }
+    @Override
+    public void showToastBusquedaSitiosCercanosNoEncontrados() {
+        // Mostramos en pantalla que no se encontraron sitios cercanos a la posicion
+        if (getContext() != null) {
+            Toast.makeText(getContext(),
+                    R.string.msgToast_MainActivity_2,
+                    Toast.LENGTH_LONG).show();
         }
-        return lugar;
+        if (rangoMapa != null) {
+            rangoMapa.setVisible(false);
+        }
+    }
+
+    @Override
+    public void showToastBusquedaSitiosCercanosFallo(DatabaseError error) {
+        if (getContext() != null) {
+            Toast.makeText(getContext(),
+                    "Error: " + error,
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void addMarkerUbicacionGPS(LatLng ubicacionActualLatLong) {
+
+         marcadorGPS = mMap.addMarker(new MarkerOptions()
+                 .position(ubicacionActualLatLong)
+                 .title("¡GPS!")
+                 .visible(true));
+
+    }
+
+    @Override
+    public void irAlActivitySeleccionarActividad(Class<? extends AppCompatActivity> ir_a_SeleccionarActividad) {
+        //progressBar_Login.setVisibility(View.GONE);
+        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity SeleccionarActividad
+        Intent deMainActivityASeleccionarActividad = new Intent(getActivity(), ir_a_SeleccionarActividad);
+        // Iniciamos el Activity SeleccionarActividad
+        startActivity(deMainActivityASeleccionarActividad);
+
     }
 }
+
+
 
 /*geoFire.setLocation(lugar.getNombre(),
 new GeoLocation(latLngLugar.latitude, latLngLugar.longitude),

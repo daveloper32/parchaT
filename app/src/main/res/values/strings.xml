@@ -98,8 +98,19 @@
     <string name="dM_MainActivity_cerrarSesion">Cerrar Sesión</string>
     <!---End Opciones de menu del menu desplegable Strings-->
 
+    <!---Start MainActivity Mensajes Emergentes Strings-->
+    <string name="msgAlertDiag_MainActivity_1">Parece que el GPS esta desactivado, ¿Quiere habilitarlo?</string>
+    <string name="msgAlertDiag_MainActivity_1_positive">Si</string>
+    <string name="msgAlertDiag_MainActivity_1_negative">No</string>
+    <string name="msgToast_MainActivity_3">¡Permisos Denegados!
+        \n\nNo tiene permisos suficientes para acceder a la aplicación</string>
+    <string name="msgToast_MainActivity_4">¡Permisos Concedidos!</string>
+    <!---Start MainActivity Mensajes Emergentes Strings-->
+
     <!---Start FragmentShowMaps Mensajes Emergentes Strings-->
     <string name="msgToast_MainActivity_1">¡Conexion fallida, vuelve a intentarlo!</string>
+    <string name="msgToast_MainActivity_2">Lo siento, no encontramos ningun sitio cerca a ti :(
+        \n\nIntenta aumentar el rango de busqueda en Configuración.</string>
     <!---End Login Mensajes Emergentes Strings-->
     <!--End MainActivity Strings-->
 
@@ -133,6 +144,32 @@
     <string name="msgAlertDiag_perfUsuario_1_title">Volver</string>
     <!---End Login Mensajes Emergentes Strings-->
     <!--End PerfilUsuario Strings-->
+
+    <!--Start Configuraciones Strings-->
+    <string name="b_configuraciones_atras">Volver</string>
+    <string name="tV_tB_configuraciones_titulo">Configuración</string>
+    <string name="tV_configuraciones_1">Modo de Búsqueda</string>
+    <string name="sW_configuraciones_tipoBusqueda">Activar Búsqueda por Marcador</string>
+    <string name="tV_configuraciones_2">Si se activa la busqueda por marcador no será necesario usar el GPS, de modo que podrás dar click sobre diferentes partes del mapa y encontrar nuevos lugares sin necesidad de que estes cerca a los mismos.</string>
+    <string name="tV_configuraciones_3">Rango de Búsqueda</string>
+    <string name="tV_configuraciones_rangoBusqueda">500 m</string>
+    <string name="tV_configuraciones_4">Puedes cambiar el rango de búsqueda en metros o kilometros.</string>
+    <!---Start Configuraciones Rangos Busqueda Strings-->
+    <string name="tV_configuraciones_rangoBusqueda50m">50 m</string>
+    <string name="tV_configuraciones_rangoBusqueda100m">100 m</string>
+    <string name="tV_configuraciones_rangoBusqueda500m">500 m</string>
+    <string name="tV_configuraciones_rangoBusqueda1km">1 km</string>
+    <string name="tV_configuraciones_rangoBusqueda5km">5 km</string>
+    <string name="tV_configuraciones_rangoBusqueda10km">10 km</string>
+    <string name="tV_configuraciones_rangoBusqueda50km">50 km</string>
+    <string name="tV_configuraciones_rangoBusqueda100km">100 km</string>
+    <!---End Configuraciones Rangos Busqueda Strings-->
+    <!---Start Login Mensajes Emergentes Strings-->
+    <string name="msgToast_configuraciones_1">Modo de Búsqueda por GPS activado</string>
+    <string name="msgToast_configuraciones_2">Modo de Búsqueda por Marcador activado</string>
+
+    <!---End Login Mensajes Emergentes Strings-->
+    <!--End Configuraciones Strings-->
 
 </resources>
 

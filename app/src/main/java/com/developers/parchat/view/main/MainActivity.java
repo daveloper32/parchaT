@@ -7,27 +7,38 @@ package com.developers.parchat.view.main;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.developers.parchat.model.entity.InfoLugar;
 import com.developers.parchat.model.entity.Usuario;
+import com.developers.parchat.view.configuraciones.Configuraciones;
 import com.developers.parchat.view.main.fragment_maps.FragmentShowMaps;
 import  com.developers.parchat.view.main.bt_st_dlg_ifo_lugar.BottomSheetDialog_InfoLugar;
 
 import com.developers.parchat.R;
 
+import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DatabaseError;
 
 
 public class MainActivity extends AppCompatActivity implements MainActivityMVP.View,
@@ -50,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
     private TextView tV_ActivityMain_nomUsuario, tV_ActivityMain_emailUsuario;
     private de.hdodenhof.circleimageview.CircleImageView imgV_ActivityMain_fotoUsuario;
 
+    private static final int PERMISSION_REQUEST = 12345;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +83,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
 
     }
 
+    @Override
+    protected void onResume() {
+        //getPermisosUbicacion();
+        //verificarGPSEncendido();
+        super.onResume();
+    }
+
     private void IniciarVista() {
         // Inicializamos elpresentador y le pasamos la vista -> this
         presentador = new MainActivityPresenter(this);
+        // Creamos archivo con configuraciones iniciales si no se a creado previamente
+        presentador.configuracionesIniciales();
         // Hacemos la conexion con la vista de los diferentes objetos de los layouts del Navigation View
         // Toolbar
         tB_MainActivity = findViewById(R.id.tB_MainActivity);
@@ -164,10 +186,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
                 .commit();
     }
 
+    private void verificarGPSEncendido() {
+        // Le solicitamos al LocationManager que verifique el tome el servicio de localizacion
+        final LocationManager manager = (LocationManager) getSystemService(
+                Context.LOCATION_SERVICE);
+        // Verificamos si esta encendido o no
+        // Si no esta encendido lanzamos en pantalla un AlertDialog
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setMessage(R.string.msgAlertDiag_MainActivity_1)
+                    .setPositiveButton(R.string.msgAlertDiag_MainActivity_1_positive,
+                            (dialog, id) -> startActivity(
+                                    new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                            ))
+                    .setNegativeButton(R.string.msgAlertDiag_MainActivity_1_negative,
+                            (dialog, id) -> {
+                                irAlActivitySeleccionarActividad(SeleccionarActividad.class);
+                                dialog.cancel();
+                            })
+                    .setCancelable(false);
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+    }
+
 
     @Override
-    public void iniciarBottomSheetDialog(String nombreSitio, String direccion, String sitioWeb, String urlImagen) {
-        bSD_infoLugar = new BottomSheetDialog_InfoLugar(nombreSitio, direccion, sitioWeb, urlImagen);
+    public void iniciarBottomSheetDialog(InfoLugar infoLugar) {
+        bSD_infoLugar = new BottomSheetDialog_InfoLugar(infoLugar);
         bSD_infoLugar.show(getSupportFragmentManager(), "TAG");
 
     }
@@ -179,6 +226,40 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
         tV_ActivityMain_nomUsuario.setText(datosUsuario.getNombreCompleto());
         tV_ActivityMain_emailUsuario.setText(datosUsuario.getEmail());
 
+    }
+
+    @Override
+    public void getPermisosUbicacion() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(this, new String[] {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.INTERNET,
+                    Manifest.permission.ACCESS_WIFI_STATE
+            }, PERMISSION_REQUEST);
+            return;
+        }
+        // Verificamos que el GPS este activado
+        //verificarGPSEncendido();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST) {
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this
+                            ,R.string.msgToast_MainActivity_3
+                            , Toast.LENGTH_LONG)
+                            .show();
+                    irAlActivitySeleccionarActividad(SeleccionarActividad.class);
+                }
+            }
+
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -214,7 +295,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
     }
 
     @Override
+    public void irAlActivityConfiguraciones(Class<? extends AppCompatActivity> ir_a_Configuraciones) {
+        //progressBar_Login.setVisibility(View.GONE);
+        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity Configuraciones
+        Intent deMainActivityACofiguraciones = new Intent(MainActivity.this, ir_a_Configuraciones);
+        // Iniciamos el Activity Login
+        startActivity(deMainActivityACofiguraciones);
+        // Terminamos el activity Login
+        MainActivity.this.finish();
+    }
+
+    @Override
     public Context getContext() {
         return MainActivity.this;
     }
+
 }

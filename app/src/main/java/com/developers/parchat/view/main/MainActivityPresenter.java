@@ -1,7 +1,9 @@
 package com.developers.parchat.view.main;
 
+
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.model.repository.RepositoryMainActivity;
+import com.developers.parchat.view.configuraciones.Configuraciones;
 import com.developers.parchat.view.login.Login;
 import com.developers.parchat.view.perfil_usuario.PerfilUsuario;
 import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
@@ -30,7 +32,7 @@ public class MainActivityPresenter implements MainActivityMVP.Presenter {
 
     @Override
     public void VerConfiguraciones() {
-
+        vista.irAlActivityConfiguraciones(Configuraciones.class);
     }
 
     @Override
@@ -53,6 +55,11 @@ public class MainActivityPresenter implements MainActivityMVP.Presenter {
     @Override
     public void cargarDatosEnHeader() {
         modelo.getDatosUsuarioLogueadoFromDB();
+    }
+
+    @Override
+    public void configuracionesIniciales() {
+        modelo.crearConfiguracionesIniciales();
     }
 
 }

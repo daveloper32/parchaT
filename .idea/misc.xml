@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/activity_configuraciones.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/activity_perfil_usuario.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/activity_seleccionar_actividad.xml" value="0.16945288753799392" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/toolbar_configuraciones.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/toolbar_main_activity.xml" value="0.33" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/toolbar_perfil_usuario.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/toolbar_seleccionar_actividad.xml" value="0.36666666666666664" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
