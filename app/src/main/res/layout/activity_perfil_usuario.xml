@@ -66,6 +66,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-smallcaps"
+                    android:enabled="false"
                     android:text="@string/tV_perfUsuario_cambiarFoto"
                     android:textColor="#C8C4C4" />
 

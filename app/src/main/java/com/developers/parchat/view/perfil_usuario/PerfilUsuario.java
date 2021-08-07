@@ -144,6 +144,8 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         eT_perfUsuario_nombreCom.setEnabled(true);
         //eT_perfUsuario_email.setEnabled(true);
         eT_perfUsuario_numero.setEnabled(true);
+        //
+        tV_perfUsuario_cambiarFoto.setEnabled(true);
     }
 
     @Override
