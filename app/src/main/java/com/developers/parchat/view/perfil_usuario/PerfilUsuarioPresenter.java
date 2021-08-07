@@ -1,9 +1,12 @@
 package com.developers.parchat.view.perfil_usuario;
 
 
+import android.net.Uri;
+
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.model.repository.RepositoryPerfilUsuario;
 import com.developers.parchat.view.main.MainActivity;
+import com.google.firebase.storage.StorageReference;
 
 public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
 
@@ -84,5 +87,15 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
         vista.hideProgressBar();
         vista.showToastDatosGuardadosConExito();
         vista.irAlActivityMain(MainActivity.class);
+    }
+
+    @Override
+    public void getURLStorageImagenUsuario() {
+        modelo.buscarFotoUsuario();
+    }
+
+    @Override
+    public void getURLStorageImagenUsuarioConExito(Uri linkFotoUsuario) {
+        vista.cargarImagenUsuario(linkFotoUsuario);
     }
 }

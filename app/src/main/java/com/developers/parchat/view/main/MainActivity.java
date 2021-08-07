@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Gravity;
@@ -28,6 +29,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.developers.parchat.model.entity.InfoLugar;
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.configuraciones.Configuraciones;
@@ -225,6 +227,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
         // Hacemos sets a los textView para poner el nombre del usuario e imagen
         tV_ActivityMain_nomUsuario.setText(datosUsuario.getNombreCompleto());
         tV_ActivityMain_emailUsuario.setText(datosUsuario.getEmail());
+        presentador.getURLStorageImagenUsuario();
 
     }
 
@@ -308,6 +311,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
     @Override
     public Context getContext() {
         return MainActivity.this;
+    }
+
+    @Override
+    public void cargarImagenUsuario(Uri linkFotoUsuario) {
+        // Cargamos la foto
+        if (linkFotoUsuario != null) {
+            // Download directly from StorageReference using Glide
+            // (See MyAppGlideModule for Loader registration)
+            Glide.with(this /* context */)
+                    .load(linkFotoUsuario)
+                    .into(imgV_ActivityMain_fotoUsuario);
+        }
     }
 
 }

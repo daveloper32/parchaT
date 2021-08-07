@@ -1,6 +1,7 @@
 package com.developers.parchat.model.repository;
 
 import android.content.Context;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
@@ -15,6 +16,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,8 +31,12 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
     private FirebaseAuth mAuth;
     // Declaramos un objeto de la Clase FirebaseUser
     private FirebaseUser usuarioActual;
+    // Declarmos un objeto de la Clase FirebaseStorage
+    private FirebaseStorage storage;
     // Declaramos un objeto de la Clase DatabaseReference
     private DatabaseReference referenciaUsuario;
+    // Declaramos un objeto de la CLase StorageReference
+    private StorageReference referenciaStorage;
     // Declaramos una variable de tipo String para recibir el id del usuario en la base de datos -> User UID
     private String IdUsuario;
     private Usuario datosUsuario;
@@ -43,8 +50,12 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
         mAuth = FirebaseAuth.getInstance();
         // Buscamos el usuario que este logueado con la clase FirebaseAuth y lo guardamos en un objeto FirebaseUser
         usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
-        // Inicializamos la instancia FirebaseDatabase
+        // Inicializamos la instancia FirebaseStorage
+        storage = FirebaseStorage.getInstance();
+        // Inicializamos la referencia con FirebaseDatabase
         referenciaUsuario = FirebaseDatabase.getInstance().getReference("Usuarios");
+        // Inicializamos la referencia con storage
+        referenciaStorage = storage.getReference();
         // Obtenemos el Id del usuario
         IdUsuario = usuarioActual.getUid();
     }
@@ -131,6 +142,20 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
                 presentadorPerfilUsuario.actualizarDatosUsuarioLogeadoConFalla();
             }
         });
+    }
+
+    @Override
+    public void buscarFotoUsuario() {
+
+        // Estariamos en la carpeta de la foto
+        referenciaStorage
+                .child(IdUsuario).child(IdUsuario + ".jpg")
+                .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        presentadorPerfilUsuario.getURLStorageImagenUsuarioConExito(uri);
+                    }
+                });
     }
 
 }

@@ -1,6 +1,8 @@
 package com.developers.parchat.view.main;
 
 
+import android.net.Uri;
+
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.model.repository.RepositoryMainActivity;
 import com.developers.parchat.view.configuraciones.Configuraciones;
@@ -60,6 +62,16 @@ public class MainActivityPresenter implements MainActivityMVP.Presenter {
     @Override
     public void configuracionesIniciales() {
         modelo.crearConfiguracionesIniciales();
+    }
+
+    @Override
+    public void getURLStorageImagenUsuario() {
+        modelo.buscarFotoUsuario();
+    }
+
+    @Override
+    public void getURLStorageImagenUsuarioConExito(Uri linkFotoUsuario) {
+        vista.cargarImagenUsuario(linkFotoUsuario);
     }
 
 }

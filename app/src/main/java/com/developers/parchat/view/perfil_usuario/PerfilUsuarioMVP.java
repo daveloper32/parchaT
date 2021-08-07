@@ -1,10 +1,12 @@
 package com.developers.parchat.view.perfil_usuario;
 
 import android.content.Context;
+import android.net.Uri;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.developers.parchat.model.entity.Usuario;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Map;
 
@@ -19,7 +21,8 @@ public interface PerfilUsuarioMVP {
         Usuario getDatosPerfilUsuario();
         // Para editar datos del usuario que tiene sesion inciada
         void editarDatosUsuario(Usuario usuario_a_editar);
-        void actualizarDatosUsuarioLogeadoConExito(Map<String,Object> childUpdates);        
+        void actualizarDatosUsuarioLogeadoConExito(Map<String,Object> childUpdates);
+        void buscarFotoUsuario();
         
     }
     // EL presentador recibe los eventos que ocurriran en la vista
@@ -38,6 +41,10 @@ public interface PerfilUsuarioMVP {
         void actualizarDatosUsuarioLogeadoConFalla();
 
         void actualizarDatosUsuarioLogeadoConExito();
+
+        void getURLStorageImagenUsuario();
+
+        void getURLStorageImagenUsuarioConExito(Uri linkFotoUsuario);
     }
     // Se obtienen datos e informacion a la vista
     interface View {
@@ -72,5 +79,6 @@ public interface PerfilUsuarioMVP {
         void showProgressBar();
 
         void hideProgressBar();
+        void cargarImagenUsuario (Uri linkFotoUsuario);
     }
 }

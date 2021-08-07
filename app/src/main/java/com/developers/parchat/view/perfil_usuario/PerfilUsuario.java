@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.main.MainActivity;
 import com.developers.parchat.R;
@@ -132,6 +134,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
             eT_perfUsuario_nombreCom.setText(usuarioActivo.getNombreCompleto());
             eT_perfUsuario_email.setText(usuarioActivo.getEmail());
             eT_perfUsuario_numero.setText(usuarioActivo.getNumeroCel());
+            presentador.getURLStorageImagenUsuario();
         }
     }
 
@@ -240,4 +243,15 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         pB_registro.setVisibility(View.GONE);
     }
 
+    @Override
+    public void cargarImagenUsuario(Uri linkFotoUsuario) {
+        // Cargamos la foto
+        if (linkFotoUsuario != null) {
+            // Download directly from StorageReference using Glide
+            // (See MyAppGlideModule for Loader registration)
+            Glide.with(this /* context */)
+                    .load(linkFotoUsuario)
+                    .into(imgV_perfUsuario_fotoUsuario);
+        }
+    }
 }

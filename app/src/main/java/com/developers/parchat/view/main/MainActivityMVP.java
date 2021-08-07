@@ -3,6 +3,7 @@ package com.developers.parchat.view.main;
 // Las interfaces me permiten tener un archivo para definir solo metodos
 
 import android.content.Context;
+import android.net.Uri;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +24,8 @@ public interface MainActivityMVP {
         void cerrarSesionFirebase();
         // Crear COnfiguracion Inicial si no se tiene
         void crearConfiguracionesIniciales();
+
+        void buscarFotoUsuario();
 
 
     }
@@ -45,6 +48,9 @@ public interface MainActivityMVP {
 
         void configuracionesIniciales();
 
+        void getURLStorageImagenUsuario();
+
+        void getURLStorageImagenUsuarioConExito(Uri linkFotoUsuario);
     }
     // Se obtienen datos e informacion a la vista
     interface View {
@@ -65,5 +71,6 @@ public interface MainActivityMVP {
         // Obtenemos el contexto de la vista para poder acceder a los SharedPreferences
         Context getContext();
 
+        void cargarImagenUsuario(Uri linkFotoUsuario);
     }
 }
