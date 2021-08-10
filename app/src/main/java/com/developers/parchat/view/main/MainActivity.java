@@ -16,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -38,6 +39,7 @@ import  com.developers.parchat.view.main.bt_st_dlg_ifo_lugar.BottomSheetDialog_I
 
 import com.developers.parchat.R;
 
+import com.developers.parchat.view.main.fragment_maps.FragmentShowMapsMVP;
 import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseError;
@@ -48,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
 
     // Variables modelo MVP
     private MainActivityMVP.Presenter presentador;
-    private MainActivityMVP.Model modelo;
 
     // Creamos los objetos necesarios para conectar con la parte grafica del menu desplegable y la barra
     // de herramientas personalizada
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
     private TextView tV_ActivityMain_nomUsuario, tV_ActivityMain_emailUsuario;
     private de.hdodenhof.circleimageview.CircleImageView imgV_ActivityMain_fotoUsuario;
 
-    private static final int PERMISSION_REQUEST = 12345;
+    private Usuario datosUsuarioLogueado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
         // Cargamos el nombre y el correo del usuario que inicio sesion
         presentador.cargarDatosEnHeader();
         // Cargamos el Fragment de Google Maps
-        CargarFragmentGoogleMaps();
+        //CargarFragmentGoogleMaps();
         // Cargamos la configuracion del NavigationDrawer
         CargarNavigationDrawer();
 
@@ -87,14 +88,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
 
     @Override
     protected void onResume() {
-        //getPermisosUbicacion();
-        //verificarGPSEncendido();
         super.onResume();
     }
 
     private void IniciarVista() {
         // Inicializamos elpresentador y le pasamos la vista -> this
         presentador = new MainActivityPresenter(this);
+        datosUsuarioLogueado = null;
         // Creamos archivo con configuraciones iniciales si no se a creado previamente
         presentador.configuracionesIniciales();
         // Hacemos la conexion con la vista de los diferentes objetos de los layouts del Navigation View
@@ -180,39 +180,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
     }
 
     private void CargarFragmentGoogleMaps() {
+        // Mandamos el nombre del usuario logueado
+        FragmentManager fm = getFragmentManager();
+        Bundle arguments = new Bundle();
+        if (datosUsuarioLogueado != null) {
+            arguments.putString("nombreUsuario", datosUsuarioLogueado.getSoloNombre());
+        }
         // CArgamos el fragmento con el mapa en el Frame Layout de contenido_fragment_activity_main
         Fragment fragment = new FragmentShowMaps();
+        fragment.setArguments(arguments);
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fL_MainActivity_Contenedor, fragment)
                 .commit();
     }
-
-    private void verificarGPSEncendido() {
-        // Le solicitamos al LocationManager que verifique el tome el servicio de localizacion
-        final LocationManager manager = (LocationManager) getSystemService(
-                Context.LOCATION_SERVICE);
-        // Verificamos si esta encendido o no
-        // Si no esta encendido lanzamos en pantalla un AlertDialog
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            builder.setMessage(R.string.msgAlertDiag_MainActivity_1)
-                    .setPositiveButton(R.string.msgAlertDiag_MainActivity_1_positive,
-                            (dialog, id) -> startActivity(
-                                    new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                            ))
-                    .setNegativeButton(R.string.msgAlertDiag_MainActivity_1_negative,
-                            (dialog, id) -> {
-                                irAlActivitySeleccionarActividad(SeleccionarActividad.class);
-                                dialog.cancel();
-                            })
-                    .setCancelable(false);
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-        }
-    }
-
 
     @Override
     public void iniciarBottomSheetDialog(InfoLugar infoLugar) {
@@ -224,45 +205,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
 
     @Override
     public void setDatosEnHeader(Usuario datosUsuario) {
+        datosUsuarioLogueado = datosUsuario;
         // Hacemos sets a los textView para poner el nombre del usuario e imagen
         tV_ActivityMain_nomUsuario.setText(datosUsuario.getNombreCompleto());
         tV_ActivityMain_emailUsuario.setText(datosUsuario.getEmail());
         presentador.getURLStorageImagenUsuario();
 
-    }
+        CargarFragmentGoogleMaps();
 
-    @Override
-    public void getPermisosUbicacion() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(this, new String[] {
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.INTERNET,
-                    Manifest.permission.ACCESS_WIFI_STATE
-            }, PERMISSION_REQUEST);
-            return;
-        }
-        // Verificamos que el GPS este activado
-        //verificarGPSEncendido();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST) {
-            for (int i = 0; i < grantResults.length; i++) {
-                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this
-                            ,R.string.msgToast_MainActivity_3
-                            , Toast.LENGTH_LONG)
-                            .show();
-                    irAlActivitySeleccionarActividad(SeleccionarActividad.class);
-                }
-            }
-
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -324,5 +274,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
                     .into(imgV_ActivityMain_fotoUsuario);
         }
     }
+
 
 }

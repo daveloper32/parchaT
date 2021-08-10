@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.developers.parchat.R;
+import com.developers.parchat.model.entity.BusquedaSeleccionarActividad;
 import com.developers.parchat.model.entity.InfoLugar;
 import com.developers.parchat.view.main.fragment_maps.FragmentShowMapsMVP;
 import com.firebase.geofire.GeoFire;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,20 +54,22 @@ public class RepositoryFragmentShowMaps implements FragmentShowMapsMVP.Model {
     private List<Marker> listMarcadoresMapa;
     private LatLng latLngUbicacionUsuario;
     private LatLng latLngUbicacionMarker;
-    private boolean modoBusquedaGPS, modoBusquedaMarker;
+    private boolean modoBusquedaGPS, modoBusquedaMarker, rangoBusquedaVisible;
     private double radioEnKm;
+    private LatLng ultimaUbicacionUsuario;
+    private BusquedaSeleccionarActividad datosBusquedaSeleccionarActividad;
 
     // Creamos un objeto SharedPreferences para buscar datos de COnfiguracion del Usuario
-    private SharedPreferences datosConfiguracion;
+    private SharedPreferences datosConfiguracion, datoUltimaUbicacionUsuario, datosBusqueda;
     private SharedPreferences.Editor editor;
 
     public RepositoryFragmentShowMaps(String keyBusqueda) {
         this.keyBusqueda = keyBusqueda;
         // Inicializamos la instancia FirebaseDatabase
         mDatabase = FirebaseDatabase.getInstance().
-                getReference("SitiosParchaT/Bogota/InfoSitios/"+keyBusqueda);
+                getReference("SitiosParchaT/InfoSitios/"+keyBusqueda);
         geoFireDatabase = FirebaseDatabase.getInstance().
-                getReference("SitiosParchaT/Bogota/GeoFire/"+keyBusqueda);
+                getReference("SitiosParchaT/GeoFire/"+keyBusqueda);
         geoFire = new GeoFire(geoFireDatabase);
 
         // Inicializamos las listas
@@ -76,6 +80,7 @@ public class RepositoryFragmentShowMaps implements FragmentShowMapsMVP.Model {
         // Inicializamos el objeto LatLng
         latLngUbicacionUsuario = null;
         latLngUbicacionMarker = null;
+        datosBusquedaSeleccionarActividad = null;
 
         //
         //fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient();
@@ -383,13 +388,19 @@ public class RepositoryFragmentShowMaps implements FragmentShowMapsMVP.Model {
     @Override
     public InfoLugar getInfoLugarSeleccionado(String tituloMarcador) {
         InfoLugar lugar = null;
+        boolean seEncontro = false;
         for (int x = 0; x < listInfoLugarDeSitiosCercanos.size(); x++) {
             lugar = listInfoLugarDeSitiosCercanos.get(x);
             if (lugar.getNombre().equals(tituloMarcador)) {
+                seEncontro = true;
                 break;
             }
         }
-        return lugar;
+        if (seEncontro) {
+            return lugar;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -400,6 +411,7 @@ public class RepositoryFragmentShowMaps implements FragmentShowMapsMVP.Model {
         if (datosConfiguracion != null) {
             modoBusquedaGPS = datosConfiguracion.getBoolean("modoBusquedaGPS", false);
             modoBusquedaMarker = datosConfiguracion.getBoolean("modoBusquedaMarker", false);
+            rangoBusquedaVisible = datosConfiguracion.getBoolean("rangoBusquedaVisible", false);
             radioEnKm = Double.parseDouble(datosConfiguracion.getString("rangoBusquedaKm", ""));
         }
     }
@@ -412,6 +424,11 @@ public class RepositoryFragmentShowMaps implements FragmentShowMapsMVP.Model {
     @Override
     public boolean getModoBusquedaMarker() {
         return modoBusquedaMarker;
+    }
+
+    @Override
+    public boolean getRangoBusquedaVisible() {
+        return rangoBusquedaVisible;
     }
 
     @Override
@@ -432,4 +449,64 @@ public class RepositoryFragmentShowMaps implements FragmentShowMapsMVP.Model {
         else if (rangoBusqueda == 100) {return 8;}
         else {return 12;}
     }
+
+    @Override
+    public void guardarUltimaUbicacionUsuario(LatLng ultimaUbicacion) {
+        datoUltimaUbicacionUsuario = contextMaps.getSharedPreferences("datoUltimaUbicacionUsuario",
+                Context.MODE_PRIVATE);
+        editor = datoUltimaUbicacionUsuario.edit();
+        editor.putString("lat_ultimaUbicacion", String.valueOf(ultimaUbicacion.latitude));
+        editor.putString("lng_ultimaUbicacion", String.valueOf(ultimaUbicacion.longitude));
+        // Hacemos el commit
+        editor.commit();
+    }
+
+    @Override
+    public LatLng getUltimaUbicacionUsuario() {
+        datoUltimaUbicacionUsuario = contextMaps.getSharedPreferences("datoUltimaUbicacionUsuario",
+                Context.MODE_PRIVATE);
+        editor = datoUltimaUbicacionUsuario.edit();
+        if (datoUltimaUbicacionUsuario != null) {
+            ultimaUbicacionUsuario = new LatLng(
+                    Double.parseDouble(datoUltimaUbicacionUsuario
+                            .getString("lat_ultimaUbicacion", "")),
+                    Double.parseDouble(datoUltimaUbicacionUsuario
+                            .getString("lng_ultimaUbicacion", "")));
+            return ultimaUbicacionUsuario;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public BusquedaSeleccionarActividad getDatosBusquedaSeleccionada() {
+        datosBusqueda = contextMaps.getSharedPreferences("actividadesSeleccionadasUsuario",
+                Context.MODE_PRIVATE);
+        editor = datosBusqueda.edit();
+        if (datosBusqueda != null) {
+            datosBusquedaSeleccionarActividad = new BusquedaSeleccionarActividad(
+                    datosBusqueda.getBoolean("areasVerdesSelected", false),
+                    datosBusqueda.getBoolean("arteSelected", false),
+                    datosBusqueda.getBoolean("cineSelected", false),
+                    datosBusqueda.getBoolean("musicaSelected", false),
+                    datosBusqueda.getBoolean("restaurantesSelected", false),
+                    datosBusqueda.getBoolean("sorprendemeSelected", false)
+            );
+            return datosBusquedaSeleccionarActividad;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public GeoFire getGeoFire() {
+        return geoFire;
+    }
+
+    @Override
+    public DatabaseReference getDataBaseReference() {
+        return mDatabase;
+    }
+
+
 }

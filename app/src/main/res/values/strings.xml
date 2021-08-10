@@ -98,19 +98,33 @@
     <string name="dM_MainActivity_cerrarSesion">Cerrar Sesión</string>
     <!---End Opciones de menu del menu desplegable Strings-->
 
+    <!---Start Botom Sheet Dialog del menu desplegable Strings-->
+    <string name="tV_bsd_main_activity_nomLugar">Nombre Sitio</string>
+    <string name="tV_bsd_main_activity_direccion">Dirección</string>
+    <string name="tV_bsd_main_activity_moreInfo">Ver más informacion del sitio</string>
+    <string name="imgV_main_activity_lugar_contDes">Imagen Sitio</string>
+    <!---End Botom Sheet Dialog del menu desplegable Strings-->
+
     <!---Start MainActivity Mensajes Emergentes Strings-->
     <string name="msgAlertDiag_MainActivity_1">Parece que el GPS esta desactivado, ¿Quiere habilitarlo?</string>
     <string name="msgAlertDiag_MainActivity_1_positive">Si</string>
     <string name="msgAlertDiag_MainActivity_1_negative">No</string>
-    <string name="msgToast_MainActivity_3">¡Permisos Denegados!
-        \n\nNo tiene permisos suficientes para acceder a la aplicación</string>
-    <string name="msgToast_MainActivity_4">¡Permisos Concedidos!</string>
+
     <!---Start MainActivity Mensajes Emergentes Strings-->
 
     <!---Start FragmentShowMaps Mensajes Emergentes Strings-->
     <string name="msgToast_MainActivity_1">¡Conexion fallida, vuelve a intentarlo!</string>
-    <string name="msgToast_MainActivity_2">Lo siento, no encontramos ningun sitio cerca a ti :(
-        \n\nIntenta aumentar el rango de busqueda en Configuración.</string>
+    <string name="msgToast_MainActivity_2">¡Permisos Concedidos!</string>
+    <string name="msgToast_MainActivity_3">¡Permisos denegados!
+        \n\nNo tiene permisos suficientes para acceder a la aplicación.</string>
+    <string name="msgToast_MainActivity_4">¡El GPS a sido activado!</string>
+    <string name="msgToast_MainActivity_5">¡El GPS a sido desactivado!</string>
+    <string name="msgSnackbar_MainActivity_1">No encontramos ningun sitio cerca a ti :(
+        Intenta aumentar el rango de busqueda.</string>
+    <string name="msgSnackbar_MainActivity_1_irButton">Ir</string>
+    <string name="msgSnackbar_MainActivity_2">
+        Este permiso es necesario para recomendarte lugares cercanos a tu posición actual.</string>
+    <string name="msgSnackbar_MainActivity_2_okButton">Ok</string>
     <!---End Login Mensajes Emergentes Strings-->
     <!--End MainActivity Strings-->
 
@@ -154,6 +168,9 @@
     <string name="tV_configuraciones_3">Rango de Búsqueda</string>
     <string name="tV_configuraciones_rangoBusqueda">500 m</string>
     <string name="tV_configuraciones_4">Puedes cambiar el rango de búsqueda en metros o kilometros.</string>
+    <string name="tV_configuraciones_5">Rango de Busqueda Visible en el Mapa</string>
+    <string name="sW_configuraciones_activarRango">Activar Visualización de Rango de Busqueda</string>
+    <string name="tV_configuraciones_6">Puedes activar o desactivar la visualización del rango de busqueda en el área del mapa en donde se esta haciendo la busqueda de lugares.</string>
     <!---Start Configuraciones Rangos Busqueda Strings-->
     <string name="tV_configuraciones_rangoBusqueda50m">50 m</string>
     <string name="tV_configuraciones_rangoBusqueda100m">100 m</string>
@@ -165,14 +182,42 @@
     <string name="tV_configuraciones_rangoBusqueda100km">100 km</string>
     <!---End Configuraciones Rangos Busqueda Strings-->
     <!---Start Login Mensajes Emergentes Strings-->
-    <string name="msgToast_configuraciones_1">Modo de Búsqueda por GPS activado</string>
-    <string name="msgToast_configuraciones_2">Modo de Búsqueda por Marcador activado</string>
+    <string name="msgToast_configuraciones_1">¡El Modo de Búsqueda por GPS esta activado!</string>
+    <string name="msgToast_configuraciones_2">¡El Modo de Búsqueda por Marcador esta activado!</string>
+    <string name="msgToast_configuraciones_3">¡El rango de busqueda ahora es visible!</string>
+    <string name="msgToast_configuraciones_4">¡El rango de busqueda ahora no es visible!</string>
 
     <!---End Login Mensajes Emergentes Strings-->
     <!--End Configuraciones Strings-->
+
+    <!---Start InformacionExtraSitio Strings-->
+    <!---Start Toolbar-->
+    <string name="imgB_InformacionExtraSitio_atras_contDes">Atrás</string>
+    <string name="tV_tB_InformacionExtraSitio_titulo">Información del Sitio</string>
+    <!---End Toolbar-->
+    <string name="imgV_InformacionExtraSitio_fotoSitio_contDes">Foto del Lugar</string>
+    <string name="tV_InformacionExtraSitio_nomSitio">Nombre del Sitio</string>
+    <string name="tV_InformacionExtraSitio_tipoLugar">Categoria: </string>
+    <string name="tV_InformacionExtraSitio_direccionSitio">Dirección del Sitio</string>
+    <string name="tV_InformacionExtraSitio_cityCountry">Ciudad y País</string>
+    <string name="tV_InformacionExtraSitio_numeroSitio">Número del Sitio</string>
+    <string name="tV_InformacionExtraSitio_urlSitio">URL Sitio</string>
+
+    <string name="txt_InformacionExtraSitio_noDisponible">No disponible en este momento</string>
+
+    <!---End InformacionExtraSitio  Strings-->
+
+    <!---Start InformacionExtraSitio Strings-->
+    <!---Start Toolbar-->
+    <string name="imgB_ShowWebPageSitio_atras_contDes">Atrás</string>
+    <string name="tV_tB_ShowWebPageSitio_titulo"></string>
+    <!---End Toolbar-->
+
+    <!---End InformacionExtraSitio  Strings-->
 
 </resources>
 
     <!---Start Login Mensajes Emergentes Strings-->
     <!---End Login Mensajes Emergentes Strings-->
+
 

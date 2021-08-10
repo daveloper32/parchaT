@@ -111,6 +111,7 @@ public class RepositoryMainActivity implements MainActivityMVP.Model {
             // Guardamos 3 datos
             editor.putBoolean("modoBusquedaGPS", true);
             editor.putBoolean("modoBusquedaMarker", false);
+            editor.putBoolean("rangoBusquedaVisible", true);
             editor.putString("rangoBusquedaKm", "0.5");
             editor.putInt("valorSBRangoBusquedaKm", 2);
             // Hacemos el commit

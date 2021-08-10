@@ -13,5 +13,10 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="font_style_sel_parchat">
+        <item name="android:fontFamily">
+            sans-serif-smallcaps
+        </item>
+    </style>
 
 </resources>

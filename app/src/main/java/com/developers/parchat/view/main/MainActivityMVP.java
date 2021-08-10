@@ -59,7 +59,6 @@ public interface MainActivityMVP {
 
         void setDatosEnHeader(Usuario datosUsuario);
 
-        void getPermisosUbicacion();
         // Para hacer el intent e ir a el Activity PerfilUsuario
         void irAlActivityPerfilUsuario(Class<? extends AppCompatActivity> ir_a_PerfilUsuario);
         // Para hacer el intent e ir a el Activity SeleccionarActividad

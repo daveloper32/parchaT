@@ -11,7 +11,9 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,14 +21,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.developers.parchat.model.entity.BusquedaSeleccionarActividad;
 import com.developers.parchat.model.entity.InfoLugar;
+import com.developers.parchat.view.configuraciones.Configuraciones;
 import com.developers.parchat.view.main.bt_st_dlg_ifo_lugar.BottomSheetDialog_InfoLugar;
 import com.developers.parchat.view.main.MainActivity;
 import com.developers.parchat.view.main.MainActivityMVP;
@@ -37,6 +44,11 @@ import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -60,24 +72,31 @@ import java.util.Objects;
 import com.developers.parchat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.View {
+public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.View,
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
     // Variables modelo MVP
     FragmentShowMapsMVP.Presenter presentador;
-    MainActivityMVP.View vistaMainActivity;
+    FragmentShowMapsMVP.Presenter presentador_restaurantes,
+            presentador_areasverdes, presentador_arte, presentador_musica,
+            presentador_cine, presentador_sorprendeme;
+    //MainActivityMVP.View vistaMainActivity;
+
+    private SupportMapFragment mapFragment;
 
     // Creamos un objeto LatLng y le pasamos las coordenadas de Bogota
     LatLng bogota = new LatLng(4.60971, -74.08175);
 
     private GoogleMap mMap;
 
-    private boolean modoBusquedaGPS, modoBusquedaMarcador;
+    private boolean modoBusquedaGPS, modoBusquedaMarcador, rangoBusquedaVisible;
 
     private Marker marcadorGPS, marcadorPosicion;
     private LatLng latLngUbicacionUsuario, latLngUbicacionMarker;
@@ -87,6 +106,30 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
 
     private static final int PERMISSION_REQUEST = 12345;
 
+    private View viewFragmentMaps;
+
+    private FusedLocationProviderClient fusedLocationProviderClient;
+
+    private String nombreUsuarioLogueado;
+
+    private boolean areasVerdesSelected, arteSelected, cineSelected, musicaSelected,
+            restaurantesSelected, sorprendemeSelected;
+
+    private List<Boolean> busquedaEncontrada;
+
+
+    private InfoLugar infoLugarSeleccionado_areasverdes,
+            infoLugarSeleccionado_arte,
+            infoLugarSeleccionado_cine,
+            infoLugarSeleccionado_musica,
+            infoLugarSeleccionado_restaurantes,
+            infoLugarSeleccionado_sorprendeme;
+
+    private BusquedaSeleccionarActividad datosBusquedaActividad;
+
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,27 +138,94 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         View v = inflater.inflate(R.layout.fragment_show_maps_activity_main, container, false);
 
         // Hacemos la conexion con el objeto Fragment en el archivo de vista cotenido_fragmet_activity_main
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+        mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mapView_ActivityMain);
-
-        IniciarVista(mapFragment);
-
+        IniciarVista(v);
+        viewFragmentMaps = v;
         return v;
     }
 
-    private void IniciarVista(SupportMapFragment mapFragment) {
+    @Override
+    public void onStart() {
+        presentador = new FragmentShowMapsPresenter(this, "");
+        presentador_areasverdes = new FragmentShowMapsPresenter(this, "AreasVerdes");
+        presentador_arte = new FragmentShowMapsPresenter(this, "Arte");
+        presentador_cine = new FragmentShowMapsPresenter(this, "Cine");
+        presentador_musica = new FragmentShowMapsPresenter(this, "Musica");
+        presentador_restaurantes = new FragmentShowMapsPresenter(this, "Restaurantes");
+        presentador_sorprendeme = new FragmentShowMapsPresenter(this, "Sorprendeme");
+        //presentador_areasverdes.ObtenerSnapshotTodaRuta();
+        //presentador_arte.ObtenerSnapshotTodaRuta();
+        //presentador_cine.ObtenerSnapshotTodaRuta();
+        //presentador_musica.ObtenerSnapshotTodaRuta();
+        //presentador_restaurantes.ObtenerSnapshotTodaRuta();
+        //presentador_sorprendeme.ObtenerSnapshotTodaRuta();
+        modoBusquedaGPS = presentador.getModoBusquedaGPSActualizado();
+        modoBusquedaMarcador = presentador.getModoBusquedaMarkerActualizado();
+        rangoBusquedaVisible = presentador.getRangoBusquedaVisibleActualizado();
+        datosBusquedaActividad = presentador.getDatosFromBusquedaSeleccionada();
+        if (datosBusquedaActividad != null) {
+            areasVerdesSelected = datosBusquedaActividad.isAreasVerdesSelected();
+            arteSelected = datosBusquedaActividad.isArteSelected();
+            cineSelected = datosBusquedaActividad.isCineSelected();
+            musicaSelected = datosBusquedaActividad.isMusicaSelected();
+            restaurantesSelected = datosBusquedaActividad.isRestaurantesSelected();
+            sorprendemeSelected = datosBusquedaActividad.isSorprendemeSelected();
+        }
+        busquedaEncontrada = new ArrayList<>();
+        super.onStart();
+    }
 
-        vistaMainActivity = new MainActivity();
-        // Inicializamos el presentador
+    @Override
+    public void onResume() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (getContext() != null && getActivity() != null) {
+                if (ContextCompat.checkSelfPermission(
+                        getContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    // Le solicitamos al LocationManager que verifique el tome el servicio de localizacion
+                    final LocationManager manager = (LocationManager) getContext().getSystemService(
+                            Context.LOCATION_SERVICE);
+                    // Modo GPS ACtivo
+                    if (modoBusquedaGPS && !modoBusquedaMarcador) {
+                        if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                            CargarMiUbicacion();
+                        } else {
+                            VerificarPermisos(getViewFragmentMaps());
+                        }
+                    }
+                }else {
+                    VerificarPermisos(getViewFragmentMaps());
+                }
+            }
+        }
+
+        super.onResume();
+    }
+
+    private void IniciarVista(View view) {
+
         rangoMapa = null;
-        presentador = new FragmentShowMapsPresenter(this, "Restaurantes");
         latLngUbicacionMarker = null;
         marcadoresMapa = new ArrayList<>();
+        nombreUsuarioLogueado = "";
+        //cargaUbicacionInicial = new LatLng(4.657160262597251, -74.05605940861399);
 
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            nombreUsuarioLogueado = bundle
+                    .getString("nombreUsuario", "");
+        }
+
+        if (getContext() != null) {
+            fusedLocationProviderClient =
+                    LocationServices.getFusedLocationProviderClient(getContext());
+        }
         // Que pasa cuando se carga el mapa en la app
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             // Cuando ya esta listo para funcionar
-            @SuppressLint("MissingPermission")
+
             @Override
             public void onMapReady(@NonNull GoogleMap googleMap) {
                 // Renombramos googleMap por mMap -> literal es como el obejto del mapa de Maps
@@ -124,32 +234,17 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
                 // Zoom in & Zoom out
                 mMap.getUiSettings().setZoomControlsEnabled(true);
 
-                modoBusquedaGPS = presentador.getModoBusquedaGPSActualizado();
-                modoBusquedaMarcador = presentador.getModoBusquedaMarkerActualizado();
-
-
-
-                // Modo GPS ACtivo
-                if (modoBusquedaGPS && !modoBusquedaMarcador) {
-                    //mMap.setMyLocationEnabled(true);
-                    verificarGPSEncendido();
-                    CargarMiUbicacion();
-                    // Si se presiona un marcador -> Mostramos informacion del sitio en un Bottom Sheet Dialog
-                    AbrirBSDdeInformacionSitio();
-                    NuevaBusquedaEnMiUbicacion();
-
-
-                }
-                // Modo Marker Activo
                 if (!modoBusquedaGPS && modoBusquedaMarcador) {
                     //mMap.setMyLocationEnabled(false);
                     // Marcador Inicial
-                    LatLng cargaUbicacionInicial = new LatLng(4.657160262597251, -74.05605940861399);
-                    CargarMarcadorUbicacionInicial(cargaUbicacionInicial);
-                    // Si se presiona un marcador -> Mostramos informacion del sitio en un Bottom Sheet Dialog
-                    AbrirBSDdeInformacionSitio();
-                    // Hacemos una nueva busqueda y despliegue de marcadores donde sea que la persona agregue un marcador
-                    NuevaBusquedaAlDarClickSobreElMapa();
+                    latLngUbicacionMarker = presentador.getUltimaUbicacionUsuario();
+                    if (latLngUbicacionMarker != null) {
+                        CargarMarcadorUbicacionInicial(latLngUbicacionMarker);
+                        // Si se presiona un marcador -> Mostramos informacion del sitio en un Bottom Sheet Dialog
+                        AbrirBSDdeInformacionSitio();
+                        // Hacemos una nueva busqueda y despliegue de marcadores donde sea que la persona agregue un marcador
+                        NuevaBusquedaAlDarClickSobreElMapa();
+                    }
                 }
             }
         });
@@ -161,8 +256,10 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         }
         marcadorGPS = mMap.addMarker(new MarkerOptions()
                 .position(miUbicacionGPS)
-                .title("¡Mi Ubicación!")
-                .visible(true));
+                .title(nombreUsuarioLogueado)
+                .visible(true)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .zIndex(1.0f));
         mMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(new CameraPosition.Builder()
                         .target(miUbicacionGPS)
@@ -176,6 +273,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         if (location != null) {
             LatLng latLngMiUbicacion = new LatLng(location.getLatitude(),
                     location.getLongitude());
+            presentador.setUltimaUbicacionUsuario(latLngMiUbicacion);
             latLngUbicacionUsuario = latLngMiUbicacion;
             addMarkerMiUbicacion(latLngMiUbicacion);
         }
@@ -184,92 +282,279 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
     LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(@NonNull Location location) {
-            actualizarMiUbicacion(location);
-            NuevaBusquedaEnMiUbicacion();
+            if (location != null) {
+                actualizarMiUbicacion(location);
+                AbrirBSDdeInformacionSitio();
+                NuevaBusquedaEnMiUbicacion();
+            }
+        }
+        @Override
+        public void onProviderEnabled(@NonNull String provider) {
+            if (getContext() != null) {
+                Toast.makeText(getContext(),
+                        R.string.msgToast_MainActivity_4,
+                        Toast.LENGTH_LONG).show();
+            }
+            CargarMiUbicacion();
+
+        }
+
+        @Override
+        public void onProviderDisabled(@NonNull String provider) {
+            //verificarGPSEncendido();
+            if (getContext() != null) {
+                Toast.makeText(getContext(),
+                        R.string.msgToast_MainActivity_5,
+                        Toast.LENGTH_LONG).show();
+            }
+            verificarGPSEncendido();
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            //verificarGPSEncendido();
+            if (getContext() != null) {
+            }
         }
     };
 
+    @SuppressLint("MissingPermission")
     private void CargarMiUbicacion() {
+        if (getContext() != null) {
+            LocationManager locationManager = (LocationManager) getContext()
+                    .getSystemService(Context.LOCATION_SERVICE);
+            // Verificamos si esta encendido o no
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                    || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 
-        if (ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[] {
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.INTERNET,
-                    Manifest.permission.ACCESS_WIFI_STATE
-            }, PERMISSION_REQUEST);
-            return;
+                fusedLocationProviderClient.getLastLocation()
+                        .addOnCompleteListener(new OnCompleteListener<Location>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Location> task) {
+                                // Obtenemos el objeto Location
+                                Location ubicacionActual = task.getResult();
+                                if (ubicacionActual != null) {
+                                    actualizarMiUbicacion(ubicacionActual);
+                                    AbrirBSDdeInformacionSitio();
+                                    NuevaBusquedaEnMiUbicacion();
+                                } else {
+                                    LocationRequest locationRequest = new LocationRequest()
+                                            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                                            .setInterval(10000)
+                                            .setFastestInterval(1000)
+                                            .setNumUpdates(1);
+
+                                    LocationCallback locationCallback = new LocationCallback() {
+                                        @Override
+                                        public void onLocationResult(@NonNull LocationResult locationResult) {
+                                            Location ubicacionActual = locationResult.getLastLocation();
+                                            if (ubicacionActual != null) {
+                                                actualizarMiUbicacion(ubicacionActual);
+                                                AbrirBSDdeInformacionSitio();
+                                                NuevaBusquedaEnMiUbicacion();
+                                            }
+                                        }
+                                    };
+                                    fusedLocationProviderClient
+                                            .requestLocationUpdates(
+                                                    locationRequest,
+                                                    locationCallback,
+                                                    Looper.myLooper());
+                                }
+                            }
+                        });
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                        15000, 10, locationListener);
+            } else {
+                verificarGPSEncendido();
+            }
         }
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        actualizarMiUbicacion(location);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                15000, 0, locationListener);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST) {
-            for (int i = 0; i < grantResults.length; i++) {
-                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getContext()
-                            ,R.string.msgToast_MainActivity_3
-                            , Toast.LENGTH_LONG)
-                            .show();
-                    irAlActivitySeleccionarActividad(SeleccionarActividad.class);
+    private void VerificarPermisos(View view) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (getContext() != null && getActivity() != null) {
+                if (ContextCompat.checkSelfPermission(
+                        getContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    // You can use the API that requires the permission.
+                    if (getContext() != null) {
+                        // Le solicitamos al LocationManager que verifique el tome el servicio de localizacion
+                        final LocationManager manager = (LocationManager) getContext().getSystemService(
+                                Context.LOCATION_SERVICE);
+                        // Verificamos si esta encendido o no
+                        // Si no esta encendido lanzamos en pantalla un AlertDialog
+                        if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                            CargarMiUbicacion();
+                        } else {
+                            verificarGPSEncendido();
+                        }
+                    }
+
+
+                } else if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) ) {
+                    // In an educational UI, explain to the user why your app requires this
+                    // permission for a specific feature to behave as expected. In this UI,
+                    // include a "cancel" or "no thanks" button that allows the user to
+                    // continue using your app without granting the permission.
+                    Snackbar.make(view,
+                            R.string.msgSnackbar_MainActivity_2,
+                            Snackbar.LENGTH_INDEFINITE)
+                            .setAction(R.string.msgSnackbar_MainActivity_2_okButton, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    requestPermissionLauncher.launch(
+                                            Manifest.permission.ACCESS_FINE_LOCATION);
+                                }
+                            }).show();
+                } else {
+                    // You can directly ask for the permission.
+                    // The registered ActivityResultCallback gets the result of this request.
+                    requestPermissionLauncher.launch(
+                            Manifest.permission.ACCESS_FINE_LOCATION);
                 }
             }
 
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
     }
 
-    private void verificarGPSEncendido() {
-        // Le solicitamos al LocationManager que verifique el tome el servicio de localizacion
-        final LocationManager manager = (LocationManager) getContext().getSystemService(
-                Context.LOCATION_SERVICE);
-        // Verificamos si esta encendido o no
-        // Si no esta encendido lanzamos en pantalla un AlertDialog
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+    private ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    // Permission is granted. Continue the action or workflow in your
+                    // app.
+                    if (getContext() != null) {
+                        Toast.makeText(getContext(),
+                                R.string.msgToast_MainActivity_2,
+                                Toast.LENGTH_SHORT).show();
+                        verificarGPSEncendido();
+                        CargarMiUbicacion();
+                    }
+                } else {
+                    // Explain to the user that the feature is unavailable because the
+                    // features requires a permission that the user has denied. At the
+                    // same time, respect the user's decision. Don't link to system
+                    // settings in an effort to convince the user to change their
+                    // decision.
+                    if (getContext() != null) {
+                        Toast.makeText(getContext(),
+                                R.string.msgToast_MainActivity_3,
+                                Toast.LENGTH_SHORT).show();
+                        irAlActivitySeleccionarActividad(SeleccionarActividad.class);
+                    }
+                }
+            });
 
-            builder.setMessage(R.string.msgAlertDiag_MainActivity_1)
-                    .setPositiveButton(R.string.msgAlertDiag_MainActivity_1_positive,
-                            (dialog, id) -> startActivity(
-                                    new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                            ))
-                    .setNegativeButton(R.string.msgAlertDiag_MainActivity_1_negative,
-                            (dialog, id) -> {
-                                irAlActivitySeleccionarActividad(SeleccionarActividad.class);
-                                dialog.cancel();
-                            })
-                    .setCancelable(false);
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
+
+    private void verificarGPSEncendido() {
+        if (getContext() != null) {
+            // Le solicitamos al LocationManager que verifique el tome el servicio de localizacion
+            final LocationManager manager = (LocationManager) getContext().getSystemService(
+                    Context.LOCATION_SERVICE);
+            // Verificamos si esta encendido o no
+            // Si no esta encendido lanzamos en pantalla un AlertDialog
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                builder.setMessage(R.string.msgAlertDiag_MainActivity_1)
+                        .setPositiveButton(R.string.msgAlertDiag_MainActivity_1_positive,
+                                (dialog, id) -> {
+                                        startActivity(
+                                        new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        })
+                        .setNegativeButton(R.string.msgAlertDiag_MainActivity_1_negative,
+                                (dialog, id) -> {
+                                    irAlActivitySeleccionarActividad(SeleccionarActividad.class);
+                                    dialog.cancel();
+                                })
+                        .setCancelable(false);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            } else {
+                VerificarPermisos(getViewFragmentMaps());
+            }
         }
     }
 
-
-
+    private View getViewFragmentMaps() {
+        return viewFragmentMaps;
+    }
 
     private void CargarMarcadorUbicacionInicial(LatLng cargaUbicacionInicial) {
         // Marcador inicial
         marcadorPosicion = mMap.addMarker(new MarkerOptions()
-                .position(cargaUbicacionInicial)
-                .title("¡Estas aquí!")
-                .visible(true));
+                .position(latLngUbicacionMarker)
+                .title(nombreUsuarioLogueado)
+                .visible(true)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .zIndex(1.0f));
+
         //
-        latLngUbicacionMarker = cargaUbicacionInicial;
-        rangoMapa = mMap.addCircle(new CircleOptions()
-                .center(latLngUbicacionMarker)
-                .radius(presentador.getRangoDeBusquedaEnMActualizado())
-                .strokeColor(R.color.orange)
-                .fillColor(R.color.orange_dif));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cargaUbicacionInicial, 15));
+        //latLngUbicacionMarker = cargaUbicacionInicial;
+        if (rangoBusquedaVisible) {
+            drawRangoMapa(latLngUbicacionMarker);
+        }
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cargaUbicacionInicial,
+                presentador.getZoomMapaSegunRangoBusquedaKm()));
         // Le decimos al presentador que busque Sitios Cercanos al Marcador
-        presentador.busquedaSitiosCercanosAMarcador();
+        if (areasVerdesSelected) {
+            presentador_areasverdes.busquedaSitiosCercanosAMarcador();
+        }
+        if (arteSelected) {
+            presentador_arte.busquedaSitiosCercanosAMarcador();
+        }
+        if (cineSelected) {
+            presentador_cine.busquedaSitiosCercanosAMarcador();
+        }
+        if (musicaSelected) {
+            presentador_musica.busquedaSitiosCercanosAMarcador();
+        }
+        if (restaurantesSelected) {
+            presentador_restaurantes.busquedaSitiosCercanosAMarcador();
+        }
+        if (sorprendemeSelected) {
+            presentador_sorprendeme.busquedaSitiosCercanosAMarcador();
+        }
+        if (!areasVerdesSelected) {
+            presentador_areasverdes.busquedaSitiosCercanosAMarkerPositionNoEncontrados();
+        }
+        if (!arteSelected) {
+            presentador_arte.busquedaSitiosCercanosAMarkerPositionNoEncontrados();
+        }
+        if (!cineSelected) {
+            presentador_cine.busquedaSitiosCercanosAMarkerPositionNoEncontrados();
+        }
+        if (!musicaSelected) {
+            presentador_musica.busquedaSitiosCercanosAMarkerPositionNoEncontrados();
+        }
+        if (!restaurantesSelected) {
+            presentador_restaurantes.busquedaSitiosCercanosAMarkerPositionNoEncontrados();
+        }
+        if (!sorprendemeSelected) {
+            presentador_sorprendeme.busquedaSitiosCercanosAMarkerPositionNoEncontrados();
+        }
+    }
+
+    private void drawRangoMapa(LatLng latLngUbicacionMarkerOUsuario) {
+        rangoMapa = mMap.addCircle(new CircleOptions()
+                .center(latLngUbicacionMarkerOUsuario)
+                .radius(presentador.getRangoDeBusquedaEnMActualizado())
+                .strokeColor(getContext().getResources().getColor(R.color.orange))
+                .fillColor(getContext().getResources().getColor(R.color.orange_dif)));
+    }
+
+    private void NullInfoLugaresObjects() {
+        infoLugarSeleccionado_areasverdes = null;
+        infoLugarSeleccionado_arte = null;
+        infoLugarSeleccionado_cine = null;
+        infoLugarSeleccionado_musica = null;
+        infoLugarSeleccionado_restaurantes = null;
+        infoLugarSeleccionado_sorprendeme = null;
     }
 
     private void AbrirBSDdeInformacionSitio() {
@@ -278,14 +563,46 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
             public boolean onMarkerClick(@NonNull @NotNull Marker marker) {
                 String tituloMarcador = marker.getTitle();
 
-                if (!tituloMarcador.equals("¡Estas aquí!") && !tituloMarcador.equals("¡Mi Ubicación!")) {
-                    String direccion = null;
+                if (!tituloMarcador.equals(nombreUsuarioLogueado) && !tituloMarcador.equals("")) {
 
-                    InfoLugar infoLugarSeleccionado = presentador.getInfoLugarSeleccionadoEnMapa(tituloMarcador);
-                    if (infoLugarSeleccionado != null) {
+                    NullInfoLugaresObjects();
+
+                    infoLugarSeleccionado_areasverdes = presentador_areasverdes.getInfoLugarSeleccionadoEnMapa(tituloMarcador);
+                    infoLugarSeleccionado_arte = presentador_arte.getInfoLugarSeleccionadoEnMapa(tituloMarcador);
+                    infoLugarSeleccionado_cine = presentador_cine.getInfoLugarSeleccionadoEnMapa(tituloMarcador);
+                    infoLugarSeleccionado_musica = presentador_musica.getInfoLugarSeleccionadoEnMapa(tituloMarcador);
+                    infoLugarSeleccionado_restaurantes = presentador_restaurantes.getInfoLugarSeleccionadoEnMapa(tituloMarcador);
+                    infoLugarSeleccionado_sorprendeme = presentador_sorprendeme.getInfoLugarSeleccionadoEnMapa(tituloMarcador);
+
+                    if (infoLugarSeleccionado_areasverdes != null) {
                         ((MainActivity) getActivity())
                                 .iniciarBottomSheetDialog(
-                                        infoLugarSeleccionado
+                                        infoLugarSeleccionado_areasverdes
+                                );
+                    } else if (infoLugarSeleccionado_arte != null) {
+                        ((MainActivity) getActivity())
+                                .iniciarBottomSheetDialog(
+                                        infoLugarSeleccionado_arte
+                                );
+                    } else if (infoLugarSeleccionado_cine != null) {
+                        ((MainActivity) getActivity())
+                                .iniciarBottomSheetDialog(
+                                        infoLugarSeleccionado_cine
+                                );
+                    } else if (infoLugarSeleccionado_musica != null) {
+                        ((MainActivity) getActivity())
+                                .iniciarBottomSheetDialog(
+                                        infoLugarSeleccionado_musica
+                                );
+                    } else if (infoLugarSeleccionado_restaurantes != null) {
+                        ((MainActivity) getActivity())
+                                .iniciarBottomSheetDialog(
+                                        infoLugarSeleccionado_restaurantes
+                                );
+                    } else if (infoLugarSeleccionado_sorprendeme != null) {
+                        ((MainActivity) getActivity())
+                                .iniciarBottomSheetDialog(
+                                        infoLugarSeleccionado_sorprendeme
                                 );
                     } else {
                         ((MainActivity) getActivity())
@@ -300,31 +617,127 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
     private void NuevaBusquedaAlDarClickSobreElMapa() {
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
-            public void onMapLongClick(@NonNull @NotNull LatLng latLngUsuario) {
+            public void onMapLongClick(@NonNull @NotNull LatLng latLngMarker) {
                 if (marcadorPosicion != null) {
                     marcadorPosicion.remove();
                 }
                 marcadorPosicion = mMap.addMarker(new MarkerOptions()
-                        .position(latLngUsuario)
-                        .title("¡Estas aquí!")
-                        .visible(true));
+                        .position(latLngMarker)
+                        .title(nombreUsuarioLogueado)
+                        .visible(true)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .zIndex(1.0f));
                 mMap.animateCamera(CameraUpdateFactory
                         .newCameraPosition(new CameraPosition.Builder()
-                                .target(latLngUsuario)
+                                .target(latLngMarker)
                                 .zoom(presentador.getZoomMapaSegunRangoBusquedaKm())
                                 .build()
                         )
                 );
+                BorrarMarcadores();
+                marcadoresMapa.clear();
                 // Hacemos la busqueda de los sitios cercanos en un radio x de kilometros
                 //
-                latLngUbicacionMarker = latLngUsuario;
-                presentador.busquedaSitiosCercanosAMarcador();
+                latLngUbicacionMarker = latLngMarker;
+                presentador.setUltimaUbicacionUsuario(latLngUbicacionMarker);
+
+                busquedaEncontrada.clear();
+
+                if (areasVerdesSelected) {
+                    presentador_areasverdes.busquedaSitiosCercanosAMarcador();
+                }
+                if (arteSelected) {
+                    presentador_arte.busquedaSitiosCercanosAMarcador();
+                }
+                if (cineSelected) {
+                    presentador_cine.busquedaSitiosCercanosAMarcador();
+                }
+                if (musicaSelected) {
+                    presentador_musica.busquedaSitiosCercanosAMarcador();
+                }
+                if (restaurantesSelected) {
+                    presentador_restaurantes.busquedaSitiosCercanosAMarcador();
+                }
+                if (sorprendemeSelected) {
+                    presentador_sorprendeme.busquedaSitiosCercanosAMarcador();
+                }
+                if (!areasVerdesSelected) {
+                    presentador_areasverdes.busquedaSitiosCercanosAMarkerPositionNoEncontrados();
+                }
+                if (!arteSelected) {
+                    presentador_arte.busquedaSitiosCercanosAMarkerPositionNoEncontrados();
+                }
+                if (!cineSelected) {
+                    presentador_cine.busquedaSitiosCercanosAMarkerPositionNoEncontrados();
+                }
+                if (!musicaSelected) {
+                    presentador_musica.busquedaSitiosCercanosAMarkerPositionNoEncontrados();
+                }
+                if (!restaurantesSelected) {
+                    presentador_restaurantes.busquedaSitiosCercanosAMarkerPositionNoEncontrados();
+                }
+                if (!sorprendemeSelected) {
+                    presentador_sorprendeme.busquedaSitiosCercanosAMarkerPositionNoEncontrados();
+                }
             }
         });
     }
 
     private void  NuevaBusquedaEnMiUbicacion() {
-        presentador.busquedaSitiosCercanosAUsuario();
+
+        BorrarMarcadores();
+        marcadoresMapa.clear();
+        if (busquedaEncontrada.size() != 0) {
+            busquedaEncontrada.clear();
+        }
+
+
+        if (areasVerdesSelected) {
+            presentador_areasverdes.busquedaSitiosCercanosAUsuario();
+        }
+        if (arteSelected) {
+            presentador_arte.busquedaSitiosCercanosAUsuario();
+        }
+        if (cineSelected) {
+            presentador_cine.busquedaSitiosCercanosAUsuario();
+        }
+        if (musicaSelected) {
+            presentador_musica.busquedaSitiosCercanosAUsuario();
+        }
+        if (restaurantesSelected) {
+            presentador_restaurantes.busquedaSitiosCercanosAUsuario();
+        }
+        if (sorprendemeSelected) {
+            presentador_sorprendeme.busquedaSitiosCercanosAUsuario();
+        }
+
+        if (!areasVerdesSelected) {
+            presentador_areasverdes.busquedaSitiosCercanosAUsuarioPositionNoEncontrados();
+        }
+        if (!arteSelected) {
+            presentador_arte.busquedaSitiosCercanosAUsuarioPositionNoEncontrados();
+        }
+        if (!cineSelected) {
+            presentador_cine.busquedaSitiosCercanosAUsuarioPositionNoEncontrados();
+        }
+        if (!musicaSelected) {
+            presentador_musica.busquedaSitiosCercanosAUsuarioPositionNoEncontrados();
+        }
+        if (!restaurantesSelected) {
+            presentador_restaurantes.busquedaSitiosCercanosAUsuarioPositionNoEncontrados();
+        }
+        if (!sorprendemeSelected) {
+            presentador_sorprendeme.busquedaSitiosCercanosAUsuarioPositionNoEncontrados();
+        }
+    }
+
+    private void BorrarMarcadores () {
+        if (marcadoresMapa.size() != 0) {
+            for (int x = 0; x < marcadoresMapa.size(); x++) {
+                Marker m = marcadoresMapa.get(x);
+                m.remove();
+            }
+        }
     }
 
     @Override
@@ -345,14 +758,73 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
                 // Creamos un objeto tipo Marker
                 Marker marcadorSitioCercano;
                 InfoLugar lugar = infoLugarList.get(x);
-                // Añadimos un marcador al mapa en las coordenadas de x restaurante
-                marcadorSitioCercano = mMap.addMarker(new MarkerOptions()
-                        .position(latLngLugarList.get(x))
-                        .title(lugar.getNombre())
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_mapa_restaurante))
-                        .anchor(0.0f, 0.0f));
-                // Añadimos el marcador a la lista de marcadores para luego borrarlos
-                marcadoresMapa.add(marcadorSitioCercano);
+                String tipoLugar = lugar.getTipositio();
+                switch (tipoLugar) {
+                    case ("areasverdes"):
+                        // Añadimos un marcador al mapa en las coordenadas de x restaurante
+                        marcadorSitioCercano = mMap.addMarker(new MarkerOptions()
+                                .position(latLngLugarList.get(x))
+                                .title(lugar.getNombre())
+                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_mapa_areasverdes))
+                        );
+                        // Añadimos el marcador a la lista de marcadores para luego borrarlos
+                        marcadoresMapa.add(marcadorSitioCercano);
+                        break;
+                    case ("arte"):
+                        // Añadimos un marcador al mapa en las coordenadas de x restaurante
+                        marcadorSitioCercano = mMap.addMarker(new MarkerOptions()
+                                .position(latLngLugarList.get(x))
+                                .title(lugar.getNombre())
+                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_mapa_arte))
+                        );
+                        // Añadimos el marcador a la lista de marcadores para luego borrarlos
+                        marcadoresMapa.add(marcadorSitioCercano);
+                        break;
+                    case ("cine"):
+                        // Añadimos un marcador al mapa en las coordenadas de x restaurante
+                        marcadorSitioCercano = mMap.addMarker(new MarkerOptions()
+                                .position(latLngLugarList.get(x))
+                                .title(lugar.getNombre())
+                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_mapa_cine))
+                        );
+                        // Añadimos el marcador a la lista de marcadores para luego borrarlos
+                        marcadoresMapa.add(marcadorSitioCercano);
+                        break;
+                    case ("musica"):
+                        // Añadimos un marcador al mapa en las coordenadas de x restaurante
+                        marcadorSitioCercano = mMap.addMarker(new MarkerOptions()
+                                .position(latLngLugarList.get(x))
+                                .title(lugar.getNombre())
+                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_mapa_musica))
+                        );
+                        // Añadimos el marcador a la lista de marcadores para luego borrarlos
+                        marcadoresMapa.add(marcadorSitioCercano);
+                        break;
+                    case ("restaurante"):
+                        // Añadimos un marcador al mapa en las coordenadas de x restaurante
+                        marcadorSitioCercano = mMap.addMarker(new MarkerOptions()
+                                .position(latLngLugarList.get(x))
+                                .title(lugar.getNombre())
+                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_mapa_restaurante))
+                        );
+                        // Añadimos el marcador a la lista de marcadores para luego borrarlos
+                        marcadoresMapa.add(marcadorSitioCercano);
+                        break;
+                    case ("sorprendeme"):
+                        // Añadimos un marcador al mapa en las coordenadas de x restaurante
+                        marcadorSitioCercano = mMap.addMarker(new MarkerOptions()
+                                .position(latLngLugarList.get(x))
+                                .title(lugar.getNombre())
+                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_mapa_sorpresa))
+                        );
+                        // Añadimos el marcador a la lista de marcadores para luego borrarlos
+                        marcadoresMapa.add(marcadorSitioCercano);
+                        break;
+                }
+
+
+
+
             }
             // De lo contrario
             else {
@@ -368,11 +840,9 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         // Si el objeto latlong en la posicion 0 del arreglo restaurantes no esta vacio
         if (latLngUsuario != null) {
             if (getContext() != null) {
-                rangoMapa = mMap.addCircle(new CircleOptions()
-                        .center(latLngUsuario)
-                        .radius(presentador.getRangoDeBusquedaEnMActualizado())
-                        .strokeColor(getContext().getResources().getColor(R.color.orange))
-                        .fillColor(getContext().getResources().getColor(R.color.orange_dif)));
+                if (rangoBusquedaVisible) {
+                    drawRangoMapa(latLngUsuario);
+                }
                 // Ubicamos la camara de google maps en el primer restaurante
                 //mMap.moveCame#FF5328ra(CameraUpdateFactory.newLatLngZoom(latLngUsuario, 15));
                 mMap.animateCamera(CameraUpdateFactory
@@ -401,12 +871,19 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
     }
 
     @Override
-    public void showToastBusquedaSitiosCercanosNoEncontrados() {
+    public void showSnackbarBusquedaSitiosCercanosNoEncontrados() {
         // Mostramos en pantalla que no se encontraron sitios cercanos a la posicion
         if (getContext() != null) {
-            Toast.makeText(getContext(),
-                    R.string.msgToast_MainActivity_2,
-                    Toast.LENGTH_LONG).show();
+            Snackbar.make(getViewFragmentMaps(),
+                    R.string.msgSnackbar_MainActivity_1,
+                    Snackbar.LENGTH_LONG)
+                    .setAction(R.string.msgSnackbar_MainActivity_1_irButton
+                            , new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            irAlActivityConfiguraciones(Configuraciones.class);
+                        }
+                    }).show();
         }
         if (rangoMapa != null) {
             rangoMapa.setVisible(false);
@@ -427,7 +904,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
 
          marcadorGPS = mMap.addMarker(new MarkerOptions()
                  .position(ubicacionActualLatLong)
-                 .title("¡GPS!")
+                 .title(nombreUsuarioLogueado)
                  .visible(true));
 
     }
@@ -440,6 +917,42 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         // Iniciamos el Activity SeleccionarActividad
         startActivity(deMainActivityASeleccionarActividad);
 
+    }
+
+    @Override
+    public void irAlActivityConfiguraciones(Class<? extends AppCompatActivity> ir_a_Configuraciones) {
+        //progressBar_Login.setVisibility(View.GONE);
+        // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity SeleccionarActividad
+        Intent deMainActivityAConfiguraciones = new Intent(getActivity(), ir_a_Configuraciones);
+        // Iniciamos el Activity SeleccionarActividad
+        startActivity(deMainActivityAConfiguraciones);
+    }
+
+    @Override
+    public void saveBusquedaEncontrada (boolean unaBusqueda) {
+        busquedaEncontrada.add(unaBusqueda);
+    }
+    @Override
+    public boolean verificarBusquedaEncontrada() {
+        if (busquedaEncontrada.size() != 0) {
+            if (busquedaEncontrada.size() == 6) {
+                if (!busquedaEncontrada.get(0)
+                        && !busquedaEncontrada.get(1)
+                        && !busquedaEncontrada.get(2)
+                        && !busquedaEncontrada.get(3)
+                        && !busquedaEncontrada.get(4)
+                        && !busquedaEncontrada.get(5)
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }
 

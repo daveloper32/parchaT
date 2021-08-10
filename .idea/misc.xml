@@ -3,13 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/drawable/style_redondeo_bsd.xml" value="0.26458333333333334" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/drawable/style_redondeo_button.xml" value="0.26458333333333334" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/font/font.xml" value="0.2786458333333333" />
         <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/activity_configuraciones.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/activity_informacion_extra_sitio.xml" value="0.3428442028985507" />
         <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/activity_perfil_usuario.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/activity_seleccionar_actividad.xml" value="0.16945288753799392" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/activity_show_web_page_sitio.xml" value="0.26403985507246375" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/bottom_sheet_dialog_info_lugar.xml" value="0.33" />
         <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/toolbar_configuraciones.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/toolbar_info_extra_sitio.xml" value="0.26403985507246375" />
         <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/toolbar_main_activity.xml" value="0.33" />
         <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/toolbar_perfil_usuario.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/toolbar_seleccionar_actividad.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/parchaT/app/src/main/res/layout/toolbar_show_webpage_sitio.xml" value="0.26403985507246375" />
       </map>
     </option>
   </component>

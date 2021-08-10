@@ -24,11 +24,11 @@ public class Configuraciones extends AppCompatActivity implements View.OnClickLi
         SwitchMaterial.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener {
 
     private ImageButton imgB_configuraciones_volver;
-    private SwitchMaterial sW_configuraciones_tipoBusqueda;
+    private SwitchMaterial sW_configuraciones_tipoBusqueda, sW_configuraciones_activarRango;
     private SeekBar sB_configuraciones_rangoBusqueda;
     private TextView tV_configuraciones_rangoBusqueda;
 
-    private boolean modoBusquedaGPS, modoBusquedaMarker;
+    private boolean modoBusquedaGPS, modoBusquedaMarker, rangoBusquedaVisible;
     private double rangoBusquedaKm;
     private int valorSBRangoBusquedaKm;
 
@@ -51,11 +51,13 @@ public class Configuraciones extends AppCompatActivity implements View.OnClickLi
         // COnexion con objetos de la vista
         imgB_configuraciones_volver = findViewById(R.id.imgB_configuraciones_volver);
         sW_configuraciones_tipoBusqueda = findViewById(R.id.sW_configuraciones_tipoBusqueda);
+        sW_configuraciones_activarRango = findViewById(R.id.sW_configuraciones_activarRango);
         sB_configuraciones_rangoBusqueda = findViewById(R.id.sB_configuraciones_rangoBusqueda);
         tV_configuraciones_rangoBusqueda = findViewById(R.id.tV_configuraciones_rangoBusqueda);
 
         imgB_configuraciones_volver.setOnClickListener(this);
         sW_configuraciones_tipoBusqueda.setOnCheckedChangeListener(this);
+        sW_configuraciones_activarRango.setOnCheckedChangeListener(this);
         sB_configuraciones_rangoBusqueda.setOnSeekBarChangeListener(this);
 
         CargarConfiguracion();
@@ -63,11 +65,17 @@ public class Configuraciones extends AppCompatActivity implements View.OnClickLi
 
     private void CargarConfiguracion() {
         // Cargamos configuracion previa
-        // switch
+        // switch Modo Busqueda
         if (getModoBusquedaGPS() && !getModoBusquedaMarker()) {
             sW_configuraciones_tipoBusqueda.setChecked(false);
         } else if (!getModoBusquedaGPS() && getModoBusquedaMarker()) {
             sW_configuraciones_tipoBusqueda.setChecked(true);
+        }
+        // Switch Rango BusquedaVisible
+        if (getRangoBusquedaVisible()) {
+            sW_configuraciones_activarRango.setChecked(true);
+        } else {
+            sW_configuraciones_activarRango.setChecked(false);
         }
         // Valor del SeekBar
         sB_configuraciones_rangoBusqueda.setProgress(getValorSBRangoBusquedaKm());
@@ -119,6 +127,7 @@ public class Configuraciones extends AppCompatActivity implements View.OnClickLi
         if (datosConfiguracion != null) {
             modoBusquedaGPS = datosConfiguracion.getBoolean("modoBusquedaGPS", false);
             modoBusquedaMarker = datosConfiguracion.getBoolean("modoBusquedaMarker", false);
+            rangoBusquedaVisible = datosConfiguracion.getBoolean("rangoBusquedaVisible", false);
             rangoBusquedaKm = Double.parseDouble(datosConfiguracion.getString("rangoBusquedaKm", ""));
             valorSBRangoBusquedaKm = datosConfiguracion.getInt("valorSBRangoBusquedaKm", 0);
         }
@@ -145,10 +154,15 @@ public class Configuraciones extends AppCompatActivity implements View.OnClickLi
         // Guardamos 4 datos
         editor.putBoolean("modoBusquedaGPS", getModoBusquedaGPS());
         editor.putBoolean("modoBusquedaMarker", getModoBusquedaMarker());
+        editor.putBoolean("rangoBusquedaVisible", getRangoBusquedaVisible());
         editor.putString("rangoBusquedaKm", getRangoBusquedaKm());
         editor.putInt("valorSBRangoBusquedaKm", getValorSBRangoBusquedaKm());
         // Hacemos el commit
         editor.commit();
+    }
+
+    private boolean getRangoBusquedaVisible() {
+        return rangoBusquedaVisible;
     }
 
     private int getValorSBRangoBusquedaKm() {
@@ -185,12 +199,19 @@ public class Configuraciones extends AppCompatActivity implements View.OnClickLi
             // Se activa modo de busqueda por GPS
             modoBusquedaGPS = true;
             modoBusquedaMarker = false;
-            Toast.makeText(this, R.string.msgToast_configuraciones_1, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, R.string.msgToast_configuraciones_1, Toast.LENGTH_LONG).show();
         } else {
             modoBusquedaGPS = false;
             modoBusquedaMarker = true;
             // Se activa modo de busqueda por marcador
-            Toast.makeText(this, R.string.msgToast_configuraciones_2, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, R.string.msgToast_configuraciones_2, Toast.LENGTH_LONG).show();
+        }
+    }
+    private void rangoBusquedaVisibleActivado(boolean isCheckedRangoBusquedaVisible) {
+        if (isCheckedRangoBusquedaVisible) {
+            rangoBusquedaVisible = true;
+        } else {
+            rangoBusquedaVisible = false;
         }
     }
 
@@ -266,6 +287,26 @@ public class Configuraciones extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        tipoDeBusqueda(isChecked);
+        if (buttonView.equals(sW_configuraciones_activarRango)) {
+            rangoBusquedaVisibleActivado(isChecked);
+            if (isChecked) {
+                //Rango de Busqueda Visible
+                Toast.makeText(this, R.string.msgToast_configuraciones_3, Toast.LENGTH_SHORT).show();
+            } else {
+                // Rango de Busqueda Invisible
+                Toast.makeText(this, R.string.msgToast_configuraciones_4, Toast.LENGTH_SHORT).show();
+            }
+        } else if (buttonView.equals(sW_configuraciones_tipoBusqueda)){
+            tipoDeBusqueda(isChecked);
+            if (!isChecked) {
+                //GPS Mode
+                Toast.makeText(this, R.string.msgToast_configuraciones_1, Toast.LENGTH_SHORT).show();
+            } else {
+                // Marker Mode
+                Toast.makeText(this, R.string.msgToast_configuraciones_2, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
+
+
 }

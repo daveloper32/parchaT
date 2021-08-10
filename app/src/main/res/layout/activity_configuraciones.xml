@@ -33,11 +33,6 @@
                 android:orientation="vertical"
                 android:paddingTop="1dp">
 
-                <View
-                    android:id="@+id/divider"
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:background="?android:attr/listDivider" />
 
                 <TextView
                     android:id="@+id/tV_configuraciones_1"
@@ -85,15 +80,74 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
+                    android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
-                    android:fontFamily="sans-serif-smallcaps"
                     android:text="@string/tV_configuraciones_2"
                     android:textStyle="italic" />
 
                 <View
                     android:id="@+id/divider4"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:background="?android:attr/listDivider" />
+
+                <TextView
+                    android:id="@+id/tV_configuraciones_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="@string/tV_configuraciones_5"
+                    android:textSize="16sp" />
+
+                <View
+                    android:id="@+id/divider_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/sW_configuraciones_activarRango"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:minHeight="48dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+
+                    android:text="@string/sW_configuraciones_activarRango" />
+
+                <View
+                    android:id="@+id/divider_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:background="?android:attr/listDivider" />
+
+                <TextView
+                    android:id="@+id/tV_configuraciones_6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="@string/tV_configuraciones_6"
+                    android:textStyle="italic" />
+
+                <View
+                    android:id="@+id/divider_1"
                     android:layout_width="match_parent"
                     android:layout_height="8dp"
                     android:background="?android:attr/listDivider" />
@@ -160,6 +214,10 @@
                     android:layout_marginBottom="5dp"
                     android:fontFamily="sans-serif-smallcaps"
                     android:textStyle="italic"/>
+
+
+
+
 
                 <View
                     android:id="@+id/divider8"

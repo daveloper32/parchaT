@@ -1,6 +1,7 @@
 package com.developers.parchat.view.main.bt_st_dlg_ifo_lugar;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.developers.parchat.view.info_extra_sitio.InformacionExtraSitio;
 import com.developers.parchat.R;
 import com.developers.parchat.model.entity.InfoLugar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -20,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class BottomSheetDialog_InfoLugar extends BottomSheetDialogFragment {
 
-    private TextView tV_bsd_main_activity_nombreLugar, tV_bsd_main_activity_direccion;
+    private TextView tV_bsd_main_activity_nombreLugar, tV_bsd_main_activity_direccion, tV_bsd_main_activity_moreInfo;
     private String nombreLugar, direccion, sitioWeb, urlImagen;
     private ImageView imgV_main_activity_lugar;
     private InfoLugar infoLugar;
@@ -41,6 +43,7 @@ public class BottomSheetDialog_InfoLugar extends BottomSheetDialogFragment {
         tV_bsd_main_activity_nombreLugar = view.findViewById(R.id.tV_bsd_main_activity_nomLugar);
         tV_bsd_main_activity_direccion = view.findViewById(R.id.tV_bsd_main_activity_direccion);
         imgV_main_activity_lugar = view.findViewById(R.id.imgV_main_activity_lugar);
+        tV_bsd_main_activity_moreInfo = view.findViewById(R.id.tV_bsd_main_activity_moreInfo);
         if (infoLugar != null) {
             nombreLugar = infoLugar.getNombre();
             direccion = infoLugar.getDireccion();
@@ -57,8 +60,19 @@ public class BottomSheetDialog_InfoLugar extends BottomSheetDialogFragment {
         tV_bsd_main_activity_direccion.setText(direccion);
         Picasso.get()
                 .load(urlImagen)
-                .error(R.mipmap.ic_mapa_restaurante)
+                .error(R.drawable.ic_actividades_comida)
                 .into(imgV_main_activity_lugar);
+
+        tV_bsd_main_activity_moreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity SeleccionarActividad
+                Intent deMainActivityAInformacionExtraSitio = new Intent(getActivity(), InformacionExtraSitio.class);
+                deMainActivityAInformacionExtraSitio.putExtra("infolugar", infoLugar);
+                // Iniciamos el Activity SeleccionarActividad
+                startActivity(deMainActivityAInformacionExtraSitio);
+            }
+        });
 
         return view;
 

@@ -7,12 +7,15 @@ import android.location.Location;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.developers.parchat.model.entity.BusquedaSeleccionarActividad;
 import com.developers.parchat.model.entity.InfoLugar;
 import com.developers.parchat.model.repository.RepositoryFragmentShowMaps;
+import com.firebase.geofire.GeoFire;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
 
@@ -47,8 +50,18 @@ public interface FragmentShowMapsMVP {
         void getConfiguraciones();
         boolean getModoBusquedaGPS();
         boolean getModoBusquedaMarker();
+        boolean getRangoBusquedaVisible();
         double getRangoBusquedaKm();
         int getZoomMapaSegunRangoBusquedaKm();
+        void guardarUltimaUbicacionUsuario(LatLng ultimaUbicacion);
+        LatLng getUltimaUbicacionUsuario();
+        BusquedaSeleccionarActividad getDatosBusquedaSeleccionada();
+
+        GeoFire getGeoFire();
+        DatabaseReference getDataBaseReference();
+
+
+
     }
     // EL presentador recibe los eventos que ocurriran en la vista
     interface Presenter {
@@ -78,9 +91,20 @@ public interface FragmentShowMapsMVP {
         void getUltimasConfiguraciones();
         boolean getModoBusquedaGPSActualizado();
         boolean getModoBusquedaMarkerActualizado();
+        boolean getRangoBusquedaVisibleActualizado();
         double getRangoDeBusquedaKmActualizado();
         double getRangoDeBusquedaEnMActualizado();
-        int getZoomMapaSegunRangoBusquedaKm();       
+        int getZoomMapaSegunRangoBusquedaKm();
+
+        void setUltimaUbicacionUsuario(LatLng ultimaUbicacion);
+        LatLng getUltimaUbicacionUsuario();
+        BusquedaSeleccionarActividad getDatosFromBusquedaSeleccionada();
+
+        void CargarDatosGeofire(InfoLugar lugar);
+        void ObtenerSnapshotTodaRuta();
+
+
+
 
         void cargarUbicacionGPS();
     }
@@ -97,7 +121,7 @@ public interface FragmentShowMapsMVP {
         LatLng getMarkerPosition();
 
 
-        void showToastBusquedaSitiosCercanosNoEncontrados();
+        void showSnackbarBusquedaSitiosCercanosNoEncontrados();
 
         void showToastBusquedaSitiosCercanosFallo(DatabaseError error);
 
@@ -105,5 +129,10 @@ public interface FragmentShowMapsMVP {
 
         // Para hacer el intent e ir a el Activity SeleccionarActividad
         void irAlActivitySeleccionarActividad(Class<? extends AppCompatActivity> ir_a_SeleccionarActividad);
+        // Para hacer el intent e ir a el Activity Configuraciones
+        void irAlActivityConfiguraciones(Class<? extends AppCompatActivity> ir_a_Configuraciones);
+
+        void saveBusquedaEncontrada (boolean unaBusqueda);
+        boolean verificarBusquedaEncontrada();
     }
 }

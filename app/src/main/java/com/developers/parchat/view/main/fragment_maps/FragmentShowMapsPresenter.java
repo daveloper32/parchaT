@@ -1,17 +1,27 @@
 package com.developers.parchat.view.main.fragment_maps;
 
 import android.location.Location;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.developers.parchat.model.entity.BusquedaSeleccionarActividad;
 import com.developers.parchat.model.entity.InfoLugar;
 import com.developers.parchat.model.repository.RepositoryFragmentShowMaps;
+import com.developers.parchat.model.repository.RepositoryMainActivity;
+import com.developers.parchat.view.main.MainActivityMVP;
 import com.developers.parchat.view.registro.RegistroMVP;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
 
@@ -20,6 +30,7 @@ public class FragmentShowMapsPresenter implements FragmentShowMapsMVP.Presenter 
     // Variables modelo MVP
     private final FragmentShowMapsMVP.View vista;
     private final FragmentShowMapsMVP.Model modelo;
+    private final MainActivityMVP.Model modeloMain;
 
     private String keyBusqueda;
 
@@ -28,6 +39,7 @@ public class FragmentShowMapsPresenter implements FragmentShowMapsMVP.Presenter 
         this.keyBusqueda = keyBusqueda;
         this.modelo = new RepositoryFragmentShowMaps(keyBusqueda);
         this.modelo.setPresentadorShowMaps(this, vista.getContext());
+        this.modeloMain = new RepositoryMainActivity();
     }
 
     @Override
@@ -48,7 +60,10 @@ public class FragmentShowMapsPresenter implements FragmentShowMapsMVP.Presenter 
 
     @Override
     public void busquedaSitiosCercanosAUsuarioPositionNoEncontrados() {
-        vista.showToastBusquedaSitiosCercanosNoEncontrados();
+        vista.saveBusquedaEncontrada(false);
+        if (vista.verificarBusquedaEncontrada()) {
+            vista.showSnackbarBusquedaSitiosCercanosNoEncontrados();
+        }
     }
 
     @Override
@@ -58,7 +73,10 @@ public class FragmentShowMapsPresenter implements FragmentShowMapsMVP.Presenter 
 
     @Override
     public void busquedaSitiosCercanosAMarkerPositionNoEncontrados() {
-        vista.showToastBusquedaSitiosCercanosNoEncontrados();
+        vista.saveBusquedaEncontrada(false);
+        if (vista.verificarBusquedaEncontrada()) {
+            vista.showSnackbarBusquedaSitiosCercanosNoEncontrados();
+        }
     }
 
     @Override
@@ -76,6 +94,7 @@ public class FragmentShowMapsPresenter implements FragmentShowMapsMVP.Presenter 
         if (infoLugarList != null && latLngLugarList != null) {
             if (infoLugarList.size() != 0 && latLngLugarList.size() != 0) {
                 if (latLngUsuario != null) {
+                    vista.saveBusquedaEncontrada(true);
                     vista.addMarkersSitiosCercanos(latLngUsuario, infoLugarList, latLngLugarList);
                 }
             }
@@ -97,6 +116,7 @@ public class FragmentShowMapsPresenter implements FragmentShowMapsMVP.Presenter 
         if (infoLugarList != null && latLngLugarList != null) {
             if (infoLugarList.size() != 0 && latLngLugarList.size() != 0) {
                 if (latLngUsuario != null) {
+                    vista.saveBusquedaEncontrada(true);
                     vista.addMarkersSitiosCercanos(latLngUsuario, infoLugarList, latLngLugarList);
                 }
             }
@@ -137,6 +157,12 @@ public class FragmentShowMapsPresenter implements FragmentShowMapsMVP.Presenter 
     }
 
     @Override
+    public boolean getRangoBusquedaVisibleActualizado() {
+        modelo.getConfiguraciones();
+        return modelo.getRangoBusquedaVisible();
+    }
+
+    @Override
     public double getRangoDeBusquedaKmActualizado() {
         modelo.getConfiguraciones();
         return modelo.getRangoBusquedaKm();
@@ -155,6 +181,23 @@ public class FragmentShowMapsPresenter implements FragmentShowMapsMVP.Presenter 
     }
 
     @Override
+    public void setUltimaUbicacionUsuario(LatLng ultimaUbicacion) {
+        if (ultimaUbicacion != null) {
+            modelo.guardarUltimaUbicacionUsuario(ultimaUbicacion);
+        }
+    }
+
+    @Override
+    public LatLng getUltimaUbicacionUsuario() {
+        return modelo.getUltimaUbicacionUsuario();
+    }
+
+    @Override
+    public BusquedaSeleccionarActividad getDatosFromBusquedaSeleccionada() {
+        return modelo.getDatosBusquedaSeleccionada();
+    }
+
+    @Override
     public void cargarUbicacionGPS() {
         modelo.addLocationUpdateCallback(new LocationCallback() {
             @Override
@@ -168,6 +211,36 @@ public class FragmentShowMapsPresenter implements FragmentShowMapsMVP.Presenter 
                 vista.addMarkerUbicacionGPS(ubicacionActualLatLong);
             }
         });
+    }
+
+    @Override
+    public void CargarDatosGeofire(InfoLugar lugar) {
+        LatLng latLngLugar = lugar.getLatLong();
+        GeoFire geoFire = modelo.getGeoFire();
+        geoFire.setLocation(lugar.getNombre(),
+                new GeoLocation(latLngLugar.latitude, latLngLugar.longitude));
+    }
+
+    @Override
+    public void ObtenerSnapshotTodaRuta() {
+        DatabaseReference mDatabase = modelo.getDataBaseReference();
+        mDatabase.get()
+                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DataSnapshot snapshot : task.getResult().getChildren()) {
+                                // COnvertimos el snapshot a un objeto tipo InfoLugar
+                                InfoLugar infoLugar = snapshot.getValue(InfoLugar.class);
+                                // Verificamos que el objeto InfoLugar no este vacio
+                                if (infoLugar != null) {
+                                    CargarDatosGeofire(infoLugar);
+                                }
+                            }
+                        }
+
+                    }
+                });
     }
 
 
