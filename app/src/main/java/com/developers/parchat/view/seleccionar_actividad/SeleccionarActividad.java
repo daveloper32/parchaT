@@ -1,22 +1,22 @@
 package com.developers.parchat.view.seleccionar_actividad;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import com.developers.parchat.R;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
+import com.developers.parchat.R;
 import com.developers.parchat.view.main.MainActivity;
 
 public class SeleccionarActividad extends AppCompatActivity implements View.OnClickListener {
 
     // Declaramos objetos CheckBox, Button y ProgressBar
-    private CheckBox cB_SeleccionarActividad_restaurantes, cB_SeleccionarActividad_musica,
+    private CardView cB_SeleccionarActividad_restaurantes, cB_SeleccionarActividad_musica,
             cB_SeleccionarActividad_cine, cB_SeleccionarActividad_areasVerdes,
-            cB_SeleccionarActividad_arte, cB_SeleccionarActividad_farmacia;
+            cB_SeleccionarActividad_arte, cB_SeleccionarActividad_sorpresa;
     private Button b_SeleccionarActividad_salir, b_SeleccionarActividad_continuar;
 
     @Override
@@ -68,7 +68,7 @@ public class SeleccionarActividad extends AppCompatActivity implements View.OnCl
         cB_SeleccionarActividad_cine = findViewById(R.id.cB_SeleccionarActividad_cine);
         cB_SeleccionarActividad_areasVerdes = findViewById(R.id.cB_SeleccionarActividad_areasVerdes);
         cB_SeleccionarActividad_arte = findViewById(R.id.cB_SeleccionarActividad_arte);
-        cB_SeleccionarActividad_farmacia = findViewById(R.id.cB_SeleccionarActividad_farmacia);
+        cB_SeleccionarActividad_sorpresa = findViewById(R.id.cB_SeleccionarActividad_sorpresa);
         // Button
         b_SeleccionarActividad_salir = findViewById(R.id.b_SeleccionarActividad_salir);
         b_SeleccionarActividad_continuar = findViewById(R.id.b_SeleccionarActividad_continuar);

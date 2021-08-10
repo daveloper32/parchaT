@@ -79,6 +79,7 @@ public interface PerfilUsuarioMVP {
         void showProgressBar();
 
         void hideProgressBar();
+
         void cargarImagenUsuario (Uri linkFotoUsuario);
     }
 }

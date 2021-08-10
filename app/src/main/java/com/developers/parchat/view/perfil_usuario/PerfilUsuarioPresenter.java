@@ -60,6 +60,7 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
     @Override
     public void CambiarFoto() {
 
+
     }
 
     @Override
