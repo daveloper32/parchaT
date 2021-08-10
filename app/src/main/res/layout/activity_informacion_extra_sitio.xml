@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.info_extra_sitio.InformacionExtraSitio">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar_info_extra_sitio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp"
+                android:paddingRight="20dp">
+
+                <ImageView
+                    android:id="@+id/imgV_InformacionExtraSitio_fotoSitio"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="15dp"
+                    android:contentDescription="@string/imgV_InformacionExtraSitio_fotoSitio_contDes"
+                    android:src="@drawable/ic_actividades_zonas_verdes" />
+
+                <TextView
+                    android:id="@+id/tV_InformacionExtraSitio_nomSitio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal"
+                    android:text="@string/tV_InformacionExtraSitio_nomSitio"
+                    android:textColor="@color/blue_darky"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tV_InformacionExtraSitio_tipoLugar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal"
+                    android:text="@string/tV_InformacionExtraSitio_tipoLugar"
+                    android:textColor="@color/grey_light" />
+
+                <TextView
+                    android:id="@+id/tV_InformacionExtraSitio_dirLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal"
+                    android:text="@string/tV_InformacionExtraSitio_direccionSitio"
+                    android:textColor="@color/grey_light" />
+
+                <TextView
+                    android:id="@+id/tV_InformacionExtraSitio_direccionSitio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal"
+                    android:text="@string/tV_InformacionExtraSitio_direccionSitio"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tV_InformacionExtraSitio_cityCountry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal"
+                    android:text="@string/tV_InformacionExtraSitio_cityCountry"
+                    android:textColor="@color/grey_light" />
+
+                <TextView
+                    android:id="@+id/tV_InformacionExtraSitio_numeroLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal"
+                    android:text="@string/tV_InformacionExtraSitio_numeroSitio"
+                    android:textColor="@color/grey_light" />
+
+                <TextView
+                    android:id="@+id/tV_InformacionExtraSitio_numeroSitio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal"
+                    android:text="@string/tV_InformacionExtraSitio_numeroSitio"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tV_InformacionExtraSitio_urlLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal"
+                    android:text="@string/tV_InformacionExtraSitio_urlSitio"
+                    android:textColor="@color/grey_light" />
+
+                <TextView
+                    android:id="@+id/tV_InformacionExtraSitio_urlSitio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal"
+                    android:text="@string/tV_InformacionExtraSitio_urlSitio"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
