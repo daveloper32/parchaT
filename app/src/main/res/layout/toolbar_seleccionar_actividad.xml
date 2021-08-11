@@ -27,7 +27,7 @@
 
         <Button
             android:id="@+id/b_SeleccionarActividad_salir"
-            android:layout_width="75dp"
+            android:layout_width="100dp"
             android:layout_height="35dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"

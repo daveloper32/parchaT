@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -15,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +28,11 @@ import com.bumptech.glide.Glide;
 import com.developers.parchat.R;
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.main.MainActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
 public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP.View, View.OnClickListener {
@@ -45,17 +52,17 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
     private StorageReference ReferenciaDeAlmacenamiento;
     //Creacion de carpeta en el storage de firebase
     private String RutaDeAlmacenamiento = "FotosDePerfil/*";
-    private String MEDIA_DIRECTORY = RutaDeAlmacenamiento + "media";
-    private String TEMPORAL_PICTURE_NAME = "imagen.jpg";
+    private String PICTURE_NAME = "imagen.jpg";
+    private FirebaseStorage storage;
+    private StorageReference referenciaStorage;
 
     /*PERMISOS*/
     private static final int CODIGO_DE_SOLICITUD_DE_ALMACENAMIENTO = 200;
     private static final int CODIGO_PARA_LA_SELECCION_DE_LA_IMAGEN = 300;
 
     /*MATRICES*/
-    private String [] PermisosDeAlmacenamiento;
+    private String[] PermisosDeAlmacenamiento;
     private Uri imagen_uri;
-    private String perfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +95,9 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         // ProgressBar
         pB_registro = findViewById(R.id.pB_perfilUsuario);
 
+        storage = FirebaseStorage.getInstance();
+        referenciaStorage = storage.getReference();
+
         // Listeners
         imgB_perfUsuario_volver.setOnClickListener(this);
         imgB_perfUsuario_editar.setOnClickListener(this);
@@ -95,7 +105,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         tV_perfUsuario_cambiarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CambiarFoto ();
+                CambiarFoto();
             }
         });
 
@@ -107,7 +117,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         int idPresionado = v.getId();
         switch (idPresionado) {
             case (R.id.imgB_perfUsuario_volver):
-                if (isEdicionActivada()){
+                if (isEdicionActivada()) {
                     MensajeEmergente(this);
                 } else {
                     irAlActivityMain(MainActivity.class);
@@ -284,9 +294,9 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         }
     }
 
-    public void CambiarFoto(){
+    public void CambiarFoto() {
 
-        String [] Opciones = {"Tomar foto", "Elegir de galeria", "Cancelar"};
+        String[] Opciones = {"Tomar foto", "Elegir de galeria", "Cancelar"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Seleccionar opcion");
@@ -294,25 +304,22 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if ( Opciones [which] == "Elegir de galeria"){
+                if (Opciones[which] == "Elegir de galeria") {
 
                     //Solicita permiso para ingresar a la galeria
-                    if (!ComprobarPermisoAlmacenamiento()){
+                    if (!ComprobarPermisoAlmacenamiento()) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             SolicitarPermisoAlmacenamiento();
                         }
-                    }else {
+                    } else {
                         ElegirImagenDeGaleria();
                     }
-                }else if (Opciones [which] == "Tomar foto") {
-                    OpenCamera ();
-                }else if (Opciones [which] == "cancelar"){
+                } else if (Opciones[which] == "Tomar foto") {
+                    OpenCamera();
+                } else if (Opciones[which] == "cancelar") {
                     dialog.dismiss();
                 }
             }
-
-
-
 
             @RequiresApi(api = Build.VERSION_CODES.M)
             private void SolicitarPermisoAlmacenamiento() {
@@ -323,9 +330,19 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
 
                 Intent panelGaleria = new Intent(Intent.ACTION_PICK);
                 panelGaleria.setType("image/*");
-                startActivityForResult(panelGaleria,CODIGO_PARA_LA_SELECCION_DE_LA_IMAGEN);
+                startActivityForResult(panelGaleria, CODIGO_PARA_LA_SELECCION_DE_LA_IMAGEN);
             }
-        }); builder.create().show();
+        });
+        builder.create().show();
+
+    }
+
+    private void OpenCamera() {
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(intent.resolveActivity(getPackageManager()) != null){
+            startActivityForResult(intent, 1);
+        }
 
     }
 
@@ -333,53 +350,51 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
 
         boolean resultado = ContextCompat.checkSelfPermission(PerfilUsuario.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-        if (!resultado){
+        if (!resultado) {
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
-            },1);
+            }, 1);
         }
         return resultado;
     }
 
-    private void OpenCamera() {
-        /*File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
-        file.mkdirs();
-
-        String path = Environment.getExternalStorageDirectory() +File.separator
-                + MEDIA_DIRECTORY + File.separator + TEMPORAL_PICTURE_NAME;
-
-        File newFile = File (path);
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
-        startActivityForResult(intent, CODIGO_DE_SOLICITUD_DE_ALMACENAMIENTO);*/
-    }
-    }
-    /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case CODIGO_DE_SOLICITUD_DE_ALMACENAMIENTO:
-                if (resultCode == RESULT_OK) {
-                    String dir = Environment.getExternalStorageDirectory() +File.separator
-                            + MEDIA_DIRECTORY + File.separator + TEMPORAL_PICTURE_NAME;
-                    decodeBitmap (dir);
-                }
-            break;
-
-            case SELECT_PICTURE:
-                if (resultCode == RESULT_OK){
-                    Uri path = data.getData();
-                    imagen_uri.setImageURI(path);
-                }
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imgBitmap = (Bitmap) extras.get("data");
+            imgV_perfUsuario_fotoUsuario.setImageBitmap(imgBitmap);
         }
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CODIGO_PARA_LA_SELECCION_DE_LA_IMAGEN) {
+                imagen_uri = data.getData();
+                subirFoto(imagen_uri);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+
+
     }
 
-    private void decodeBitmap(String dir) {
-        Bitmap bitmap;
-        bitmap = BitmapFactory.decodeFile(dir);
-        de.hdodenhof.circleimageview.CircleImageView.setImageBitmap (bitmap);
+    private void subirFoto(Uri imagen_uri) {
+
+        String rutaArchivo = RutaDeAlmacenamiento + "" + PICTURE_NAME;
+        StorageReference storageReference = referenciaStorage.child(rutaArchivo);
+        storageReference.putFile(imagen_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+
+                while (!uriTask.isSuccessful()) ;
+                Uri descarga_uri = uriTask.getResult();
+
+                imgV_perfUsuario_fotoUsuario.setImageURI(descarga_uri);
+            }
+        });
     }
-}*/
+}
+

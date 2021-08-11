@@ -21,48 +21,52 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:paddingBottom="100dp">
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="0dp"
                 android:layout_marginTop="80dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginRight="12dp"
                 android:fontFamily="sans-serif-smallcaps"
-                android:text="¿Qué quieres hacer hoy?"
+                android:text="@string/tV_SeleccionarActividad_titulo"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="323dp"
+                android:layout_height="413dp"
                 android:layout_below="@+id/textView"
-                android:layout_margin="40dp"
-                android:paddingBottom="100dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="0dp"
                 android:columnCount="2"
-                android:rowCount="3">
+                android:rowCount="4">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cB_SeleccionarActividad_restaurantes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="fill"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
                     android:layout_row="0"
+                    android:layout_rowWeight="1"
                     android:layout_column="0"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp"
-                    app:cardUseCompatPadding="true"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:checkable="true"
                     android:clickable="true"
                     android:focusable="true"
-                    android:checkable="true">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -74,14 +78,14 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_actividades_comida"/>
+                            android:src="@drawable/ic_actividades_comida" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tV_SeleccionarActividad_restaurantes"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -91,17 +95,17 @@
                     android:id="@+id/cB_SeleccionarActividad_areasVerdes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="fill"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
                     android:layout_row="0"
+                    android:layout_rowWeight="1"
                     android:layout_column="1"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp"
-                    app:cardUseCompatPadding="true"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:checkable="true"
                     android:clickable="true"
                     android:focusable="true"
-                    android:checkable="true">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -113,14 +117,14 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_actividades_zonas_verdes"/>
+                            android:src="@drawable/ic_actividades_zonas_verdes" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tV_SeleccionarActividad_areasVerdes"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -130,17 +134,17 @@
                     android:id="@+id/cB_SeleccionarActividad_cine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="fill"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
                     android:layout_row="1"
+                    android:layout_rowWeight="1"
                     android:layout_column="0"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp"
-                    app:cardUseCompatPadding="true"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:checkable="true"
                     android:clickable="true"
                     android:focusable="true"
-                    android:checkable="true">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -152,14 +156,14 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_actividades_cine"/>
+                            android:src="@drawable/ic_actividades_cine" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tV_SeleccionarActividad_cine"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -169,17 +173,17 @@
                     android:id="@+id/cB_SeleccionarActividad_musica"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="fill"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
                     android:layout_row="1"
+                    android:layout_rowWeight="1"
                     android:layout_column="1"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp"
-                    app:cardUseCompatPadding="true"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:checkable="true"
                     android:clickable="true"
                     android:focusable="true"
-                    android:checkable="true">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -191,14 +195,14 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_actividades_musica"/>
+                            android:src="@drawable/ic_actividades_musica" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tV_SeleccionarActividad_musica"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -208,17 +212,17 @@
                     android:id="@+id/cB_SeleccionarActividad_arte"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="fill"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
                     android:layout_row="2"
+                    android:layout_rowWeight="1"
                     android:layout_column="0"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp"
-                    app:cardUseCompatPadding="true"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:checkable="true"
                     android:clickable="true"
                     android:focusable="true"
-                    android:checkable="true">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -230,14 +234,14 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_actividades_arte"/>
+                            android:src="@drawable/ic_actividades_arte" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tV_SeleccionarActividad_arte"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -247,17 +251,17 @@
                     android:id="@+id/cB_SeleccionarActividad_sorpresa"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="fill"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
                     android:layout_row="2"
+                    android:layout_rowWeight="1"
                     android:layout_column="1"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp"
-                    app:cardUseCompatPadding="true"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:checkable="true"
                     android:clickable="true"
                     android:focusable="true"
-                    android:checkable="true">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -269,14 +273,14 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_actividades_sorpresa"/>
+                            android:src="@drawable/ic_actividades_sorpresa" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tV_SeleccionarActividad_sorpresa"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -284,15 +288,24 @@
 
             </GridLayout>
 
-
             <Button
-
                 android:id="@+id/b_SeleccionarActividad_continuar"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:translationX="102dp"
-                android:translationY="480dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="100dp"
+                android:layout_marginLeft="128dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginRight="150dp"
+                android:layout_marginBottom="600dp"
                 android:text="@string/b_SeleccionarActividad_continuar" />
+
+
+
 
         </RelativeLayout>
 

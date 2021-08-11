@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="#FF5328"
+        android:background="@drawable/im_fondo_perfil"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +31,7 @@
             android:foregroundGravity="center_horizontal"
             android:gravity="center_horizontal"
             android:text="@string/tV_ActivityMain_nomUsuario"
+            android:textColor="#FFFFFF"
             android:textSize="20sp" />
 
         <TextView
@@ -42,6 +43,7 @@
             android:foregroundGravity="center_horizontal"
             android:gravity="center_horizontal"
             android:text="@string/tV_ActivityMain_emailUsuario"
+            android:textColor="#FFFFFF"
             android:textSize="14sp" />
     </LinearLayout>
 
