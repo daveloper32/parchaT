@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".view.info_extra_sitio.InformacionExtraSitio">
 
     <include
@@ -51,7 +52,7 @@
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_InformacionExtraSitio_nomSitio"
-                    android:textColor="@color/blue_darky"
+                    android:textColor="?attr/colorSecondary"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
@@ -63,7 +64,7 @@
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_InformacionExtraSitio_tipoLugar"
-                    android:textColor="@color/grey_light" />
+                    android:textColor="?attr/colorOnSecondary" />
 
                 <TextView
                     android:id="@+id/tV_InformacionExtraSitio_dirLabel"
@@ -73,7 +74,7 @@
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_InformacionExtraSitio_direccionSitio"
-                    android:textColor="@color/grey_light" />
+                    android:textColor="?attr/colorOnSecondary" />
 
                 <TextView
                     android:id="@+id/tV_InformacionExtraSitio_direccionSitio"
@@ -83,7 +84,7 @@
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_InformacionExtraSitio_direccionSitio"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="18sp" />
 
                 <TextView
@@ -94,7 +95,7 @@
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_InformacionExtraSitio_cityCountry"
-                    android:textColor="@color/grey_light" />
+                    android:textColor="?attr/colorOnSecondary" />
 
                 <TextView
                     android:id="@+id/tV_InformacionExtraSitio_numeroLabel"
@@ -104,7 +105,7 @@
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_InformacionExtraSitio_numeroSitio"
-                    android:textColor="@color/grey_light" />
+                    android:textColor="?attr/colorOnSecondary" />
 
                 <TextView
                     android:id="@+id/tV_InformacionExtraSitio_numeroSitio"
@@ -114,7 +115,7 @@
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_InformacionExtraSitio_numeroSitio"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="18sp" />
 
                 <TextView
@@ -125,7 +126,7 @@
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_InformacionExtraSitio_urlSitio"
-                    android:textColor="@color/grey_light" />
+                    android:textColor="?attr/colorOnSecondary" />
 
                 <TextView
                     android:id="@+id/tV_InformacionExtraSitio_urlSitio"
@@ -135,7 +136,7 @@
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_InformacionExtraSitio_urlSitio"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="18sp" />
 
             </LinearLayout>

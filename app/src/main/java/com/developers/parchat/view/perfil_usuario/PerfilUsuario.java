@@ -122,6 +122,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
                 presentador.GuardarDatos();
                 break;
             case (R.id.tV_perfUsuario_cambiarFoto):
+                //cambiarFotoPronto();
                 verificarPermisosCamara();
                 //presentador.CambiarFoto();
                 break;
@@ -187,6 +188,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
                 PackageManager.PERMISSION_GRANTED) {
             // SI tiene el permiso de camara
             //presentador.CambiarFoto();
+            //cambiarFotoPronto();
             cambiarFoto();
 
         } else {
@@ -196,8 +198,13 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
                     Manifest.permission.READ_EXTERNAL_STORAGE
             };
             // Si no tiene el permiso de camara
+            //cambiarFotoPronto();
             requestPermissionCamara.launch(PERMISOS_CAMARA);
         }
+    }
+
+    private void cambiarFotoPronto() {
+        Toast.makeText(this, R.string.msgToast_perfUsuario_7, Toast.LENGTH_LONG).show();
     }
 
     private ActivityResultLauncher <String[]> requestPermissionCamara =
@@ -206,6 +213,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
     isGranted -> {
         if (!isGranted.containsValue(false)) {
             //presentador.CambiarFoto();
+            //cambiarFotoPronto();
             cambiarFoto();
         } else {
             // Si los permisos no se otorgaron
@@ -232,7 +240,8 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (opcionesCambiarFoto[which] == tomarFoto) {
-                            TomarFoto();
+                            cambiarFotoPronto();
+                            //TomarFoto();
                         } else if (opcionesCambiarFoto[which] == elegirDeGaleria) {
                             ElegirFotoDeGaleria();
                         } else if (opcionesCambiarFoto[which] == cancelar) {

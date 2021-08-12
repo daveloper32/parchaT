@@ -160,6 +160,8 @@
         \n\nNo es posible cambiar tu foto de perfil.</string>
     <string name="msgToast_perfUsuario_6">¡Algo salio mal!
         \n\nNo se pudo cambiar tu foto de perfil.</string>
+    <string name="msgToast_perfUsuario_7">En desarrollo....
+    \n\nIntenta subir la foto desde la galeria.</string>
     <string name="msgAlertDiag_perfUsuario_1">¿Esta seguro que quiere salir sin guardar los cambios?</string>
     <string name="msgAlertDiag_perfUsuario_1_positive">Si</string>
     <string name="msgAlertDiag_perfUsuario_1_negative">Cancelar</string>
