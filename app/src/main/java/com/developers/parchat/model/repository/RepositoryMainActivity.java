@@ -6,8 +6,12 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
+import com.developers.parchat.R;
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.main.MainActivityMVP;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,6 +37,8 @@ public class RepositoryMainActivity implements MainActivityMVP.Model {
     private DatabaseReference referenciaUsuario;
     // Declaramos un objeto de la CLase StorageReference
     private StorageReference referenciaStorage;
+    // Declaramos un Objeto de la clase GoogleSignInClient
+    private GoogleSignInClient mGoogleSignInClient;
     // Declaramos una variable de tipo String para recibir el id del usuario en la base de datos -> User UID
     private String IdUsuario;
     private Usuario datosUsuario;
@@ -98,6 +104,8 @@ public class RepositoryMainActivity implements MainActivityMVP.Model {
     public void cerrarSesionFirebase() {
         // Usamos el metodo de FirebaseAuth para cerrar sesión
         mAuth.signOut();
+        // Cerramos sesion con Google
+        mGoogleSignInClient.signOut();
     }
 
     @Override
@@ -131,5 +139,16 @@ public class RepositoryMainActivity implements MainActivityMVP.Model {
                 presentadorMain.getURLStorageImagenUsuarioConExito(uri);
             }
         });
+    }
+
+    @Override
+    public void performGoogleLogin() {
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(contextMain.getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(contextMain, gso);
     }
 }

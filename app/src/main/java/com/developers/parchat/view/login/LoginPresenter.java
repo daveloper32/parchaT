@@ -2,6 +2,8 @@ package com.developers.parchat.view.login;
 
 // Va a llevar toda la logica de la vista Login
 
+import android.content.Intent;
+import android.util.Log;
 import android.util.Patterns;
 
 import com.developers.parchat.model.entity.Usuario;
@@ -9,6 +11,12 @@ import com.developers.parchat.model.repository.RepositoryLogin;
 import com.developers.parchat.view.recuperar_password.RecuperarPassword;
 import com.developers.parchat.view.registro.Registro;
 import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
+import com.facebook.CallbackManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 
 public class LoginPresenter implements LoginMVP.Presenter {
@@ -79,13 +87,15 @@ public class LoginPresenter implements LoginMVP.Presenter {
 
     @Override
     public void IniciarSesionFacebook() {
-
+        vista.showProgressBar();
+        firebaseAuthWithFacebook();
     }
 
     @Override
     public void IniciarSesionGoogle() {
-
-
+        modelo.performGoogleLogin();
+        vista.showProgressBar();
+        vista.signInGoogle();
     }
 
     @Override
@@ -106,6 +116,80 @@ public class LoginPresenter implements LoginMVP.Presenter {
     @Override
     public void InicioSesionFallido() {
         vista.showToastPasswordError();
+        // Escondemos el ProgressBar
+        vista.hideProgressBar();
+    }
+
+    @Override
+    public GoogleSignInClient getGoogleSignInClientFromRepo() {
+        return modelo.getGoogleSignInClient();
+    }
+
+    @Override
+    public void runGoogleIntent(Intent data) {
+        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+        try {
+            // Google Sign In was successful, authenticate with Firebase
+            GoogleSignInAccount account = task.getResult(ApiException.class);
+            //Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+            setFirebaseAuthWithGoogle(account.getIdToken());
+            vista.hideProgressBar();
+        } catch (ApiException e) {
+            // Google Sign In failed, update UI appropriately
+            //Log.w(TAG, "Google sign in failed", e);
+            vista.hideProgressBar();
+        }
+    }
+
+    @Override
+    public void setFirebaseAuthWithGoogle(String idToken) {
+        modelo.firebaseAuthWithGoogle(idToken);
+    }
+
+    @Override
+    public void firebaseAuthWithGoogleFalla() {
+        vista.showToastFirebaseAuthWithGoogleError();
+        vista.hideProgressBar();
+    }
+
+    @Override
+    public void SaveUsuarioInDBWithGoogleExitosa() {
+        vista.hideProgressBar();
+        vista.irAlActivitySeleccionarActividad(SeleccionarActividad.class);
+    }
+
+    @Override
+    public void SaveUsuarioInDBWithGoogleFallo() {
+        vista.showToastFirebaseAuthWithGoogleError();
+        vista.hideProgressBar();
+    }
+
+    @Override
+    public void firebaseAuthWithFacebook() {
+        modelo.firebaseAuthWithFacebook();
+    }
+
+    @Override
+    public void firebaseAuthWithFacebookFalla() {
+        vista.showToastFirebaseAuthWithFacebookError();
+        vista.hideProgressBar();
+    }
+
+    @Override
+    public void SaveUsuarioInDBWithFacebookExitosa() {
+        vista.hideProgressBar();
+        vista.irAlActivitySeleccionarActividad(SeleccionarActividad.class);
+    }
+
+    @Override
+    public void SaveUsuarioInDBWithFacebookFallo() {
+        vista.showToastFirebaseAuthWithFacebookError();
+        vista.hideProgressBar();
+    }
+
+    @Override
+    public CallbackManager getCallbackManager() {
+        return modelo.getCallbackManager();
     }
 
 

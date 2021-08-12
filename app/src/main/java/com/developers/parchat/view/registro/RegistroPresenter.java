@@ -101,6 +101,8 @@ public class RegistroPresenter implements RegistroMVP.Presenter {
     @Override
     public void AuthUsuarioFallo() {
         vista.showToastErrorRegistrarUsuarioNuevo();
+        // Ocultamos ProgressBar
+        vista.hideProgressBar();
     }
 
     @Override
@@ -116,5 +118,7 @@ public class RegistroPresenter implements RegistroMVP.Presenter {
     @Override
     public void SaveUsuarioInDBFallo() {
         vista.showToastErrorRegistrarUsuarioNuevo();
+        // Ocultamos ProgressBar
+        vista.hideProgressBar();
     }
 }

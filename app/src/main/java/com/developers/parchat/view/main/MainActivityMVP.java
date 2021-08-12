@@ -27,6 +27,8 @@ public interface MainActivityMVP {
 
         void buscarFotoUsuario();
 
+        void performGoogleLogin();
+
 
     }
     // EL presentador recibe los eventos que ocurriran en la vista

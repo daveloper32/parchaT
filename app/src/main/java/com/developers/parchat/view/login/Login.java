@@ -9,12 +9,16 @@ package com.developers.parchat.view.login;
 // El círculo que se ve es el color naranja con opacidad 37%
 // Fuente temporal: sans-serif-smallcaps
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -26,7 +30,16 @@ import com.developers.parchat.R;
 
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
+import com.facebook.CallbackManager;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.Arrays;
 
 // EN model
 // -> entity clases y archivos para guardar informacion -> EN general informacion
@@ -46,6 +59,13 @@ public class Login extends AppCompatActivity implements LoginMVP.View, View.OnCl
     private Button b_login_iniSesion;
     private ImageButton imgB_login_facebook, imgB_login_google;
     private ProgressBar pB_login;
+
+    //Google Login
+    private GoogleSignInClient googleSignInClient;
+    // Constantes
+    //private int RC_SIGN_IN = 112;
+    //private String TAG = "GoogleSignInLoginActivity";
+    // End Google Login
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +126,9 @@ public class Login extends AppCompatActivity implements LoginMVP.View, View.OnCl
                 break;
             // Si se presiona el boton de Facebook
             case (R.id.imgB_login_facebook):
+                LoginManager.getInstance()
+                        .logInWithReadPermissions(this,
+                                Arrays.asList("public_profile", "user_photos"));
                 // EL presentador llama al metodo IniciarSesionFacebook
                 presentador.IniciarSesionFacebook();
                 break;
@@ -134,6 +157,32 @@ public class Login extends AppCompatActivity implements LoginMVP.View, View.OnCl
         Usuario credentialsUsuario = new Usuario(email, password);
         // Retornamos el objeto LoginCredentialsoUsuario
         return credentialsUsuario;
+    }
+
+    @Override
+    public void signInGoogle() {
+        googleSignInClient = presentador.getGoogleSignInClientFromRepo();
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        googleLauncher.launch(signInIntent);
+        //startActivityForResult(signInIntent, RC_SIGN_IN);
+
+    }
+
+    ActivityResultLauncher <Intent> googleLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Intent data = result.getData();
+                presentador.runGoogleIntent(data);
+            }
+    );
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        CallbackManager callbackManager = presentador.getCallbackManager();
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     @Override
@@ -178,6 +227,16 @@ public class Login extends AppCompatActivity implements LoginMVP.View, View.OnCl
     @Override
     public void showToastPasswordError() {
         Toast.makeText(this, R.string.msgToast_login_2, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showToastFirebaseAuthWithGoogleError() {
+        Toast.makeText(this, R.string.msgToast_login_3, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showToastFirebaseAuthWithFacebookError() {
+        Toast.makeText(this, R.string.msgToast_login_3, Toast.LENGTH_LONG).show();
     }
 
     @Override

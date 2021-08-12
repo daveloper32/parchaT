@@ -8,6 +8,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import com.developers.parchat.R;
 import com.developers.parchat.model.entity.InfoLugar;
@@ -17,6 +18,7 @@ public class ShowWebPageSitio extends AppCompatActivity {
 
     private ImageButton imgB_ShowWebPageSitio_atras;
     private WebView wB_ShowWebPageSitio;
+    private ProgressBar pB_show_webpage_sitio;
 
     private String paginaWeb;
 
@@ -32,6 +34,9 @@ public class ShowWebPageSitio extends AppCompatActivity {
     private void IniciarVista() {
         imgB_ShowWebPageSitio_atras = findViewById(R.id.imgB_ShowWebPageSitio_atras);
         wB_ShowWebPageSitio = findViewById(R.id.wB_ShowWebPageSitio);
+        pB_show_webpage_sitio = findViewById(R.id.pB_show_webpage_sitio);
+
+        pB_show_webpage_sitio.setVisibility(View.VISIBLE);
 
         infoLugar = getIntent().getParcelableExtra("infolugar");
 
@@ -41,6 +46,7 @@ public class ShowWebPageSitio extends AppCompatActivity {
             //webViewMio.getSettings().setLoadsImagesAutomatically(true);
             wB_ShowWebPageSitio.getSettings().setJavaScriptEnabled(true);
             wB_ShowWebPageSitio.loadUrl(paginaWeb);
+            pB_show_webpage_sitio.setVisibility(View.GONE);
         }
 
         imgB_ShowWebPageSitio_atras.setOnClickListener(new View.OnClickListener() {

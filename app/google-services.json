@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1065982828082",
+    "firebase_url": "https://prismatic-petal-320304-default-rtdb.firebaseio.com",
     "project_id": "prismatic-petal-320304",
     "storage_bucket": "prismatic-petal-320304.appspot.com"
   },
@@ -13,6 +14,22 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1065982828082-4sbd4tmrv696ne60712h4m1pfpruudm8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.developers.parchat",
+            "certificate_hash": "c3798a967affdf4bb0c5ea0d49477d018e995a37"
+          }
+        },
+        {
+          "client_id": "1065982828082-gjpnhr362fcvtd7no9bkijdc6g70p1j0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.developers.parchat",
+            "certificate_hash": "91726cbe09b3be0ebc3f3addf6a8e964a43ed08c"
+          }
+        },
         {
           "client_id": "1065982828082-knncregq0nbkacth46dvmavm217uesnl.apps.googleusercontent.com",
           "client_type": 3

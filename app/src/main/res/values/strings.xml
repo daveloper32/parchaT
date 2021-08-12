@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">ParchaT</string>
 
+    <!--Id facebook name aplication-->
+    <string name="facebook_app_id">584463539405075</string>
+
     <!--Start Login Strings-->
     <string name="imgV_login_logo_contDes">Logo parchaT</string>
     <string name="eT_login_correo">Correo electrónico</string>
@@ -21,6 +24,7 @@
     <!---Start Login Mensajes Emergentes Strings-->
     <string name="msgToast_login_1">!El correo ingresado no esta registrado o es incorrecto!</string>
     <string name="msgToast_login_2">!La contraseña ingresada es incorrecta!</string>
+    <string name="msgToast_login_3">¡Algo salio mal! ¡Ingresa de nuevo!</string>
     <!---End Login Mensajes Emergentes Strings-->
     <!--End Login Strings-->
 
@@ -211,6 +215,7 @@
     <!---Start Toolbar-->
     <string name="imgB_ShowWebPageSitio_atras_contDes">Atrás</string>
     <string name="tV_tB_ShowWebPageSitio_titulo"></string>
+
     <!---End Toolbar-->
 
     <!---End InformacionExtraSitio  Strings-->

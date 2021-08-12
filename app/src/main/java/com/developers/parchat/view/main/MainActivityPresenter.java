@@ -39,6 +39,7 @@ public class MainActivityPresenter implements MainActivityMVP.Presenter {
 
     @Override
     public void CerrarSesion() {
+        modelo.performGoogleLogin();
         modelo.cerrarSesionFirebase();
         vista.irAlActivityLogin(Login.class);
     }

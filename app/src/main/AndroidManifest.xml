@@ -98,10 +98,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDihQEGTP5T7LlWV7VT7jhnULw8UhZ_2Kk" />
+
     </application>
 
 </manifest>

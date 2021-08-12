@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
         // Cargamos la configuracion del NavigationDrawer
         CargarNavigationDrawer();
 
+
+
     }
 
     @Override

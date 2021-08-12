@@ -5,10 +5,15 @@ package com.developers.parchat.view.login;
 // vista hace referencia al archivo .java que esta linkeado a el .xml
 
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.developers.parchat.model.entity.Usuario;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public interface LoginMVP {
@@ -20,6 +25,22 @@ public interface LoginMVP {
         void validarConEmailYPasswordUsuario(String email, String password);
         // Verificamos si el usuario ya habia iniciado sesion previamente en la app
         boolean validarSaltarLogin();
+
+        void performGoogleLogin();
+
+        void firebaseAuthWithGoogle(String idToken);
+        void firebaseAuthWithGoogleExito(FirebaseUser usuarioActual);
+
+        void guardarUsuarioNuevoWithGoogleEnBaseDatos(Usuario usuarioNuevoGoogle);
+
+        GoogleSignInClient getGoogleSignInClient();
+
+        void firebaseAuthWithFacebook();
+        void firebaseAuthWithFacebookExito(AccessToken token);
+
+        void guardarUsuarioNuevoWithFacebookEnBaseDatos(Usuario usuarioNuevoFacebook);
+
+        CallbackManager getCallbackManager();
     }
 
     // EL presentador recibe los eventos que ocurriran en la vista
@@ -40,12 +61,31 @@ public interface LoginMVP {
         void InicioSesionExitoso();
 
         void InicioSesionFallido();
+
+        GoogleSignInClient getGoogleSignInClientFromRepo();
+        void runGoogleIntent(Intent data);
+
+        void setFirebaseAuthWithGoogle(String idToken);
+        void firebaseAuthWithGoogleFalla();
+
+        void SaveUsuarioInDBWithGoogleExitosa();
+        void SaveUsuarioInDBWithGoogleFallo();
+
+        void firebaseAuthWithFacebook();
+        void firebaseAuthWithFacebookFalla();
+
+        void SaveUsuarioInDBWithFacebookExitosa();
+        void SaveUsuarioInDBWithFacebookFallo();
+
+        CallbackManager getCallbackManager();
     }
 
     // Se obtienen datos e informacion a la vista
     interface View {
         // Primero obtengo las credenciales (correo, password)
         Usuario getLoginCredentialsUsuario();
+
+        void signInGoogle();
 
         // Mostramos errores de validación, si aplica
         // TextInputEditText de email vacio
@@ -70,6 +110,10 @@ public interface LoginMVP {
         void showToastEmailNotFound();
         // Mostrar un mensaje emergente que diga que la contraseña es incorrecta
         void showToastPasswordError();
+
+        void showToastFirebaseAuthWithGoogleError();
+
+        void showToastFirebaseAuthWithFacebookError();
 
         Context getContext();
     }
