@@ -65,14 +65,4 @@ public class MainActivityPresenter implements MainActivityMVP.Presenter {
         modelo.crearConfiguracionesIniciales();
     }
 
-    @Override
-    public void getURLStorageImagenUsuario() {
-        modelo.buscarFotoUsuario();
-    }
-
-    @Override
-    public void getURLStorageImagenUsuarioConExito(Uri linkFotoUsuario) {
-        vista.cargarImagenUsuario(linkFotoUsuario);
-    }
-
 }

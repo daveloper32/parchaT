@@ -4,6 +4,7 @@ package com.developers.parchat.view.login;
 
 // vista hace referencia al archivo .java que esta linkeado a el .xml
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
@@ -35,7 +36,7 @@ public interface LoginMVP {
 
         GoogleSignInClient getGoogleSignInClient();
 
-        void firebaseAuthWithFacebook();
+        void firebaseAuthWithFacebook(Login login);
         void firebaseAuthWithFacebookExito(AccessToken token);
 
         void guardarUsuarioNuevoWithFacebookEnBaseDatos(Usuario usuarioNuevoFacebook);
@@ -52,7 +53,8 @@ public interface LoginMVP {
         // Que pasa si se presiona el texto Registrate
         void RegistrarNuevoUsuario();
         // Que pasa si se presiona el boton de facebook
-        void IniciarSesionFacebook();
+        void IniciarSesionFacebook(Login login);
+        //void IniciarSesionFacebook();
         // Que pasa si se presiona el boton de google
         void IniciarSesionGoogle();
         // Validamos si alguien ya inicio sesion
@@ -71,13 +73,16 @@ public interface LoginMVP {
         void SaveUsuarioInDBWithGoogleExitosa();
         void SaveUsuarioInDBWithGoogleFallo();
 
-        void firebaseAuthWithFacebook();
+        void firebaseAuthWithFacebook(Login login);
         void firebaseAuthWithFacebookFalla();
 
         void SaveUsuarioInDBWithFacebookExitosa();
         void SaveUsuarioInDBWithFacebookFallo();
 
         CallbackManager getCallbackManager();
+
+
+
     }
 
     // Se obtienen datos e informacion a la vista

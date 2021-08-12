@@ -134,7 +134,10 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
             eT_perfUsuario_nombreCom.setText(usuarioActivo.getNombreCompleto());
             eT_perfUsuario_email.setText(usuarioActivo.getEmail());
             eT_perfUsuario_numero.setText(usuarioActivo.getNumeroCel());
-            presentador.getURLStorageImagenUsuario();
+            Uri imgUsuario = Uri.parse(usuarioActivo.getUrlImagenPerfil());
+            if (imgUsuario != null) {
+                cargarImagenUsuario(imgUsuario);
+            }
         }
     }
 
@@ -255,5 +258,10 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
                     .load(linkFotoUsuario)
                     .into(imgV_perfUsuario_fotoUsuario);
         }
+    }
+
+    @Override
+    public void getURLImagenUsuarioFromStorage(Uri linkFotoUsuario) {
+
     }
 }

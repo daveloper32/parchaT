@@ -2,6 +2,8 @@ package com.developers.parchat.view.login;
 
 // Va a llevar toda la logica de la vista Login
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.util.Patterns;
@@ -86,10 +88,12 @@ public class LoginPresenter implements LoginMVP.Presenter {
     }
 
     @Override
-    public void IniciarSesionFacebook() {
+    public void IniciarSesionFacebook(Login login) {
         vista.showProgressBar();
-        firebaseAuthWithFacebook();
+        firebaseAuthWithFacebook(login);
     }
+
+
 
     @Override
     public void IniciarSesionGoogle() {
@@ -165,8 +169,8 @@ public class LoginPresenter implements LoginMVP.Presenter {
     }
 
     @Override
-    public void firebaseAuthWithFacebook() {
-        modelo.firebaseAuthWithFacebook();
+    public void firebaseAuthWithFacebook(Login login) {
+        modelo.firebaseAuthWithFacebook(login);
     }
 
     @Override
@@ -191,6 +195,7 @@ public class LoginPresenter implements LoginMVP.Presenter {
     public CallbackManager getCallbackManager() {
         return modelo.getCallbackManager();
     }
+
 
 
 }

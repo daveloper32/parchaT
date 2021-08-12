@@ -46,6 +46,8 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
                 return;
             }
 
+
+
             // Guardo y confirmo si se guardo
             modelo.editarDatosUsuario(usuarioNuevosDatos);
             vista.showProgressBar();
@@ -90,12 +92,12 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
     }
 
     @Override
-    public void getURLStorageImagenUsuario() {
+    public void generarURLStorageImagenUsuario() {
         modelo.buscarFotoUsuario();
     }
 
     @Override
     public void getURLStorageImagenUsuarioConExito(Uri linkFotoUsuario) {
-        vista.cargarImagenUsuario(linkFotoUsuario);
+        vista.getURLImagenUsuarioFromStorage(linkFotoUsuario);
     }
 }

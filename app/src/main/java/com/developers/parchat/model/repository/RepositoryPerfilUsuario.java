@@ -93,7 +93,7 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
         if (datosUsuario != null) {
             Usuario datosUsuarioActual = new Usuario(
                     datosUsuario.getNombreCompleto(), datosUsuario.getEmail(),
-                    datosUsuario.getNumeroCel());
+                    datosUsuario.getNumeroCel(), datosUsuario.getUrlImagenPerfil());
             return datosUsuarioActual;
         } else {
             return null;

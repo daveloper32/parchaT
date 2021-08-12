@@ -42,7 +42,7 @@ public interface PerfilUsuarioMVP {
 
         void actualizarDatosUsuarioLogeadoConExito();
 
-        void getURLStorageImagenUsuario();
+        void generarURLStorageImagenUsuario();
 
         void getURLStorageImagenUsuarioConExito(Uri linkFotoUsuario);
     }
@@ -80,5 +80,7 @@ public interface PerfilUsuarioMVP {
 
         void hideProgressBar();
         void cargarImagenUsuario (Uri linkFotoUsuario);
+
+        void getURLImagenUsuarioFromStorage(Uri linkFotoUsuario);
     }
 }

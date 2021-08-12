@@ -1,14 +1,17 @@
 package com.developers.parchat.model.repository;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
 import com.developers.parchat.R;
 import com.developers.parchat.model.entity.Usuario;
+import com.developers.parchat.view.login.Login;
 import com.developers.parchat.view.login.LoginMVP;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -138,10 +141,11 @@ public class RepositoryLogin implements LoginMVP.Model {
         String nomCompleto = usuarioActual.getDisplayName();
         String email = usuarioActual.getEmail();
         String numero = usuarioActual.getPhoneNumber();
+        String imgUserPhoto = String.valueOf(usuarioActual.getPhotoUrl());
 
         // Creamos un objeto de la clase usuario
         Usuario usuarioNuevoGoogle = new Usuario(nomCompleto,
-                email, numero);
+                email, numero, imgUserPhoto);
 
         if (usuarioNuevoGoogle != null) {
             guardarUsuarioNuevoWithGoogleEnBaseDatos(usuarioNuevoGoogle);
@@ -174,8 +178,11 @@ public class RepositoryLogin implements LoginMVP.Model {
     }
 
     @Override
-    public void firebaseAuthWithFacebook() {
+    public void firebaseAuthWithFacebook(Login login) {
 
+        LoginManager.getInstance()
+                .logInWithReadPermissions(login,
+                        Arrays.asList("public_profile"));
         LoginManager.getInstance()
                 .registerCallback(callbackManager,
                         new FacebookCallback<LoginResult>() {
@@ -190,6 +197,7 @@ public class RepositoryLogin implements LoginMVP.Model {
 
                             @Override
                             public void onCancel() {
+                                presentadorLogin.firebaseAuthWithFacebookFalla();
 
                             }
 
@@ -215,10 +223,11 @@ public class RepositoryLogin implements LoginMVP.Model {
                             String nomCompleto = usuarioActual.getDisplayName();
                             String email = usuarioActual.getEmail();
                             String numero = usuarioActual.getPhoneNumber();
+                            String imgUserPhoto = String.valueOf(usuarioActual.getPhotoUrl());
 
                             // Creamos un objeto de la clase usuario
                             Usuario usuarioNuevoFacebook = new Usuario(nomCompleto,
-                                    email, numero);
+                                    email, numero, imgUserPhoto);
 
                             if (usuarioNuevoFacebook != null) {
                                 guardarUsuarioNuevoWithFacebookEnBaseDatos(usuarioNuevoFacebook);

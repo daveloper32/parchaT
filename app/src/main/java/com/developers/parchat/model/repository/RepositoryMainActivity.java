@@ -31,12 +31,8 @@ public class RepositoryMainActivity implements MainActivityMVP.Model {
     private FirebaseAuth mAuth;
     // Declaramos un objeto de la Clase FirebaseUser
     private FirebaseUser usuarioActual;
-    // Declarmos un objeto de la Clase FirebaseStorage
-    private FirebaseStorage storage;
     // Declaramos un objeto de la Clase DatabaseReference
     private DatabaseReference referenciaUsuario;
-    // Declaramos un objeto de la CLase StorageReference
-    private StorageReference referenciaStorage;
     // Declaramos un Objeto de la clase GoogleSignInClient
     private GoogleSignInClient mGoogleSignInClient;
     // Declaramos una variable de tipo String para recibir el id del usuario en la base de datos -> User UID
@@ -56,12 +52,8 @@ public class RepositoryMainActivity implements MainActivityMVP.Model {
         mAuth = FirebaseAuth.getInstance();
         // Buscamos el usuario que este logueado con la clase FirebaseAuth y lo guardamos en un objeto FirebaseUser
         usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
-        // Inicializamos la instancia FirebaseStorage
-        storage = FirebaseStorage.getInstance();
         // Inicializamos la referencia con FirebaseDatabase
         referenciaUsuario = FirebaseDatabase.getInstance().getReference("Usuarios");
-        // Inicializamos la referencia con storage
-        referenciaStorage = storage.getReference();
         // Obtenemos el Id del usuario
         IdUsuario = usuarioActual.getUid();
     }
@@ -127,19 +119,7 @@ public class RepositoryMainActivity implements MainActivityMVP.Model {
         }
 
     }
-    @Override
-    public void buscarFotoUsuario() {
 
-        // Estariamos en la carpeta de la foto
-        referenciaStorage
-                .child(IdUsuario).child(IdUsuario + ".jpg")
-                .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                presentadorMain.getURLStorageImagenUsuarioConExito(uri);
-            }
-        });
-    }
 
     @Override
     public void performGoogleLogin() {

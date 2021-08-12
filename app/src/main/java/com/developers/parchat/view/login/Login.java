@@ -126,11 +126,8 @@ public class Login extends AppCompatActivity implements LoginMVP.View, View.OnCl
                 break;
             // Si se presiona el boton de Facebook
             case (R.id.imgB_login_facebook):
-                LoginManager.getInstance()
-                        .logInWithReadPermissions(this,
-                                Arrays.asList("public_profile", "user_photos"));
                 // EL presentador llama al metodo IniciarSesionFacebook
-                presentador.IniciarSesionFacebook();
+                presentador.IniciarSesionFacebook(this);
                 break;
             // Si se presiona el boton de Google
             case (R.id.imgB_login_google):

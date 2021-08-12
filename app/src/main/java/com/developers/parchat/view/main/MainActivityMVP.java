@@ -25,7 +25,6 @@ public interface MainActivityMVP {
         // Crear COnfiguracion Inicial si no se tiene
         void crearConfiguracionesIniciales();
 
-        void buscarFotoUsuario();
 
         void performGoogleLogin();
 
@@ -50,9 +49,6 @@ public interface MainActivityMVP {
 
         void configuracionesIniciales();
 
-        void getURLStorageImagenUsuario();
-
-        void getURLStorageImagenUsuarioConExito(Uri linkFotoUsuario);
     }
     // Se obtienen datos e informacion a la vista
     interface View {

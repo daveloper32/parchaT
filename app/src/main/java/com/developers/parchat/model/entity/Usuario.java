@@ -8,6 +8,7 @@ public class Usuario {
     private String email;
     private String password;
     private String numeroCel;
+    private String urlImagenPerfil;
 
     public Usuario() {
     }
@@ -23,11 +24,35 @@ public class Usuario {
         this.numeroCel = numeroCel;
     }
 
-    public Usuario(String nombreCompleto, String email, String password, String numeroCel) {
+    public Usuario(String nombreCompleto, String email, String numeroCel, String urlImagenPerfil) {
+        this.nombreCompleto = nombreCompleto;
+        this.email = email;
+        this.numeroCel = numeroCel;
+        this.urlImagenPerfil = urlImagenPerfil;
+    }
+
+    public Usuario(String nombreCompleto, String email, String password, String numeroCel, String urlImagenPerfil) {
         this.nombreCompleto = nombreCompleto;
         this.email = email;
         this.password = password;
         this.numeroCel = numeroCel;
+        this.urlImagenPerfil = urlImagenPerfil;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUrlImagenPerfil() {
+        return urlImagenPerfil;
+    }
+
+    public void setUrlImagenPerfil(String urlImagenPerfil) {
+        this.urlImagenPerfil = urlImagenPerfil;
     }
 
     public String getNombreCompleto() {
