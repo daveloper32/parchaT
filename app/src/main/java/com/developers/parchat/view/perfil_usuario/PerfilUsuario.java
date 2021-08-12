@@ -1,14 +1,31 @@
 package com.developers.parchat.view.perfil_usuario;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -20,6 +37,10 @@ import com.bumptech.glide.Glide;
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.main.MainActivity;
 import com.developers.parchat.R;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 
 
 public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP.View, View.OnClickListener {
@@ -36,6 +57,13 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
 
     private String nombreUsuario, email, numero;
 
+    // Ruta almacenamiento de fotos tomadas
+    private String RUTA_FOTO = "parchat";
+    private String ruta;
+    private Uri fotoUri;
+    private String linkFotoUsuarioSubida;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +77,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
     private void IniciarVista() {
         // Inicializamos elpresentador y le pasamos la vista -> this
         presentador = new PerfilUsuarioPresenter(this);
+        linkFotoUsuarioSubida = "";
 
         // Hacemos puente de conexion con la parte grafica
         // Image Buttons
@@ -93,7 +122,8 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
                 presentador.GuardarDatos();
                 break;
             case (R.id.tV_perfUsuario_cambiarFoto):
-                presentador.CambiarFoto();
+                verificarPermisosCamara();
+                //presentador.CambiarFoto();
                 break;
 
         }
@@ -108,7 +138,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         numeroChanged = eT_perfUsuario_numero.getText().toString().trim();
         // El email no lo cambiamos
         Usuario usuarioNuevosDatos = new Usuario(nombreChanged, emailNotChanged,
-                numeroChanged);
+                numeroChanged, linkFotoUsuarioSubida);
         return usuarioNuevosDatos;
 
     }
@@ -150,6 +180,167 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         //
         tV_perfUsuario_cambiarFoto.setEnabled(true);
     }
+
+    public void verificarPermisosCamara() {
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED) {
+            // SI tiene el permiso de camara
+            //presentador.CambiarFoto();
+            cambiarFoto();
+
+        } else {
+            final String[] PERMISOS_CAMARA = {
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            };
+            // Si no tiene el permiso de camara
+            requestPermissionCamara.launch(PERMISOS_CAMARA);
+        }
+    }
+
+    private ActivityResultLauncher <String[]> requestPermissionCamara =
+    registerForActivityResult(
+                    new ActivityResultContracts.RequestMultiplePermissions(),
+    isGranted -> {
+        if (!isGranted.containsValue(false)) {
+            //presentador.CambiarFoto();
+            cambiarFoto();
+        } else {
+            // Si los permisos no se otorgaron
+            showToastPermisosNoOtorgados();
+        }
+    });
+
+    private void cambiarFoto() {
+        String tomarFoto = this.getResources().getString(R.string.msgAlertDiag_perfUsuario_cambiarFoto_1);
+        String elegirDeGaleria = this.getResources().getString(R.string.msgAlertDiag_perfUsuario_cambiarFoto_2);
+        String cancelar = this.getResources().getString(R.string.msgAlertDiag_perfUsuario_cambiarFoto_3);
+        String [] opcionesCambiarFoto = {
+                tomarFoto,
+                elegirDeGaleria,
+                cancelar
+        };
+        // Hacemos un alert Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Le ponemos un titulo
+        builder.setTitle(this.getResources().getString(R.string.msgAlertDiag_perfUsuario_cambiarFoto_titulo));
+        // Le ponemos las opciones
+        builder.setItems(opcionesCambiarFoto,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (opcionesCambiarFoto[which] == tomarFoto) {
+                            TomarFoto();
+                        } else if (opcionesCambiarFoto[which] == elegirDeGaleria) {
+                            ElegirFotoDeGaleria();
+                        } else if (opcionesCambiarFoto[which] == cancelar) {
+                            // Cerramos el alert dialog
+                            dialog.dismiss();
+                        }
+
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void TomarFoto() {
+        // Nombre para la foto
+        String nombreFoto = "";
+        //
+        File fileFoto = new File(Environment.getExternalStorageDirectory(),
+                RUTA_FOTO);
+
+        boolean isCreada = fileFoto.exists();
+
+        if (!isCreada) {
+            isCreada = fileFoto.mkdirs();
+        }
+        if (isCreada) {
+            nombreFoto = (System.currentTimeMillis() / 1000) + ".jpg";
+        }
+
+        ruta = Environment.getExternalStorageDirectory()
+                + File.separator
+                + RUTA_FOTO
+                + File.separator
+                + nombreFoto;
+
+        File foto = new File(ruta);
+
+        Intent iniCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            String authorities = this.getPackageName()
+                    + ".provider";
+            Uri fotoUri = FileProvider.getUriForFile(this, authorities, foto);
+            iniCamara.putExtra(MediaStore.EXTRA_OUTPUT, fotoUri);
+        } else {
+            iniCamara.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
+        }
+        
+        tomarFotoRequest.launch(iniCamara);
+
+
+
+    }
+    private ActivityResultLauncher <Intent> tomarFotoRequest =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult()
+                    , new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            if (result.getResultCode() == Activity.RESULT_OK) {
+                                Intent data = result.getData();
+                                MediaScannerConnection.scanFile(PerfilUsuario.this,
+                                        new String[]{ruta},
+                                        null,
+                                        new MediaScannerConnection.OnScanCompletedListener() {
+                                            @Override
+                                            public void onScanCompleted(String path, Uri uri) {
+                                                Bitmap bitmap = BitmapFactory.decodeFile(path);
+                                                imgV_perfUsuario_fotoUsuario.setImageBitmap(bitmap);
+                                                imgV_perfUsuario_fotoUsuario.setDrawingCacheEnabled(true);
+                                                imgV_perfUsuario_fotoUsuario.buildDrawingCache();
+                                                Bitmap bitmap1 = ((BitmapDrawable) imgV_perfUsuario_fotoUsuario.getDrawable()).getBitmap();
+                                                presentador.uploadFotoUsuarioFromImageView(bitmap1);
+                                                showProgressBar();
+                                            }
+                                        });
+
+                            }
+                        }
+                    }
+                    );
+
+
+    private void ElegirFotoDeGaleria() {
+        Intent iniGaleria = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        selectFotoFromGaleriaRequest.launch(iniGaleria);
+    }
+    private ActivityResultLauncher <Intent> selectFotoFromGaleriaRequest =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult()
+                    , new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            if (result.getResultCode() == Activity.RESULT_OK) {
+                                Intent data = result.getData();
+                                fotoUri = data.getData();
+                                imgV_perfUsuario_fotoUsuario.setImageURI(fotoUri);
+                                imgV_perfUsuario_fotoUsuario.setDrawingCacheEnabled(true);
+                                imgV_perfUsuario_fotoUsuario.buildDrawingCache();
+                                Bitmap bitmap1 = ((BitmapDrawable) imgV_perfUsuario_fotoUsuario.getDrawable()).getBitmap();
+                                presentador.uploadFotoUsuarioFromImageView(bitmap1);
+                                showProgressBar();
+
+                            }
+                        }
+                    }
+            );
+
 
     @Override
     public void showEmptyNombreCompletoError() {
@@ -224,6 +415,16 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
     }
 
     @Override
+    public void showToastPermisosNoOtorgados() {
+        Toast.makeText(this, R.string.msgToast_perfUsuario_5, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showToastUploadImagenPerfilFallo() {
+        Toast.makeText(this, R.string.msgToast_perfUsuario_6, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void irAlActivityMain(Class<? extends AppCompatActivity> ir_a_ActivityMain) {
         // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al MainActivity o de Pagina Principal de la App
         Intent dePerfilUsuarioAMainActivity = new Intent(PerfilUsuario.this, ir_a_ActivityMain);
@@ -262,6 +463,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
 
     @Override
     public void getURLImagenUsuarioFromStorage(Uri linkFotoUsuario) {
-
+        linkFotoUsuarioSubida = String.valueOf(linkFotoUsuario);
+        hideProgressBar();
     }
 }

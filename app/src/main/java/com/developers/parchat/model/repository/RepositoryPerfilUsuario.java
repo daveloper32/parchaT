@@ -1,6 +1,7 @@
 package com.developers.parchat.model.repository;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
@@ -18,9 +19,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +58,7 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
         // Inicializamos la referencia con FirebaseDatabase
         referenciaUsuario = FirebaseDatabase.getInstance().getReference("Usuarios");
         // Inicializamos la referencia con storage
-        referenciaStorage = storage.getReference();
+        referenciaStorage = storage.getReference("FotosPerfilUsuario");
         // Obtenemos el Id del usuario
         IdUsuario = usuarioActual.getUid();
     }
@@ -116,6 +119,9 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
                             childUpdates.put(IdUsuario + "/nombreCompleto/",usuario_a_editar.getNombreCompleto());
                             childUpdates.put(IdUsuario + "/email/",usuario_a_editar.getEmail());
                             childUpdates.put(IdUsuario + "/numeroCel/",usuario_a_editar.getNumeroCel());
+                            if (!usuario_a_editar.getUrlImagenPerfil().isEmpty()) {
+                                childUpdates.put(IdUsuario + "/urlImagenPerfil/",usuario_a_editar.getUrlImagenPerfil());
+                            }
 
                             actualizarDatosUsuarioLogeadoConExito(childUpdates);
                         }
@@ -145,6 +151,31 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
     }
 
     @Override
+    public void uploadFotoUsuarioFromImageView(Bitmap bitmap) {
+        //Actualizar la referencia
+        StorageReference referenciaFotoUsuarioStorage = referenciaStorage.child(IdUsuario).child(IdUsuario + ".jpg");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = referenciaFotoUsuarioStorage.putBytes(data);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // SI ise sube la foto
+                presentadorPerfilUsuario.uploadFotoUsuarioFromImageViewConExito();
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // SI falla subir la foto
+                        presentadorPerfilUsuario.uploadFotoUsuarioFromImageViewConFalla();
+                    }
+                });
+    }
+
+    @Override
     public void buscarFotoUsuario() {
 
         // Estariamos en la carpeta de la foto
@@ -156,6 +187,11 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
                         presentadorPerfilUsuario.getURLStorageImagenUsuarioConExito(uri);
                     }
                 });
+    }
+
+    @Override
+    public String getIdUsuarioLogueado() {
+        return IdUsuario;
     }
 
 }

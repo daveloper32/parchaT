@@ -1,6 +1,7 @@
 package com.developers.parchat.view.perfil_usuario;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +23,9 @@ public interface PerfilUsuarioMVP {
         // Para editar datos del usuario que tiene sesion inciada
         void editarDatosUsuario(Usuario usuario_a_editar);
         void actualizarDatosUsuarioLogeadoConExito(Map<String,Object> childUpdates);
+        void uploadFotoUsuarioFromImageView(Bitmap bitmap);
         void buscarFotoUsuario();
+        String getIdUsuarioLogueado();
         
     }
     // EL presentador recibe los eventos que ocurriran en la vista
@@ -33,6 +36,8 @@ public interface PerfilUsuarioMVP {
         void GuardarDatos();
         // Que pasa si se presiona el text Cambiar foto
         void CambiarFoto();
+
+
 
         void obtenerDatosUsuarioLogeadoConExito();
 
@@ -45,6 +50,14 @@ public interface PerfilUsuarioMVP {
         void generarURLStorageImagenUsuario();
 
         void getURLStorageImagenUsuarioConExito(Uri linkFotoUsuario);
+
+        String getIdUsuarioLogueado();
+
+        void uploadFotoUsuarioFromImageView(Bitmap bitmap);
+
+        void uploadFotoUsuarioFromImageViewConExito();
+
+        void uploadFotoUsuarioFromImageViewConFalla();
     }
     // Se obtienen datos e informacion a la vista
     interface View {
@@ -56,6 +69,7 @@ public interface PerfilUsuarioMVP {
         void CargamosDatosUsuario(Usuario usuarioActivo);
         // Que pasa si se presiona el boton Lapiz o editar
         void EditarDatos();
+
         // Mostramos errores de validación, si aplica
         // TextInputEditText de nombre completo vacio
         void showEmptyNombreCompletoError();
@@ -71,6 +85,8 @@ public interface PerfilUsuarioMVP {
         void showToastErrorDatosGuardados();
         // Mostrar un mensaje emergente que diga Debes presionar el lapiz para editar y guardar tus datos
         void showToastErrorActivarEdicionDatos();
+        void showToastPermisosNoOtorgados();
+        void showToastUploadImagenPerfilFallo();
         // Para hacer el intent e ir a el Activity ActivityMain
         void irAlActivityMain(Class<? extends AppCompatActivity> ir_a_ActivityMain);
         // Obtenemos el contexto de la vista para poder acceder a los SharedPreferences

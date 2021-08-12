@@ -1,6 +1,7 @@
 package com.developers.parchat.view.perfil_usuario;
 
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.developers.parchat.model.entity.Usuario;
@@ -62,6 +63,7 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
     @Override
     public void CambiarFoto() {
 
+
     }
 
     @Override
@@ -99,5 +101,27 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
     @Override
     public void getURLStorageImagenUsuarioConExito(Uri linkFotoUsuario) {
         vista.getURLImagenUsuarioFromStorage(linkFotoUsuario);
+    }
+
+    @Override
+    public String getIdUsuarioLogueado() {
+        return modelo.getIdUsuarioLogueado();
+    }
+
+    @Override
+    public void uploadFotoUsuarioFromImageView(Bitmap bitmap) {
+        if (bitmap != null) {
+            modelo.uploadFotoUsuarioFromImageView(bitmap);
+        }
+    }
+
+    @Override
+    public void uploadFotoUsuarioFromImageViewConExito() {
+        modelo.buscarFotoUsuario();
+    }
+
+    @Override
+    public void uploadFotoUsuarioFromImageViewConFalla() {
+        vista.showToastUploadImagenPerfilFallo();
     }
 }

@@ -156,10 +156,18 @@
     <string name="msgToast_perfUsuario_3">¡Error! Debes activar el modo edición para guardar.</string>
     <string name="msgToast_perfUsuario_4">¡Algo salio mal!
         \n\nIntenta guardar tus datos de nuevo.</string>
+    <string name="msgToast_perfUsuario_5">¡Permisos Denegados!
+        \n\nNo es posible cambiar tu foto de perfil.</string>
+    <string name="msgToast_perfUsuario_6">¡Algo salio mal!
+        \n\nNo se pudo cambiar tu foto de perfil.</string>
     <string name="msgAlertDiag_perfUsuario_1">¿Esta seguro que quiere salir sin guardar los cambios?</string>
     <string name="msgAlertDiag_perfUsuario_1_positive">Si</string>
     <string name="msgAlertDiag_perfUsuario_1_negative">Cancelar</string>
     <string name="msgAlertDiag_perfUsuario_1_title">Volver</string>
+    <string name="msgAlertDiag_perfUsuario_cambiarFoto_titulo">Seleccionar opción</string>
+    <string name="msgAlertDiag_perfUsuario_cambiarFoto_1">Tomar foto</string>
+    <string name="msgAlertDiag_perfUsuario_cambiarFoto_2">Elegir de la galería</string>
+    <string name="msgAlertDiag_perfUsuario_cambiarFoto_3">Cancelar</string>
     <!---End Login Mensajes Emergentes Strings-->
     <!--End PerfilUsuario Strings-->
 
