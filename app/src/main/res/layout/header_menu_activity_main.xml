@@ -31,7 +31,7 @@
             android:foregroundGravity="center_horizontal"
             android:gravity="center_horizontal"
             android:text="@string/tV_ActivityMain_nomUsuario"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="20sp" />
 
         <TextView
@@ -43,7 +43,7 @@
             android:foregroundGravity="center_horizontal"
             android:gravity="center_horizontal"
             android:text="@string/tV_ActivityMain_emailUsuario"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="14sp" />
     </LinearLayout>
 

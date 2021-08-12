@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Usuario/parchaT/app/src/main/res/drawable/home_background.xml" value="0.1125" />
+        <entry key="..\:/Users/Usuario/parchaT/app/src/main/res/drawable/ic_actividades_arte.xml" value="0.2203125" />
         <entry key="..\:/Users/Usuario/parchaT/app/src/main/res/layout/activity_configuraciones.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Usuario/parchaT/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Usuario/parchaT/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
@@ -15,6 +16,7 @@
         <entry key="..\:/Users/Usuario/parchaT/app/src/main/res/layout/contenido_fragment_activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Usuario/parchaT/app/src/main/res/layout/fragment_show_maps_activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Usuario/parchaT/app/src/main/res/layout/header_menu_activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Usuario/parchaT/app/src/main/res/layout/toolbar_perfil_usuario.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Usuario/parchaT/app/src/main/res/layout/toolbar_seleccionar_actividad.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Usuario/parchaT/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2203125" />
         <entry key="..\:/Users/Usuario/parchaT/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2203125" />

@@ -30,6 +30,8 @@ import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.main.MainActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -49,12 +51,13 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
 
     private String nombreUsuario, email, numero;
 
-    private StorageReference ReferenciaDeAlmacenamiento;
     //Creacion de carpeta en el storage de firebase
-    private String RutaDeAlmacenamiento = "FotosDePerfil/*";
+    private String RutaDeAlmacenamiento = "FotosDePerfil/";
     private String PICTURE_NAME = "imagen.jpg";
     private FirebaseStorage storage;
     private StorageReference referenciaStorage;
+    private FirebaseUser usuarioActual;
+    private String IdUsuario;
 
     /*PERMISOS*/
     private static final int CODIGO_DE_SOLICITUD_DE_ALMACENAMIENTO = 200;
@@ -97,6 +100,8 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
 
         storage = FirebaseStorage.getInstance();
         referenciaStorage = storage.getReference();
+        usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
+        IdUsuario = usuarioActual.getUid();
 
         // Listeners
         imgB_perfUsuario_volver.setOnClickListener(this);
@@ -360,12 +365,12 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imgBitmap = (Bitmap) extras.get("data");
             imgV_perfUsuario_fotoUsuario.setImageBitmap(imgBitmap);
+
         }
 
         if (resultCode == RESULT_OK) {
@@ -374,6 +379,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
                 subirFoto(imagen_uri);
             }
         }
+
         super.onActivityResult(requestCode, resultCode, data);
 
 
@@ -381,7 +387,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
 
     private void subirFoto(Uri imagen_uri) {
 
-        String rutaArchivo = RutaDeAlmacenamiento + "" + PICTURE_NAME;
+        String rutaArchivo = RutaDeAlmacenamiento + "" + IdUsuario;
         StorageReference storageReference = referenciaStorage.child(rutaArchivo);
         storageReference.putFile(imagen_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
