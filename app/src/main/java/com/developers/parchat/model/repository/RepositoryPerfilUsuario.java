@@ -119,9 +119,6 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
                             childUpdates.put(IdUsuario + "/nombreCompleto/",usuario_a_editar.getNombreCompleto());
                             childUpdates.put(IdUsuario + "/email/",usuario_a_editar.getEmail());
                             childUpdates.put(IdUsuario + "/numeroCel/",usuario_a_editar.getNumeroCel());
-                            if (!usuario_a_editar.getUrlImagenPerfil().isEmpty()) {
-                                childUpdates.put(IdUsuario + "/urlImagenPerfil/",usuario_a_editar.getUrlImagenPerfil());
-                            }
 
                             actualizarDatosUsuarioLogeadoConExito(childUpdates);
                         }
@@ -184,9 +181,55 @@ public class RepositoryPerfilUsuario implements PerfilUsuarioMVP.Model {
                 .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        presentadorPerfilUsuario.getURLStorageImagenUsuarioConExito(uri);
+                        actualizarURLFotoUsuarioLogueadoToDB(uri);
+                        //presentadorPerfilUsuario.getURLStorageImagenUsuarioConExito(uri);
                     }
                 });
+    }
+
+    @Override
+    public void actualizarURLFotoUsuarioLogueadoToDB(Uri linkFotoUsuario) {
+        String linkFoto = String.valueOf(linkFotoUsuario);
+        referenciaUsuario.child(IdUsuario)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // Creamos un objeto de la clase Usuario para recibir el objeto con los datos
+                        // del usuario en la base de datos
+                        datosUsuario = snapshot.getValue(Usuario.class);
+                        // Verificamos que lo haya encontrado -> Si el objeto Usuario no esta vacio
+                        if (datosUsuario != null) {
+                            Map<String, Object> childUpdates = new HashMap<>();
+
+                            if (!linkFoto.equals("")) {
+                                childUpdates.put(IdUsuario + "/urlImagenPerfil/", linkFoto);
+                                actualizarURLFotoUsuarioLogueadoToDBConExito(childUpdates);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        presentadorPerfilUsuario.actualizarURLFotoUsuarioLogueadoToDBConFalla();
+                    }
+                });
+
+    }
+
+    @Override
+    public void actualizarURLFotoUsuarioLogueadoToDBConExito(Map<String, Object> childUpdates) {
+        referenciaUsuario.updateChildren(childUpdates)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        presentadorPerfilUsuario.actualizarURLFotoUsuarioLogueadoToDBConExito();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                presentadorPerfilUsuario.actualizarURLFotoUsuarioLogueadoToDBConFalla();
+            }
+        });
     }
 
     @Override

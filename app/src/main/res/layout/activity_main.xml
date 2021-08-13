@@ -13,9 +13,10 @@
 
     <include
         android:id="@+id/header_main_activity"
+        layout="@layout/contenido_fragment_activity_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/contenido_fragment_activity_main"/>
+        android:background="#00FFFFFF" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nV_MainActivity_menuLateral"

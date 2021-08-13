@@ -211,9 +211,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
         // Hacemos sets a los textView para poner el nombre del usuario e imagen
         tV_ActivityMain_nomUsuario.setText(datosUsuario.getNombreCompleto());
         tV_ActivityMain_emailUsuario.setText(datosUsuario.getEmail());
-        Uri imgUsuario = Uri.parse(datosUsuario.getUrlImagenPerfil());
-        if (imgUsuario != null) {
-            cargarImagenUsuario(imgUsuario);
+        String imgUsuario = datosUsuario.getUrlImagenPerfil();
+        if (!imgUsuario.equals("") && imgUsuario != null) {
+            Uri uriImgUsuario = Uri.parse(imgUsuario);
+            cargarImagenUsuario(uriImgUsuario);
         }
 
         CargarFragmentGoogleMaps();

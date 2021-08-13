@@ -25,6 +25,10 @@ public interface PerfilUsuarioMVP {
         void actualizarDatosUsuarioLogeadoConExito(Map<String,Object> childUpdates);
         void uploadFotoUsuarioFromImageView(Bitmap bitmap);
         void buscarFotoUsuario();
+        void actualizarURLFotoUsuarioLogueadoToDB(Uri linkFotoUsuario);
+        void actualizarURLFotoUsuarioLogueadoToDBConExito(Map<String,Object> childUpdates);
+
+
         String getIdUsuarioLogueado();
         
     }
@@ -47,9 +51,8 @@ public interface PerfilUsuarioMVP {
 
         void actualizarDatosUsuarioLogeadoConExito();
 
-        void generarURLStorageImagenUsuario();
-
-        void getURLStorageImagenUsuarioConExito(Uri linkFotoUsuario);
+        void actualizarURLFotoUsuarioLogueadoToDBConExito();
+        void actualizarURLFotoUsuarioLogueadoToDBConFalla();
 
         String getIdUsuarioLogueado();
 
@@ -58,6 +61,8 @@ public interface PerfilUsuarioMVP {
         void uploadFotoUsuarioFromImageViewConExito();
 
         void uploadFotoUsuarioFromImageViewConFalla();
+
+
     }
     // Se obtienen datos e informacion a la vista
     interface View {
@@ -87,6 +92,9 @@ public interface PerfilUsuarioMVP {
         void showToastErrorActivarEdicionDatos();
         void showToastPermisosNoOtorgados();
         void showToastUploadImagenPerfilFallo();
+        void showToastActualizarURLFotoUsuarioLogueadoToDBExito();
+
+        void showToastActualizarURLFotoUsuarioLogueadoToDBFallo();
         // Para hacer el intent e ir a el Activity ActivityMain
         void irAlActivityMain(Class<? extends AppCompatActivity> ir_a_ActivityMain);
         // Obtenemos el contexto de la vista para poder acceder a los SharedPreferences
@@ -98,5 +106,7 @@ public interface PerfilUsuarioMVP {
         void cargarImagenUsuario (Uri linkFotoUsuario);
 
         void getURLImagenUsuarioFromStorage(Uri linkFotoUsuario);
+
+
     }
 }

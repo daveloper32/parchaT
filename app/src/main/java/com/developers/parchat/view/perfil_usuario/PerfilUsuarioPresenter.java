@@ -94,13 +94,14 @@ public class PerfilUsuarioPresenter implements PerfilUsuarioMVP.Presenter {
     }
 
     @Override
-    public void generarURLStorageImagenUsuario() {
-        modelo.buscarFotoUsuario();
+    public void actualizarURLFotoUsuarioLogueadoToDBConExito() {
+        vista.hideProgressBar();
+        vista.showToastActualizarURLFotoUsuarioLogueadoToDBExito();
     }
 
     @Override
-    public void getURLStorageImagenUsuarioConExito(Uri linkFotoUsuario) {
-        vista.getURLImagenUsuarioFromStorage(linkFotoUsuario);
+    public void actualizarURLFotoUsuarioLogueadoToDBConFalla() {
+        vista.showToastActualizarURLFotoUsuarioLogueadoToDBFallo();
     }
 
     @Override

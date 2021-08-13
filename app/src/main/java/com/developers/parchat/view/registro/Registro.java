@@ -1,5 +1,8 @@
 package com.developers.parchat.view.registro;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -19,10 +22,14 @@ import android.widget.Toast;
 import com.developers.parchat.R;
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.login.Login;
+import com.developers.parchat.view.login.LoginMVP;
 import com.developers.parchat.view.login.LoginPresenter;
+import com.facebook.CallbackManager;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class Registro extends AppCompatActivity implements RegistroMVP.View, View.OnClickListener{
+public class Registro extends AppCompatActivity implements RegistroMVP.View,
+        View.OnClickListener{
 
     // Variables modelo MVP
     RegistroMVP.Presenter presentador;
@@ -37,6 +44,9 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View, Vie
     private ImageButton imgB_registro_google;
     private ProgressBar pB_registro;
 
+    //Google Login
+    private GoogleSignInClient googleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +59,7 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View, Vie
     private void IniciarVista() {
         // Inicializamos elpresentador y le pasamos la vista -> this
         presentador = new RegistroPresenter(this);
+
         // Hacemos puente de conexion con la parte grafica
         // TextInputEditText
         eT_usuario_nomCom = findViewById(R.id.eT_usuario_nomCom);
@@ -92,7 +103,7 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View, Vie
             // Si se presiona el boton de facebook
             case (R.id.imgB_registro_facebook):
                 // EL presentador llama al metodo Log_Facebook
-                presentador.Log_Facebook();
+                presentador.Log_Facebook(this);
                 break;
             // Si se presiona el boton de google
             case (R.id.imgB_registro_google):
@@ -111,7 +122,7 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View, Vie
         email = eT_usuario_email.getText().toString().trim();
         password = eT_usuario_contrasena.getText().toString().trim();
         // Guardamos el nombreComp, email y contraseña en un objeto LoginInfoUsuario
-        Usuario datosUsuario = new Usuario(nombreComp, email, password, "");
+        Usuario datosUsuario = new Usuario(nombreComp, email, password, "","");
         // Retornamos el objeto RegistroDatosUsuario
         return datosUsuario;
     }
@@ -156,6 +167,8 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View, Vie
         return;
     }
 
+
+
     @Override
     public void showProgressBar() {
         pB_registro.setVisibility(View.VISIBLE);
@@ -197,9 +210,51 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View, Vie
     }
 
     @Override
+    public void showToasEnDesarrollo() {
+        Toast.makeText(this, R.string.msgToast_registro_5, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showToastFirebaseAuthWithGoogleError() {
+        Toast.makeText(this, R.string.msgToast_registro_4, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showToastFirebaseAuthWithFacebookError() {
+        Toast.makeText(this, R.string.msgToast_registro_4, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public Context getContext() {
         return Registro.this;
     }
+
+    @Override
+    public void signInGoogle() {
+        googleSignInClient = presentador.getGoogleSignInClientFromRepo();
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        googleLauncher.launch(signInIntent);
+        //startActivityForResult(signInIntent, RC_SIGN_IN);
+
+    }
+
+    ActivityResultLauncher<Intent> googleLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Intent data = result.getData();
+                presentador.runGoogleIntent(data);
+            }
+    );
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        CallbackManager callbackManager = presentador.getCallbackManager();
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+
 
     private void LimpiarCampos() {
         eT_usuario_nomCom.setText("");

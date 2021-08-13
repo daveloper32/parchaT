@@ -1,10 +1,18 @@
 package com.developers.parchat.view.registro;
 
+import android.content.Intent;
 import android.util.Patterns;
 
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.model.repository.RepositoryRegistro;
 import com.developers.parchat.view.login.Login;
+import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
+import com.facebook.CallbackManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 public class RegistroPresenter implements RegistroMVP.Presenter {
 
@@ -59,7 +67,7 @@ public class RegistroPresenter implements RegistroMVP.Presenter {
 
         // Creamos un objeto de la clase Usuario y guardamos nombre, email y contraseña
         Usuario usuarioAGuardar = new Usuario(datosUsuario.getNombreCompleto(),
-                datosUsuario.getEmail(), datosUsuario.getPassword(), "");
+                datosUsuario.getEmail(), datosUsuario.getPassword(), "", "");
 
         // SI el objeto usuarioAGuardar no esta vacio
         if (usuarioAGuardar != null) {
@@ -78,12 +86,17 @@ public class RegistroPresenter implements RegistroMVP.Presenter {
     }
 
     @Override
-    public void Log_Facebook() {
+    public void Log_Facebook(Registro registro) {
+        vista.showProgressBar();
+        firebaseAuthWithFacebook(registro);
 
     }
 
     @Override
     public void Log_Google() {
+        modelo.performGoogleLogin();
+        vista.showProgressBar();
+        vista.signInGoogle();
 
     }
 
@@ -120,5 +133,76 @@ public class RegistroPresenter implements RegistroMVP.Presenter {
         vista.showToastErrorRegistrarUsuarioNuevo();
         // Ocultamos ProgressBar
         vista.hideProgressBar();
+    }
+    @Override
+    public GoogleSignInClient getGoogleSignInClientFromRepo() {
+        return modelo.getGoogleSignInClient();
+    }
+
+    @Override
+    public void runGoogleIntent(Intent data) {
+        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+        try {
+            // Google Sign In was successful, authenticate with Firebase
+            GoogleSignInAccount account = task.getResult(ApiException.class);
+            //Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+            setFirebaseAuthWithGoogle(account.getIdToken());
+            vista.hideProgressBar();
+        } catch (ApiException e) {
+            // Google Sign In failed, update UI appropriately
+            //Log.w(TAG, "Google sign in failed", e);
+            vista.hideProgressBar();
+        }
+    }
+
+    @Override
+    public void setFirebaseAuthWithGoogle(String idToken) {
+        modelo.firebaseAuthWithGoogle(idToken);
+    }
+
+    @Override
+    public void firebaseAuthWithGoogleFalla() {
+        vista.showToastFirebaseAuthWithGoogleError();
+        vista.hideProgressBar();
+    }
+
+    @Override
+    public void SaveUsuarioInDBWithGoogleExitosa() {
+        vista.hideProgressBar();
+        vista.irAlActivityLogin(Login.class);
+    }
+
+    @Override
+    public void SaveUsuarioInDBWithGoogleFallo() {
+        vista.showToastFirebaseAuthWithGoogleError();
+        vista.hideProgressBar();
+    }
+
+    @Override
+    public void firebaseAuthWithFacebook(Registro registro) {
+        modelo.firebaseAuthWithFacebook(registro);
+    }
+
+    @Override
+    public void firebaseAuthWithFacebookFalla() {
+        vista.showToastFirebaseAuthWithFacebookError();
+        vista.hideProgressBar();
+    }
+
+    @Override
+    public void SaveUsuarioInDBWithFacebookExitosa() {
+        vista.hideProgressBar();
+        vista.irAlActivityLogin(Login.class);
+    }
+
+    @Override
+    public void SaveUsuarioInDBWithFacebookFallo() {
+        vista.showToastFirebaseAuthWithFacebookError();
+        vista.hideProgressBar();
+    }
+
+    @Override
+    public CallbackManager getCallbackManager() {
+        return modelo.getCallbackManager();
     }
 }

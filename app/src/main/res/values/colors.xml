@@ -11,8 +11,9 @@
     <color name="orange_dif">#7CFFAD98</color>
     <color name="blue_darky">#233140</color>
     <color name="grey_light">#4A4D5A</color>
-    <color name="grey_light2">#A0A7C3</color>
-    <color name="grey_light3">#CBFFFFFF</color>
+    <color name="grey_light2">#BCBEC7</color>
+    <color name="grey_light3">#C7C7C7</color>
     <color name="blue_light">#729DCC</color>
     <color name="ghost">#00FFFFFF</color>
+    <color name="cardview_color">#C7C7C7</color>
 </resources>

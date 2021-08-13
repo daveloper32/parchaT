@@ -162,10 +162,10 @@
 
                 <ImageButton
                     android:id="@+id/imgB_login_facebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="11dp"
-                    android:layout_marginRight="11dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
                     android:contentDescription="@string/imgB_login_facebook_contDes"
@@ -174,10 +174,10 @@
 
                 <ImageButton
                     android:id="@+id/imgB_login_google"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
                     android:contentDescription="@string/imgB_login_google_contDes"

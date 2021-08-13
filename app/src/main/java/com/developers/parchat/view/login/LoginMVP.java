@@ -38,10 +38,14 @@ public interface LoginMVP {
 
         void firebaseAuthWithFacebook(Login login);
         void firebaseAuthWithFacebookExito(AccessToken token);
+        void getInfoUsuarioNuevoAGuardarWithFacebookEnBaseDatos(FirebaseUser usuarioActual);
 
         void guardarUsuarioNuevoWithFacebookEnBaseDatos(Usuario usuarioNuevoFacebook);
 
         CallbackManager getCallbackManager();
+
+        void verificarDatosUsuarioLogueadoFromDBGoogle(FirebaseUser firebaseUser);
+        void verificarDatosUsuarioLogueadoFromDBFacebook(FirebaseUser firebaseUser);
     }
 
     // EL presentador recibe los eventos que ocurriran en la vista

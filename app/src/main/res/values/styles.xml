@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TransparentBottomSheetDialog" parent="Theme.AppCompat.Light">
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorAlertDialogListItem">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textColorTertiary">@color/white</item>
+        <item name="android:textColorHighlight">@color/white</item>
+        <item name="colorOnPrimary">@color/orange</item>
+        <item name="android:typeface">sans</item>
+
+    </style>
+
+
+
+</resources>

@@ -31,8 +31,11 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 
 import java.util.Arrays;
@@ -44,6 +47,8 @@ public class RepositoryLogin implements LoginMVP.Model {
     private FirebaseAuth mAuth;
     // Declaramos un objeto de la Clase DatabaseReference
     private DatabaseReference mDatabase;
+    // Declaramos un objeto de la Clase DatabaseReference
+    private DatabaseReference referenciaUsuario;
 
     // Variables modelo MVP Login
     private LoginMVP.Presenter presentadorLogin;
@@ -63,7 +68,10 @@ public class RepositoryLogin implements LoginMVP.Model {
         // Inicializamos la instancia FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
         // Inicializamos la instancia FirebaseDatabase
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();// Inicializamos la referencia con FirebaseDatabase
+        // Inicializamos la referencia con FirebaseDatabase
+        referenciaUsuario = FirebaseDatabase.getInstance().getReference("Usuarios");
+
         //performGoogleLogin();
         callbackManager = CallbackManager.Factory.create();
     }
@@ -123,8 +131,11 @@ public class RepositoryLogin implements LoginMVP.Model {
                         if (task.isSuccessful()) {
                             // Obtenemos el usaro autenticado
                             FirebaseUser usuarioActual = mAuth.getCurrentUser();
+                            //Verificar si ya habia igresado
                             if (usuarioActual != null) {
-                                firebaseAuthWithGoogleExito(usuarioActual);
+                                //firebaseAuthWithGoogleExito(usuarioActual);
+                                verificarDatosUsuarioLogueadoFromDBGoogle(usuarioActual);
+
                             } else {
                                 presentadorLogin.firebaseAuthWithGoogleFalla();
                             }
@@ -220,25 +231,37 @@ public class RepositoryLogin implements LoginMVP.Model {
                         if (task.isSuccessful()) {
 
                             FirebaseUser usuarioActual = mAuth.getCurrentUser();
-                            String nomCompleto = usuarioActual.getDisplayName();
-                            String email = usuarioActual.getEmail();
-                            String numero = usuarioActual.getPhoneNumber();
-                            String imgUserPhoto = String.valueOf(usuarioActual.getPhotoUrl());
+                            if (usuarioActual != null) {
+                                verificarDatosUsuarioLogueadoFromDBFacebook(usuarioActual);
 
-                            // Creamos un objeto de la clase usuario
-                            Usuario usuarioNuevoFacebook = new Usuario(nomCompleto,
-                                    email, numero, imgUserPhoto);
-
-                            if (usuarioNuevoFacebook != null) {
-                                guardarUsuarioNuevoWithFacebookEnBaseDatos(usuarioNuevoFacebook);
                             } else {
                                 presentadorLogin.firebaseAuthWithFacebookFalla();
                             }
+
                         } else {
                             presentadorLogin.firebaseAuthWithFacebookFalla();
                         }
                     }
                 });
+
+    }
+
+    @Override
+    public void getInfoUsuarioNuevoAGuardarWithFacebookEnBaseDatos(FirebaseUser usuarioActual) {
+        String nomCompleto = usuarioActual.getDisplayName();
+        String email = usuarioActual.getEmail();
+        String numero = usuarioActual.getPhoneNumber();
+        String imgUserPhoto = String.valueOf(usuarioActual.getPhotoUrl());
+
+        // Creamos un objeto de la clase usuario
+        Usuario usuarioNuevoFacebook = new Usuario(nomCompleto,
+                email, numero, imgUserPhoto);
+
+        if (usuarioNuevoFacebook != null) {
+            guardarUsuarioNuevoWithFacebookEnBaseDatos(usuarioNuevoFacebook);
+        } else {
+            presentadorLogin.firebaseAuthWithFacebookFalla();
+        }
 
     }
 
@@ -262,6 +285,58 @@ public class RepositoryLogin implements LoginMVP.Model {
     @Override
     public CallbackManager getCallbackManager() {
         return callbackManager;
+    }
+
+    @Override
+    public void verificarDatosUsuarioLogueadoFromDBGoogle(FirebaseUser firebaseUser) {
+        if (firebaseUser != null) {
+            String idUsuarioALoguear = firebaseUser.getUid();
+            // Le pasamos el id del usuario a la referencia en la base de datos para obtener los datos del usuario
+            referenciaUsuario.child(idUsuarioALoguear)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull @org.jetbrains.annotations.NotNull DataSnapshot snapshot) {
+                            Usuario usuario = snapshot.getValue(Usuario.class);
+                            if (usuario == null) {
+                                firebaseAuthWithGoogleExito(firebaseUser);
+                            } else {
+                                presentadorLogin.SaveUsuarioInDBWithGoogleExitosa();
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull @org.jetbrains.annotations.NotNull DatabaseError error) {
+                            presentadorLogin.firebaseAuthWithGoogleFalla();
+                        }
+                    });
+        } else {
+            presentadorLogin.firebaseAuthWithGoogleFalla();
+        }
+    }
+
+    @Override
+    public void verificarDatosUsuarioLogueadoFromDBFacebook(FirebaseUser firebaseUser) {
+        if (firebaseUser != null) {
+            String idUsuarioALoguear = firebaseUser.getUid();
+            // Le pasamos el id del usuario a la referencia en la base de datos para obtener los datos del usuario
+            referenciaUsuario.child(idUsuarioALoguear)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull @org.jetbrains.annotations.NotNull DataSnapshot snapshot) {
+                            Usuario usuario = snapshot.getValue(Usuario.class);
+                            if (usuario == null) {
+                                getInfoUsuarioNuevoAGuardarWithFacebookEnBaseDatos(firebaseUser);
+                            } else {
+                                presentadorLogin.SaveUsuarioInDBWithFacebookExitosa();
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull @org.jetbrains.annotations.NotNull DatabaseError error) {
+                            presentadorLogin.firebaseAuthWithFacebookFalla();
+                        }
+                    });
+        } else {
+            presentadorLogin.firebaseAuthWithFacebookFalla();
+        }
     }
 
 }

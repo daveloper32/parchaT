@@ -54,6 +54,10 @@
         </string>
     <string name="msgToast_registro_3">¡Algo salio mal!
         \n\nIntenta registrarte de nuevo.</string>
+    <string name="msgToast_registro_4">¡Algo salio mal! ¡Ingresa de nuevo!
+    </string>
+    <string name="msgToast_registro_5">En desarrollo....
+    </string>
     <!---End Login Mensajes Emergentes Strings-->
     <!--End Registro Strings-->
 
@@ -66,6 +70,8 @@
     <!---Start Login Mensajes Emergentes Strings-->
     <string name="msgToast_passRe_1">¡Revisa tu bandeja de entrada!
         \n\nTe hemos enviado un correo para que puedas restaurar tu contraseña.</string>
+    <string name="msgToast_passRe_2">¡Ocurrio un error!
+        \n\nVerifica que el correo ingresaste es el correcto.</string>
     <!---End Login Mensajes Emergentes Strings-->
     <!--End PasswordRecovery Strings-->
 
@@ -80,7 +86,7 @@
     <string name="tV_SeleccionarActividad_cine">Cine</string>
     <string name="tV_SeleccionarActividad_areasVerdes">Areas Verdes</string>
     <string name="tV_SeleccionarActividad_arte">Arte</string>
-    <string name="tV_SeleccionarActividad_farmacia">Farmacias</string>
+    <string name="tV_SeleccionarActividad_sorpresa">Sorprendeme</string>
     <string name="b_SeleccionarActividad_continuar">Continuar</string>
     <!--End SeleccionarActividad Strings-->
 
@@ -162,6 +168,10 @@
         \n\nNo se pudo cambiar tu foto de perfil.</string>
     <string name="msgToast_perfUsuario_7">En desarrollo....
     \n\nIntenta subir la foto desde la galeria.</string>
+    <string name="msgToast_perfUsuario_8">¡Tu foto de perfil a sido actualizada con exito!
+        </string>
+    <string name="msgToast_perfUsuario_9">¡Algo salio mal!
+        \n\nNo se pudo guardar tu foto de perfil.</string>
     <string name="msgAlertDiag_perfUsuario_1">¿Esta seguro que quiere salir sin guardar los cambios?</string>
     <string name="msgAlertDiag_perfUsuario_1_positive">Si</string>
     <string name="msgAlertDiag_perfUsuario_1_negative">Cancelar</string>

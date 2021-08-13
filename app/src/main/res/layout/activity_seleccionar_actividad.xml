@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.seleccionar_actividad.SeleccionarActividad">
+    tools:context=".view.seleccionar_actividad.SeleccionarActividad"
+    >
 
     <include
         android:id="@+id/include"
@@ -16,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/ic_fondo_actividades"
         android:orientation="vertical"
         android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,6 +46,7 @@
                     android:textColor="#514B4B"
                     android:textSize="24sp" />
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,67 +56,107 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cV_SeleccionarActividad_restaurantes"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:checkable="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        app:cardBackgroundColor="?attr/colorBackgroundFloating"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="10dp"                        >
 
-                        <CheckBox
-                            android:id="@+id/cB_SeleccionarActividad_restaurantes"
-                            android:layout_width="110dp"
-                            android:layout_height="100dp"
+                        <LinearLayout
+                            android:id="@+id/LL_SeleccionarActividad_restaurantes"
+                            android:layout_width="90dp"
+
+                            android:layout_height="80dp"
                             android:layout_gravity="center_horizontal"
-                            android:background="@drawable/ic_actividades_comida"
-                            android:button="@null"
-                            android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
-                            android:fontFamily="sans-serif-smallcaps"
-                            android:freezesText="false"
-                            android:gravity="center_horizontal"
-                            android:textColor="#514B4B" />
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tV_SeleccionarActividad_restaurantes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-smallcaps"
-                            android:text="@string/tV_SeleccionarActividad_restaurantes"
-                            android:textColor="#514B4B" />
-                    </LinearLayout>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/ic_actividades_comida"
+                                android:button="@null"
+                                android:contentDescription="@string/tV_SeleccionarActividad_restaurantes"
+                                android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                                android:gravity="center_horizontal" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/tV_SeleccionarActividad_restaurantes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-smallcaps"
+                                android:text="@string/tV_SeleccionarActividad_restaurantes"
+                                android:textColor="@color/blue_darky" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cV_SeleccionarActividad_musica"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:checkable="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="?attr/colorBackgroundFloating">
 
-                        <CheckBox
-                            android:id="@+id/cB_SeleccionarActividad_musica"
-                            android:layout_width="110dp"
-                            android:layout_height="100dp"
+                        <LinearLayout
+                            android:id="@+id/LL_SeleccionarActividad_musica"
+                            android:layout_width="90dp"
+                            android:layout_height="80dp"
                             android:layout_gravity="center_horizontal"
-                            android:background="@drawable/ic_actividades_musica"
-                            android:button="@null"
-                            android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
-                            android:fontFamily="sans-serif-smallcaps"
-                            android:freezesText="false"
-                            android:gravity="center_horizontal"
-                            android:textColor="#514B4B" />
-
-                        <TextView
-                            android:id="@+id/tV_SeleccionarActividad_musica"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
                             android:layout_weight="1"
-                            android:fontFamily="sans-serif-smallcaps"
-                            android:text="@string/tV_SeleccionarActividad_musica"
-                            android:textColor="#514B4B" />
-                    </LinearLayout>
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/ic_actividades_musica"
+                                android:button="@null"
+                                android:contentDescription="@string/tV_SeleccionarActividad_musica"
+                                android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                                android:gravity="center_horizontal" />
+
+                            <TextView
+                                android:id="@+id/tV_SeleccionarActividad_musica"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-smallcaps"
+                                android:text="@string/tV_SeleccionarActividad_musica"
+                                android:textColor="@color/blue_darky" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
                 <LinearLayout
@@ -126,67 +168,107 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cV_SeleccionarActividad_cine"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:checkable="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="?attr/colorBackgroundFloating">
 
-                        <CheckBox
-                            android:id="@+id/cB_SeleccionarActividad_cine"
-                            android:layout_width="110dp"
-                            android:layout_height="100dp"
+                        <LinearLayout
+                            android:id="@+id/LL_SeleccionarActividad_cine"
+                            android:layout_width="90dp"
+
+                            android:layout_height="80dp"
                             android:layout_gravity="center_horizontal"
-                            android:background="@drawable/ic_actividades_cine"
-                            android:button="@null"
-                            android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
-                            android:fontFamily="sans-serif-smallcaps"
-                            android:freezesText="false"
-                            android:gravity="center_horizontal"
-                            android:textColor="#514B4B" />
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tV_SeleccionarActividad_cine"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-smallcaps"
-                            android:text="@string/tV_SeleccionarActividad_cine"
-                            android:textColor="#514B4B" />
-                    </LinearLayout>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/ic_actividades_cine"
+                                android:button="@null"
+                                android:contentDescription="@string/tV_SeleccionarActividad_cine"
+                                android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                                android:gravity="center_horizontal" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/tV_SeleccionarActividad_cine"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-smallcaps"
+                                android:text="@string/tV_SeleccionarActividad_cine"
+                                android:textColor="@color/blue_darky" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cV_SeleccionarActividad_areasVerdes"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:checkable="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="?attr/colorBackgroundFloating">
 
-                        <CheckBox
-                            android:id="@+id/cB_SeleccionarActividad_areasVerdes"
-                            android:layout_width="110dp"
-                            android:layout_height="100dp"
+                        <LinearLayout
+                            android:id="@+id/LL_SeleccionarActividad_areasVerdes"
+                            android:layout_width="90dp"
+                            android:layout_height="80dp"
                             android:layout_gravity="center_horizontal"
-                            android:background="@drawable/ic_actividades_zonas_verdes"
-                            android:button="@null"
-                            android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
-                            android:fontFamily="sans-serif-smallcaps"
-                            android:freezesText="false"
-                            android:gravity="center_horizontal"
-                            android:textColor="#514B4B" />
-
-                        <TextView
-                            android:id="@+id/tV_SeleccionarActividad_areasVerdes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
                             android:layout_weight="1"
-                            android:fontFamily="sans-serif-smallcaps"
-                            android:text="@string/tV_SeleccionarActividad_areasVerdes"
-                            android:textColor="#514B4B" />
-                    </LinearLayout>
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/ic_actividades_zonas_verdes"
+                                android:button="@null"
+                                android:contentDescription="@string/tV_SeleccionarActividad_areasVerdes"
+                                android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                                android:gravity="center_horizontal" />
+
+                            <TextView
+                                android:id="@+id/tV_SeleccionarActividad_areasVerdes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-smallcaps"
+                                android:text="@string/tV_SeleccionarActividad_areasVerdes"
+                                android:textColor="@color/blue_darky" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
                 <LinearLayout
@@ -198,69 +280,110 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cV_SeleccionarActividad_arte"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:checkable="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="?attr/colorBackgroundFloating">
 
-                        <CheckBox
-                            android:id="@+id/cB_SeleccionarActividad_arte"
-                            android:layout_width="110dp"
-                            android:layout_height="100dp"
+                        <LinearLayout
+                            android:id="@+id/LL_SeleccionarActividad_arte"
+                            android:layout_width="90dp"
+
+                            android:layout_height="80dp"
                             android:layout_gravity="center_horizontal"
-                            android:background="@drawable/ic_actividades_arte"
-                            android:button="@null"
-                            android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
-                            android:fontFamily="sans-serif-smallcaps"
-                            android:freezesText="false"
-                            android:gravity="center_horizontal"
-                            android:textColor="#514B4B" />
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tV_SeleccionarActividad_arte"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-smallcaps"
-                            android:text="@string/tV_SeleccionarActividad_arte"
-                            android:textColor="#514B4B" />
-                    </LinearLayout>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/ic_actividades_arte"
+                                android:button="@null"
+                                android:contentDescription="@string/tV_SeleccionarActividad_arte"
+                                android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                                android:gravity="center_horizontal" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/tV_SeleccionarActividad_arte"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-smallcaps"
+                                android:text="@string/tV_SeleccionarActividad_arte"
+                                android:textColor="@color/blue_darky" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cV_SeleccionarActividad_sorpresa"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:checkable="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="?attr/colorBackgroundFloating">
 
-                        <CheckBox
-                            android:id="@+id/cB_SeleccionarActividad_farmacia"
-                            android:layout_width="110dp"
-                            android:layout_height="100dp"
+                        <LinearLayout
+                            android:id="@+id/LL_SeleccionarActividad_sorpresa"
+                            android:layout_width="90dp"
+                            android:layout_height="80dp"
                             android:layout_gravity="center_horizontal"
-                            android:background="@drawable/ic_actividades_farmacia"
-                            android:button="@null"
-                            android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
-                            android:fontFamily="sans-serif-smallcaps"
-                            android:freezesText="false"
-                            android:gravity="center_horizontal"
-                            android:textColor="#514B4B" />
-
-                        <TextView
-                            android:id="@+id/tV_SeleccionarActividad_farmacia"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
                             android:layout_weight="1"
-                            android:fontFamily="sans-serif-smallcaps"
-                            android:text="@string/tV_SeleccionarActividad_farmacia"
-                            android:textColor="#514B4B" />
-                    </LinearLayout>
+                            android:orientation="vertical">
 
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/ic_actividades_sorpresa"
+                                android:button="@null"
+                                android:contentDescription="@string/tV_SeleccionarActividad_sorpresa"
+                                android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                                android:gravity="center_horizontal" />
+
+                            <TextView
+                                android:id="@+id/tV_SeleccionarActividad_sorpresa"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-smallcaps"
+                                android:text="@string/tV_SeleccionarActividad_sorpresa"
+                                android:textColor="@color/blue_darky" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
+
+
 
                 <Button
                     android:id="@+id/b_SeleccionarActividad_continuar"

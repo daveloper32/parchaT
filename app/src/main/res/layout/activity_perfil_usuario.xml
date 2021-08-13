@@ -17,7 +17,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/ic_fondo_passwordrecovery"
+        android:background="@drawable/ic_fondo_perfil"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,10 +65,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="5dp"
+                    android:enabled="true"
                     android:fontFamily="sans-serif-smallcaps"
-                    android:enabled="false"
                     android:text="@string/tV_perfUsuario_cambiarFoto"
-                    android:textColor="#C8C4C4" />
+                    android:textColor="@color/black" />
 
                 <com.google.android.material.textfield.TextInputLayout
 
@@ -81,7 +81,7 @@
                     app:endIconMode="clear_text"
                     app:endIconTint="#9EE6D5D5"
                     app:hintTextColor="#B0040404"
-                    app:startIconDrawable="@android:drawable/ic_menu_myplaces"
+                    app:startIconDrawable="@drawable/ic_user"
                     app:startIconTint="#A19D9D">
 
                     <com.google.android.material.textfield.TextInputEditText

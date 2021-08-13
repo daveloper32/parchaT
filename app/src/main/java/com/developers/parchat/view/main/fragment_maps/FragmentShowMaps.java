@@ -579,6 +579,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
                                 .iniciarBottomSheetDialog(
                                         infoLugarSeleccionado_areasverdes
                                 );
+
                     } else if (infoLugarSeleccionado_arte != null) {
                         ((MainActivity) getActivity())
                                 .iniciarBottomSheetDialog(

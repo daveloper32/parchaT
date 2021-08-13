@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/dM_MainActivity_verPerfil"
-        android:icon="@drawable/ic_launcher_foreground"
         android:fontFamily="sans-serif-smallcaps"
+        android:icon="@drawable/ic_user_h"
         android:title="@string/dM_MainActivity_verPerfil">
     </item>
     <item
@@ -14,13 +14,14 @@
     </item>
     <item
         android:id="@+id/dM_MainActivity_config"
-        android:icon="@android:drawable/ic_menu_manage"
+        android:icon="@drawable/ic_config"
         android:fontFamily="sans-serif-smallcaps"
         android:title="@string/dM_MainActivity_config">
     </item>
     <item
         android:id="@+id/dM_MainActivity_cerrarSesion"
         android:fontFamily="sans-serif-smallcaps"
+        android:icon="@drawable/ic_sign_out"
         android:title="@string/dM_MainActivity_cerrarSesion">
     </item>
 

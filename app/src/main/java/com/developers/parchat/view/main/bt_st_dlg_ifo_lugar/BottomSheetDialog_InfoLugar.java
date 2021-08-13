@@ -1,6 +1,7 @@
 package com.developers.parchat.view.main.bt_st_dlg_ifo_lugar;
 
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import com.developers.parchat.view.info_extra_sitio.InformacionExtraSitio;
 import com.developers.parchat.R;
 import com.developers.parchat.model.entity.InfoLugar;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.squareup.picasso.Picasso;
 
@@ -31,7 +33,11 @@ public class BottomSheetDialog_InfoLugar extends BottomSheetDialogFragment {
         this.infoLugar = infoLugar;
     }
 
-
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return new BottomSheetDialog(getContext(), R.style.TransparentBottomSheetDialog);
+    }
 
     @Nullable
     @org.jetbrains.annotations.Nullable
@@ -39,7 +45,7 @@ public class BottomSheetDialog_InfoLugar extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.bottom_sheet_dialog_info_lugar,
-                null, false);
+                null);
         tV_bsd_main_activity_nombreLugar = view.findViewById(R.id.tV_bsd_main_activity_nomLugar);
         tV_bsd_main_activity_direccion = view.findViewById(R.id.tV_bsd_main_activity_direccion);
         imgV_main_activity_lugar = view.findViewById(R.id.imgV_main_activity_lugar);

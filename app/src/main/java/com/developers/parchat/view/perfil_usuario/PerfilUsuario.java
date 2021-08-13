@@ -5,27 +5,33 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Html;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -43,6 +49,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP.View, View.OnClickListener {
 
     // Variables modelo MVP
@@ -165,9 +172,10 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
             eT_perfUsuario_nombreCom.setText(usuarioActivo.getNombreCompleto());
             eT_perfUsuario_email.setText(usuarioActivo.getEmail());
             eT_perfUsuario_numero.setText(usuarioActivo.getNumeroCel());
-            Uri imgUsuario = Uri.parse(usuarioActivo.getUrlImagenPerfil());
-            if (imgUsuario != null) {
-                cargarImagenUsuario(imgUsuario);
+            String imgUsuario = usuarioActivo.getUrlImagenPerfil();
+            if (!imgUsuario.equals("") && imgUsuario != null) {
+                Uri uriImgUsuario = Uri.parse(imgUsuario);
+                cargarImagenUsuario(uriImgUsuario);
             }
         }
     }
@@ -179,13 +187,14 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         //eT_perfUsuario_email.setEnabled(true);
         eT_perfUsuario_numero.setEnabled(true);
         //
-        tV_perfUsuario_cambiarFoto.setEnabled(true);
+        //tV_perfUsuario_cambiarFoto.setEnabled(true);
     }
 
     public void verificarPermisosCamara() {
         if (ContextCompat.checkSelfPermission(
-                this, Manifest.permission.CAMERA) ==
-                PackageManager.PERMISSION_GRANTED) {
+                this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED)
+                {
             // SI tiene el permiso de camara
             //presentador.CambiarFoto();
             //cambiarFotoPronto();
@@ -194,7 +203,6 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         } else {
             final String[] PERMISOS_CAMARA = {
                     Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE
             };
             // Si no tiene el permiso de camara
@@ -221,6 +229,8 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         }
     });
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void cambiarFoto() {
         String tomarFoto = this.getResources().getString(R.string.msgAlertDiag_perfUsuario_cambiarFoto_1);
         String elegirDeGaleria = this.getResources().getString(R.string.msgAlertDiag_perfUsuario_cambiarFoto_2);
@@ -231,17 +241,17 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
                 cancelar
         };
         // Hacemos un alert Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // Le ponemos un titulo
-        builder.setTitle(this.getResources().getString(R.string.msgAlertDiag_perfUsuario_cambiarFoto_titulo));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom));
+
         // Le ponemos las opciones
         builder.setItems(opcionesCambiarFoto,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (opcionesCambiarFoto[which] == tomarFoto) {
-                            cambiarFotoPronto();
-                            //TomarFoto();
+                            //cambiarFotoPronto();
+                            TomarFoto();
                         } else if (opcionesCambiarFoto[which] == elegirDeGaleria) {
                             ElegirFotoDeGaleria();
                         } else if (opcionesCambiarFoto[which] == cancelar) {
@@ -251,48 +261,17 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
 
                     }
                 });
-        builder.create().show();
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setTitle(this.getResources().getString(R.string.msgAlertDiag_perfUsuario_cambiarFoto_titulo));
+        alertDialog.setIcon(this.getResources().getDrawable(R.drawable.ic_foto));
+        alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawable(this.getResources().getDrawable(R.drawable.style_alert_dialog));
+
     }
 
     private void TomarFoto() {
-        // Nombre para la foto
-        String nombreFoto = "";
-        //
-        File fileFoto = new File(Environment.getExternalStorageDirectory(),
-                RUTA_FOTO);
-
-        boolean isCreada = fileFoto.exists();
-
-        if (!isCreada) {
-            isCreada = fileFoto.mkdirs();
-        }
-        if (isCreada) {
-            nombreFoto = (System.currentTimeMillis() / 1000) + ".jpg";
-        }
-
-        ruta = Environment.getExternalStorageDirectory()
-                + File.separator
-                + RUTA_FOTO
-                + File.separator
-                + nombreFoto;
-
-        File foto = new File(ruta);
-
         Intent iniCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            String authorities = this.getPackageName()
-                    + ".provider";
-            Uri fotoUri = FileProvider.getUriForFile(this, authorities, foto);
-            iniCamara.putExtra(MediaStore.EXTRA_OUTPUT, fotoUri);
-        } else {
-            iniCamara.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
-        }
-        
         tomarFotoRequest.launch(iniCamara);
-
-
-
     }
     private ActivityResultLauncher <Intent> tomarFotoRequest =
             registerForActivityResult(
@@ -302,22 +281,17 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
                         public void onActivityResult(ActivityResult result) {
                             if (result.getResultCode() == Activity.RESULT_OK) {
                                 Intent data = result.getData();
-                                MediaScannerConnection.scanFile(PerfilUsuario.this,
-                                        new String[]{ruta},
-                                        null,
-                                        new MediaScannerConnection.OnScanCompletedListener() {
-                                            @Override
-                                            public void onScanCompleted(String path, Uri uri) {
-                                                Bitmap bitmap = BitmapFactory.decodeFile(path);
-                                                imgV_perfUsuario_fotoUsuario.setImageBitmap(bitmap);
-                                                imgV_perfUsuario_fotoUsuario.setDrawingCacheEnabled(true);
-                                                imgV_perfUsuario_fotoUsuario.buildDrawingCache();
-                                                Bitmap bitmap1 = ((BitmapDrawable) imgV_perfUsuario_fotoUsuario.getDrawable()).getBitmap();
-                                                presentador.uploadFotoUsuarioFromImageView(bitmap1);
-                                                showProgressBar();
-                                            }
-                                        });
-
+                                if (data.getExtras() != null) {
+                                    Bundle extras = data.getExtras();
+                                    Bitmap imgBitmap = (Bitmap) extras.get("data");
+                                    imgV_perfUsuario_fotoUsuario.setImageBitmap(imgBitmap);
+                                    imgV_perfUsuario_fotoUsuario.setDrawingCacheEnabled(true);
+                                    imgV_perfUsuario_fotoUsuario.buildDrawingCache();
+                                    presentador.uploadFotoUsuarioFromImageView(imgBitmap);
+                                    showProgressBar();
+                                } else {
+                                    showToastUploadImagenPerfilFallo();
+                                }
                             }
                         }
                     }
@@ -367,11 +341,12 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         return;
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void MensajeEmergente(Context context) {
 
         // Creamos un objeto de la clase AlertDialog, para poner en pantalla un mensaje emergente
-        AlertDialog.Builder msg_alertaA4 = new AlertDialog.Builder(PerfilUsuario.this);
+        AlertDialog.Builder msg_alertaA4 = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom));
         // COnfiguramos un mensaje para el  AlertDialog
         msg_alertaA4.setMessage(R.string.msgAlertDiag_perfUsuario_1)
                 .setNegativeButton(R.string.msgAlertDiag_perfUsuario_1_negative, new DialogInterface.OnClickListener() {
@@ -395,6 +370,7 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         titulo.setTitle(R.string.msgAlertDiag_perfUsuario_1_title);
         // Mostramos en pantalla el AlertDialog
         titulo.show();
+        titulo.getWindow().setBackgroundDrawable(this.getResources().getDrawable(R.drawable.style_alert_dialog));
 
     }
 
@@ -431,6 +407,16 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
     @Override
     public void showToastUploadImagenPerfilFallo() {
         Toast.makeText(this, R.string.msgToast_perfUsuario_6, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showToastActualizarURLFotoUsuarioLogueadoToDBExito() {
+        Toast.makeText(this, R.string.msgToast_perfUsuario_8, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showToastActualizarURLFotoUsuarioLogueadoToDBFallo() {
+        Toast.makeText(this, R.string.msgToast_perfUsuario_9, Toast.LENGTH_LONG).show();
     }
 
     @Override

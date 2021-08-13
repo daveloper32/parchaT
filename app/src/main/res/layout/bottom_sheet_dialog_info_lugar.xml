@@ -1,111 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/ghost">
+    android:background="@drawable/style_redondeo_bsd"
+    android:paddingLeft="5dp"
+    android:paddingTop="10dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="15dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    tools:layout_editor_absoluteX="5dp">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="50dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/style_redondeo_bsd"
-        android:paddingLeft="5dp"
-        android:paddingTop="10dp"
-        android:paddingRight="5dp"
-        android:paddingBottom="15dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="5dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <ImageView
+            android:id="@+id/imgV_main_activity_lugar"
+            android:layout_width="140dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:contentDescription="@string/imgV_main_activity_lugar_contDes"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="50dp"
-            android:layout_height="1dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/white"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+            app:layout_constraintStart_toEndOf="@+id/imgV_main_activity_lugar"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imgV_main_activity_lugar"
-                android:layout_width="140dp"
-                android:layout_height="110dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:contentDescription="@string/imgV_main_activity_lugar_contDes"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_actividades_comida" />
-
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tV_bsd_main_activity_nomLugar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-smallcaps"
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:padding="5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imgV_main_activity_lugar"
-                app:layout_constraintTop_toTopOf="parent">
+                android:text="@string/tV_bsd_main_activity_nomLugar"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tV_bsd_main_activity_nomLugar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="sans-serif-smallcaps"
-                    android:gravity="center_horizontal"
-                    android:text="@string/tV_bsd_main_activity_nomLugar"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tV_bsd_main_activity_direccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-smallcaps"
+                android:gravity="center_horizontal"
+                android:text="@string/tV_bsd_main_activity_direccion"
+                android:textColor="@color/white" />
 
-                <TextView
-                    android:id="@+id/tV_bsd_main_activity_direccion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="sans-serif-smallcaps"
-                    android:gravity="center_horizontal"
-                    android:text="@string/tV_bsd_main_activity_direccion"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    android:id="@+id/tV_bsd_main_activity_moreInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="sans-serif-smallcaps"
-                    android:gravity="center_horizontal"
-                    android:text="@string/tV_bsd_main_activity_moreInfo"
-                    android:textColor="@color/orange"
-                    android:textSize="12sp"
-                    android:textStyle="italic" />
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tV_bsd_main_activity_moreInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-smallcaps"
+                android:gravity="center_horizontal"
+                android:text="@string/tV_bsd_main_activity_moreInfo"
+                android:textColor="@color/orange"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -1,14 +1,17 @@
 package com.developers.parchat.view.seleccionar_actividad;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.developers.parchat.R;
@@ -17,10 +20,13 @@ import com.developers.parchat.view.main.MainActivity;
 
 public class SeleccionarActividad extends AppCompatActivity implements View.OnClickListener {
 
-    // Declaramos objetos CheckBox, Button y ProgressBar
-    private CheckBox cB_SeleccionarActividad_restaurantes, cB_SeleccionarActividad_musica,
-            cB_SeleccionarActividad_cine, cB_SeleccionarActividad_areasVerdes,
-            cB_SeleccionarActividad_arte, cB_SeleccionarActividad_farmacia;
+    // Declaramos objetos CardView, Button y ProgressBar
+    private androidx.cardview.widget.CardView cV_SeleccionarActividad_restaurantes, cV_SeleccionarActividad_musica,
+            cV_SeleccionarActividad_cine, cV_SeleccionarActividad_areasVerdes,
+            cV_SeleccionarActividad_arte, cV_SeleccionarActividad_sorpresa;
+    private LinearLayout LL_SeleccionarActividad_restaurantes, LL_SeleccionarActividad_musica,
+            LL_SeleccionarActividad_cine, LL_SeleccionarActividad_areasVerdes,
+            LL_SeleccionarActividad_arte, LL_SeleccionarActividad_sorpresa;
     private Button b_SeleccionarActividad_salir, b_SeleccionarActividad_continuar;
 
     private boolean restaurantesSelected, musicaSelected,
@@ -36,17 +42,35 @@ public class SeleccionarActividad extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seleccionar_actividad);
 
-        // Hacemos la conexion con los objetos de la vista con findViewById
-        ConexionObjetosConVista();
-        // Asignamos los Listeners a los objetos de interaccion del SeleccionarActividad
-        ListenersSeleccionarActividad();
+        IniciarVista();
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
         // Obtengo el id del objeto que esta siendo presionado
         int idPresionado = v.getId();
         switch (idPresionado) {
+            // Cardviews
+            case (R.id.cV_SeleccionarActividad_restaurantes):
+                isRestaurantesSelected();
+                break;
+            case (R.id.cV_SeleccionarActividad_musica):
+                isMusicaSelected();
+                break;
+            case (R.id.cV_SeleccionarActividad_cine):
+                isCineSelected();
+                break;
+            case (R.id.cV_SeleccionarActividad_areasVerdes):
+                isAreasVerdesSelected();
+                break;
+            case (R.id.cV_SeleccionarActividad_arte):
+                isArteSelected();
+                break;
+            case (R.id.cV_SeleccionarActividad_sorpresa):
+                isSorprendemeSelected();
+                break;
             // Si se da click al boton salir
             case (R.id.b_SeleccionarActividad_salir):
                 SalirDeApp();
@@ -56,6 +80,143 @@ public class SeleccionarActividad extends AppCompatActivity implements View.OnCl
                 ContinuarAMain();
                 break;
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void isRestaurantesSelected() {
+        if (restaurantesSelected) {
+            restaurantesSelected = false;
+            cV_SeleccionarActividad_restaurantes
+                    .setCardBackgroundColor(this.getResources().getColor(R.color.white));
+            LL_SeleccionarActividad_restaurantes.setForeground(null);
+        } else {
+            restaurantesSelected = true;
+            cV_SeleccionarActividad_restaurantes
+                    .setCardBackgroundColor(this.getResources().getColor(R.color.cardview_color));
+            LL_SeleccionarActividad_restaurantes.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void isMusicaSelected() {
+        if (musicaSelected) {
+            musicaSelected = false;
+            cV_SeleccionarActividad_musica
+                    .setCardBackgroundColor(this.getResources().getColor(R.color.white));
+            LL_SeleccionarActividad_musica.setForeground(null);
+        } else {
+            musicaSelected = true;
+            cV_SeleccionarActividad_musica
+                    .setCardBackgroundColor(this.getResources().getColor(R.color.cardview_color));
+            LL_SeleccionarActividad_musica.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void isCineSelected() {
+        if (cineSelected) {
+            cineSelected = false;
+            cV_SeleccionarActividad_cine
+                    .setCardBackgroundColor(this.getResources().getColor(R.color.white));
+            LL_SeleccionarActividad_cine.setForeground(null);
+        } else {
+            cineSelected = true;
+            cV_SeleccionarActividad_cine
+                    .setCardBackgroundColor(this.getResources().getColor(R.color.cardview_color));
+            LL_SeleccionarActividad_cine.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void isAreasVerdesSelected() {
+        if (areasVerdesSelected) {
+            areasVerdesSelected = false;
+            cV_SeleccionarActividad_areasVerdes
+                    .setCardBackgroundColor(this.getResources().getColor(R.color.white));
+            LL_SeleccionarActividad_areasVerdes.setForeground(null);
+        } else {
+            areasVerdesSelected = true;
+            cV_SeleccionarActividad_areasVerdes
+                    .setCardBackgroundColor(this.getResources().getColor(R.color.cardview_color));
+            LL_SeleccionarActividad_areasVerdes.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void isArteSelected() {
+        if (arteSelected) {
+            arteSelected = false;
+            cV_SeleccionarActividad_arte
+                    .setCardBackgroundColor(this.getResources().getColor(R.color.white));
+            LL_SeleccionarActividad_arte.setForeground(null);
+        } else {
+            arteSelected = true;
+            cV_SeleccionarActividad_arte
+                    .setCardBackgroundColor(this.getResources().getColor(R.color.cardview_color));
+            LL_SeleccionarActividad_arte.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void isSorprendemeSelected() {
+        if (sorprendemeSelected) {
+            sorprendemeSelected = false;
+            cV_SeleccionarActividad_sorpresa
+                    .setCardBackgroundColor(this.getResources().getColor(R.color.white));
+            LL_SeleccionarActividad_sorpresa.setForeground(null);
+        } else {
+            sorprendemeSelected = true;
+            cV_SeleccionarActividad_sorpresa
+                    .setCardBackgroundColor(this.getResources().getColor(R.color.cardview_color));
+            LL_SeleccionarActividad_sorpresa.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
+        }
+    }
+
+    private void IniciarVista() {
+
+        restaurantesSelected = false;
+        musicaSelected = false;
+        cineSelected = false;
+        areasVerdesSelected = false;
+        arteSelected = false;
+        sorprendemeSelected = false;
+        // Hacemos puente de conexion con la parte grafica
+        // CardView
+        cV_SeleccionarActividad_restaurantes = findViewById(R.id.cV_SeleccionarActividad_restaurantes);
+        cV_SeleccionarActividad_musica = findViewById(R.id.cV_SeleccionarActividad_musica);
+        cV_SeleccionarActividad_cine = findViewById(R.id.cV_SeleccionarActividad_cine);
+        cV_SeleccionarActividad_areasVerdes = findViewById(R.id.cV_SeleccionarActividad_areasVerdes);
+        cV_SeleccionarActividad_arte = findViewById(R.id.cV_SeleccionarActividad_arte);
+        cV_SeleccionarActividad_sorpresa = findViewById(R.id.cV_SeleccionarActividad_sorpresa);
+        //LinearLayout
+        LL_SeleccionarActividad_restaurantes = findViewById(R.id.LL_SeleccionarActividad_restaurantes);
+        LL_SeleccionarActividad_musica = findViewById(R.id.LL_SeleccionarActividad_musica);
+        LL_SeleccionarActividad_cine = findViewById(R.id.LL_SeleccionarActividad_cine);
+        LL_SeleccionarActividad_areasVerdes = findViewById(R.id.LL_SeleccionarActividad_areasVerdes);
+        LL_SeleccionarActividad_arte = findViewById(R.id.LL_SeleccionarActividad_arte);
+        LL_SeleccionarActividad_sorpresa = findViewById(R.id.LL_SeleccionarActividad_sorpresa);
+        // Button
+        b_SeleccionarActividad_salir = findViewById(R.id.b_SeleccionarActividad_salir);
+        b_SeleccionarActividad_continuar = findViewById(R.id.b_SeleccionarActividad_continuar);
+
+        // Listeners
+        cV_SeleccionarActividad_restaurantes.setOnClickListener(this);
+        cV_SeleccionarActividad_musica.setOnClickListener(this);
+        cV_SeleccionarActividad_cine.setOnClickListener(this);
+        cV_SeleccionarActividad_areasVerdes.setOnClickListener(this);
+        cV_SeleccionarActividad_arte.setOnClickListener(this);
+        cV_SeleccionarActividad_sorpresa.setOnClickListener(this);
+        // Listeners de Button
+        b_SeleccionarActividad_salir.setOnClickListener(this);
+        b_SeleccionarActividad_continuar.setOnClickListener(this);
+
+
     }
 
     private void SalirDeApp() {
@@ -81,41 +242,6 @@ public class SeleccionarActividad extends AppCompatActivity implements View.OnCl
     }
 
     private void ContinuarAMain() {
-        if (cB_SeleccionarActividad_restaurantes.isChecked()) {
-            restaurantesSelected = true;
-        } else {
-            restaurantesSelected = false;
-        }
-
-        if (cB_SeleccionarActividad_musica.isChecked()) {
-            musicaSelected = true;
-        } else {
-            musicaSelected = false;
-        }
-
-        if (cB_SeleccionarActividad_cine.isChecked()) {
-            cineSelected = true;
-        } else {
-            cineSelected = false;
-        }
-
-        if (cB_SeleccionarActividad_areasVerdes.isChecked()) {
-            areasVerdesSelected = true;
-        } else {
-            areasVerdesSelected = false;
-        }
-
-        if (cB_SeleccionarActividad_arte.isChecked()) {
-            arteSelected = true;
-        } else {
-            arteSelected = false;
-        }
-
-        if (cB_SeleccionarActividad_farmacia.isChecked()) {
-            sorprendemeSelected = true;
-        } else {
-            sorprendemeSelected = false;
-        }
 
         if (!restaurantesSelected
                 && !musicaSelected
@@ -135,25 +261,6 @@ public class SeleccionarActividad extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void ConexionObjetosConVista() {
-        // Hacemos puente de conexion con la parte grafica
-        // Checkbox
-        cB_SeleccionarActividad_restaurantes = findViewById(R.id.cB_SeleccionarActividad_restaurantes);
-        cB_SeleccionarActividad_musica = findViewById(R.id.cB_SeleccionarActividad_musica);
-        cB_SeleccionarActividad_cine = findViewById(R.id.cB_SeleccionarActividad_cine);
-        cB_SeleccionarActividad_areasVerdes = findViewById(R.id.cB_SeleccionarActividad_areasVerdes);
-        cB_SeleccionarActividad_arte = findViewById(R.id.cB_SeleccionarActividad_arte);
-        cB_SeleccionarActividad_farmacia = findViewById(R.id.cB_SeleccionarActividad_farmacia);
-        // Button
-        b_SeleccionarActividad_salir = findViewById(R.id.b_SeleccionarActividad_salir);
-        b_SeleccionarActividad_continuar = findViewById(R.id.b_SeleccionarActividad_continuar);
 
 
-    }
-
-    private void ListenersSeleccionarActividad() {
-        // Listeners de Button
-        b_SeleccionarActividad_salir.setOnClickListener(this);
-        b_SeleccionarActividad_continuar.setOnClickListener(this);
-    }
 }
