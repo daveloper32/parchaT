@@ -53,7 +53,6 @@ public interface MainActivityMVP {
     // Se obtienen datos e informacion a la vista
     interface View {
 
-        void iniciarBottomSheetDialog(InfoLugar infoLugar);
 
         void setDatosEnHeader(Usuario datosUsuario);
 

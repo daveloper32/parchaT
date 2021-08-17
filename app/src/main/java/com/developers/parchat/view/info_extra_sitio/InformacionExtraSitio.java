@@ -21,7 +21,7 @@ public class InformacionExtraSitio extends AppCompatActivity implements View.OnC
 
     private InfoLugar infoLugar;
 
-    private ImageButton imgB_InformacionExtraSitio_atras;
+    private ImageButton imgB_InformacionExtraSitio_atras, imgB_InformacionExtraSitio_irUrlSitio;
     private ImageView imgV_InformacionExtraSitio_fotoSitio;
     private TextView tV_InformacionExtraSitio_nomSitio,
             tV_InformacionExtraSitio_tipoLugar,
@@ -41,6 +41,7 @@ public class InformacionExtraSitio extends AppCompatActivity implements View.OnC
         // COnectamos objetos de la vista
         // ImageButton
         imgB_InformacionExtraSitio_atras = findViewById(R.id.imgB_InformacionExtraSitio_atras);
+        imgB_InformacionExtraSitio_irUrlSitio = findViewById(R.id.imgB_InformacionExtraSitio_irUrlSitio);
         // ImageView
         imgV_InformacionExtraSitio_fotoSitio = findViewById(R.id.imgV_InformacionExtraSitio_fotoSitio);
         // TextView
@@ -117,6 +118,7 @@ public class InformacionExtraSitio extends AppCompatActivity implements View.OnC
                 tV_InformacionExtraSitio_urlSitio.setText(urlSitio);
             }
             // Listeners
+            imgB_InformacionExtraSitio_irUrlSitio.setOnClickListener(this);
             imgB_InformacionExtraSitio_atras.setOnClickListener(this);
 
 
@@ -132,6 +134,9 @@ public class InformacionExtraSitio extends AppCompatActivity implements View.OnC
                 irAlActivityMain(MainActivity.class);
                 break;
             case (R.id.tV_InformacionExtraSitio_urlSitio):
+                irAlShowWebPageSitio(ShowWebPageSitio.class);
+                break;
+            case (R.id.imgB_InformacionExtraSitio_irUrlSitio):
                 irAlShowWebPageSitio(ShowWebPageSitio.class);
                 break;
         }

@@ -132,12 +132,26 @@
                     android:id="@+id/tV_InformacionExtraSitio_urlSitio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="2dp"
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_InformacionExtraSitio_urlSitio"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/imgB_InformacionExtraSitio_irUrlSitio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="#00FFFFFF"
+                    android:contentDescription="@string/imgB_InformacionExtraSitio_irUrlSitio_contDes"
+                    android:src="@drawable/ic_ir_sitio_web"
+                    tools:src="@drawable/ic_ir_sitio_web" />
 
             </LinearLayout>
         </ScrollView>

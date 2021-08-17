@@ -5,9 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -15,10 +12,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -29,21 +27,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.developers.parchat.model.entity.BusquedaSeleccionarActividad;
 import com.developers.parchat.model.entity.InfoLugar;
 import com.developers.parchat.view.configuraciones.Configuraciones;
-import com.developers.parchat.view.main.bt_st_dlg_ifo_lugar.BottomSheetDialog_InfoLugar;
+import com.developers.parchat.view.info_extra_sitio.InformacionExtraSitio;
 import com.developers.parchat.view.main.MainActivity;
-import com.developers.parchat.view.main.MainActivityMVP;
-import com.developers.parchat.view.main.MainActivityPresenter;
-import com.developers.parchat.view.registro.RegistroMVP;
 import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
-import com.firebase.geofire.GeoFire;
-import com.firebase.geofire.GeoLocation;
-import com.firebase.geofire.GeoQuery;
-import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -63,21 +53,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import com.developers.parchat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.View,
         ActivityCompat.OnRequestPermissionsResultCallback {
@@ -127,8 +113,11 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
 
     private BusquedaSeleccionarActividad datosBusquedaActividad;
 
+    private BottomSheetDialog bSDPersonalizado;
 
-
+    private TextView tV_bsd_main_activity_nombreLugar, tV_bsd_main_activity_direccion, tV_bsd_main_activity_moreInfo;
+    private String nombreLugar, direccion, sitioWeb, urlImagen;
+    private ImageView imgV_main_activity_lugar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -154,6 +143,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         presentador_musica = new FragmentShowMapsPresenter(this, "Musica");
         presentador_restaurantes = new FragmentShowMapsPresenter(this, "Restaurantes");
         presentador_sorprendeme = new FragmentShowMapsPresenter(this, "Sorprendeme");
+        // Actualizar Query Geofire
         //presentador_areasverdes.ObtenerSnapshotTodaRuta();
         //presentador_arte.ObtenerSnapshotTodaRuta();
         //presentador_cine.ObtenerSnapshotTodaRuta();
@@ -557,6 +547,53 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         infoLugarSeleccionado_sorprendeme = null;
     }
 
+    private void showBottomSheetDialog(InfoLugar infoLugar) {
+        if (getContext() != null) {
+            bSDPersonalizado = new BottomSheetDialog(getContext(),
+                    R.style.TransparentBottomSheetDialog);
+            // Hacemos el linkeo con el layout
+            bSDPersonalizado.setContentView(R.layout.bottom_sheet_dialog_info_lugar);
+
+            //
+            tV_bsd_main_activity_nombreLugar = bSDPersonalizado.findViewById(R.id.tV_bsd_main_activity_nomLugar);
+            tV_bsd_main_activity_direccion = bSDPersonalizado.findViewById(R.id.tV_bsd_main_activity_direccion);
+            imgV_main_activity_lugar = bSDPersonalizado.findViewById(R.id.imgV_main_activity_lugar);
+            tV_bsd_main_activity_moreInfo = bSDPersonalizado.findViewById(R.id.tV_bsd_main_activity_moreInfo);
+            //
+            if (infoLugar != null) {
+                nombreLugar = infoLugar.getNombre();
+                direccion = infoLugar.getDireccion();
+                sitioWeb = infoLugar.getSitioweb();
+                urlImagen = infoLugar.getUrlimagen();
+            } else {
+                nombreLugar = "No disponible";
+                direccion = "No disponible en este momento";
+                sitioWeb = "";
+                urlImagen = "";
+            }
+
+            tV_bsd_main_activity_nombreLugar.setText(nombreLugar);
+            tV_bsd_main_activity_direccion.setText(direccion);
+            Picasso.get()
+                    .load(urlImagen)
+                    .error(R.drawable.ic_actividades_comida)
+                    .into(imgV_main_activity_lugar);
+
+            tV_bsd_main_activity_moreInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity SeleccionarActividad
+                    Intent deMainActivityAInformacionExtraSitio = new Intent(getActivity(), InformacionExtraSitio.class);
+                    deMainActivityAInformacionExtraSitio.putExtra("infolugar", infoLugar);
+                    // Iniciamos el Activity SeleccionarActividad
+                    startActivity(deMainActivityAInformacionExtraSitio);
+                }
+            });
+            bSDPersonalizado.show();
+        }
+
+    }
+
     private void AbrirBSDdeInformacionSitio() {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -575,39 +612,19 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
                     infoLugarSeleccionado_sorprendeme = presentador_sorprendeme.getInfoLugarSeleccionadoEnMapa(tituloMarcador);
 
                     if (infoLugarSeleccionado_areasverdes != null) {
-                        ((MainActivity) getActivity())
-                                .iniciarBottomSheetDialog(
-                                        infoLugarSeleccionado_areasverdes
-                                );
-
+                        showBottomSheetDialog(infoLugarSeleccionado_areasverdes);
                     } else if (infoLugarSeleccionado_arte != null) {
-                        ((MainActivity) getActivity())
-                                .iniciarBottomSheetDialog(
-                                        infoLugarSeleccionado_arte
-                                );
+                        showBottomSheetDialog(infoLugarSeleccionado_arte);
                     } else if (infoLugarSeleccionado_cine != null) {
-                        ((MainActivity) getActivity())
-                                .iniciarBottomSheetDialog(
-                                        infoLugarSeleccionado_cine
-                                );
+                        showBottomSheetDialog(infoLugarSeleccionado_cine);
                     } else if (infoLugarSeleccionado_musica != null) {
-                        ((MainActivity) getActivity())
-                                .iniciarBottomSheetDialog(
-                                        infoLugarSeleccionado_musica
-                                );
+                        showBottomSheetDialog(infoLugarSeleccionado_musica);
                     } else if (infoLugarSeleccionado_restaurantes != null) {
-                        ((MainActivity) getActivity())
-                                .iniciarBottomSheetDialog(
-                                        infoLugarSeleccionado_restaurantes
-                                );
+                        showBottomSheetDialog(infoLugarSeleccionado_restaurantes);
                     } else if (infoLugarSeleccionado_sorprendeme != null) {
-                        ((MainActivity) getActivity())
-                                .iniciarBottomSheetDialog(
-                                        infoLugarSeleccionado_sorprendeme
-                                );
+                        showBottomSheetDialog(infoLugarSeleccionado_sorprendeme);
                     } else {
-                        ((MainActivity) getActivity())
-                                .iniciarBottomSheetDialog(null);
+                        showBottomSheetDialog(null);
                     }
                 }
                 return false;
@@ -691,7 +708,6 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         if (busquedaEncontrada.size() != 0) {
             busquedaEncontrada.clear();
         }
-
 
         if (areasVerdesSelected) {
             presentador_areasverdes.busquedaSitiosCercanosAUsuario();

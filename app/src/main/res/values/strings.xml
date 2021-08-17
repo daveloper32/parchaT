@@ -226,6 +226,7 @@
     <string name="tV_InformacionExtraSitio_cityCountry">Ciudad y País</string>
     <string name="tV_InformacionExtraSitio_numeroSitio">Número del Sitio</string>
     <string name="tV_InformacionExtraSitio_urlSitio">URL Sitio</string>
+    <string name="imgB_InformacionExtraSitio_irUrlSitio_contDes">URL Sitio</string>
 
     <string name="txt_InformacionExtraSitio_noDisponible">No disponible en este momento</string>
 

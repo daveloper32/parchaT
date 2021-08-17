@@ -35,7 +35,7 @@ import com.developers.parchat.model.entity.InfoLugar;
 import com.developers.parchat.model.entity.Usuario;
 import com.developers.parchat.view.configuraciones.Configuraciones;
 import com.developers.parchat.view.main.fragment_maps.FragmentShowMaps;
-import  com.developers.parchat.view.main.bt_st_dlg_ifo_lugar.BottomSheetDialog_InfoLugar;
+
 
 import com.developers.parchat.R;
 
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
     private ActionBarDrawerToggle bAB_MainActivity;
     private Toolbar tB_MainActivity;
     private NavigationView nV_MainActivity;
-    private BottomSheetDialog_InfoLugar bSD_infoLugar;
     // Creamos un objeto tipo View para acceder alos objetos del header del main activity
     private View header_main_activity;
     // Declaramos Textviews e ImageView circular que aparecen en el header del menu desplegable
@@ -197,12 +196,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
                 .commit();
     }
 
-    @Override
-    public void iniciarBottomSheetDialog(InfoLugar infoLugar) {
-        bSD_infoLugar = new BottomSheetDialog_InfoLugar(infoLugar);
-        bSD_infoLugar.show(getSupportFragmentManager(), "TAG");
-
-    }
 
 
     @Override

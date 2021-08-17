@@ -2,6 +2,7 @@ package com.developers.parchat.view.show_webpage_sitio;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +19,7 @@ public class ShowWebPageSitio extends AppCompatActivity {
 
     private ImageButton imgB_ShowWebPageSitio_atras;
     private WebView wB_ShowWebPageSitio;
-    private ProgressBar pB_show_webpage_sitio;
+    private ProgressBar pB_ShowWebPageSitio;
 
     private String paginaWeb;
 
@@ -31,12 +32,13 @@ public class ShowWebPageSitio extends AppCompatActivity {
         IniciarVista();
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void IniciarVista() {
         imgB_ShowWebPageSitio_atras = findViewById(R.id.imgB_ShowWebPageSitio_atras);
         wB_ShowWebPageSitio = findViewById(R.id.wB_ShowWebPageSitio);
-        pB_show_webpage_sitio = findViewById(R.id.pB_show_webpage_sitio);
+        pB_ShowWebPageSitio = findViewById(R.id.pB_ShowWebPageSitio);
 
-        pB_show_webpage_sitio.setVisibility(View.VISIBLE);
+        pB_ShowWebPageSitio.setVisibility(View.VISIBLE);
 
         infoLugar = getIntent().getParcelableExtra("infolugar");
 
@@ -45,8 +47,8 @@ public class ShowWebPageSitio extends AppCompatActivity {
             wB_ShowWebPageSitio.setWebViewClient(new WebViewClient());
             //webViewMio.getSettings().setLoadsImagesAutomatically(true);
             wB_ShowWebPageSitio.getSettings().setJavaScriptEnabled(true);
-            wB_ShowWebPageSitio.loadUrl(paginaWeb);
-            pB_show_webpage_sitio.setVisibility(View.GONE);
+            //wB_ShowWebPageSitio.loadUrl(paginaWeb);
+            revisarPaginaCargada();
         }
 
         imgB_ShowWebPageSitio_atras.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +58,24 @@ public class ShowWebPageSitio extends AppCompatActivity {
             }
         });
     }
+
+    private void revisarPaginaCargada() {
+
+        wB_ShowWebPageSitio.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(wB_ShowWebPageSitio, url);
+                pB_ShowWebPageSitio.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                irAlInformacionExtraSitio(InformacionExtraSitio.class);
+            }
+        });
+        wB_ShowWebPageSitio.loadUrl(paginaWeb);
+    }
+
 
     public void irAlInformacionExtraSitio(Class<? extends AppCompatActivity> ir_a_InformacionExtraSitio) {
         // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al MainActivity o de Pagina Principal de la App

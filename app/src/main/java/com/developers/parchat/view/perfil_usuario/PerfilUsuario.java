@@ -211,10 +211,6 @@ public class PerfilUsuario extends AppCompatActivity implements PerfilUsuarioMVP
         }
     }
 
-    private void cambiarFotoPronto() {
-        Toast.makeText(this, R.string.msgToast_perfUsuario_7, Toast.LENGTH_LONG).show();
-    }
-
     private ActivityResultLauncher <String[]> requestPermissionCamara =
     registerForActivityResult(
                     new ActivityResultContracts.RequestMultiplePermissions(),
