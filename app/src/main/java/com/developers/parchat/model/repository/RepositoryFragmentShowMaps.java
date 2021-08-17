@@ -48,7 +48,7 @@ public class RepositoryFragmentShowMaps implements FragmentShowMapsMVP.Model {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static Location ubicacionActual;
 
-    private List<InfoLugar> listInfoLugarDeSitiosCercanos;
+    final private List<InfoLugar> listInfoLugarDeSitiosCercanos;
     private List<LatLng> listLatLngsLugares;
     private List<String> listLugaresGeoQueryResult;
     private List<Marker> listMarcadoresMapa;

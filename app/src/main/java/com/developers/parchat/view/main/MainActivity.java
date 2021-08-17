@@ -41,6 +41,7 @@ import com.developers.parchat.R;
 
 import com.developers.parchat.view.main.fragment_maps.FragmentShowMapsMVP;
 import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
+import com.directions.route.RoutingListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseError;
 
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityMVP.V
     private de.hdodenhof.circleimageview.CircleImageView imgV_ActivityMain_fotoUsuario;
 
     private Usuario datosUsuarioLogueado;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

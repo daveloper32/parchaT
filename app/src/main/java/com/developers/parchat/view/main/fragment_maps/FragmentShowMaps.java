@@ -12,9 +12,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,12 +30,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.developers.parchat.directionhelpers.FetchURL;
+import com.developers.parchat.directionhelpers.TaskLoadedCallback;
 import com.developers.parchat.model.entity.BusquedaSeleccionarActividad;
 import com.developers.parchat.model.entity.InfoLugar;
 import com.developers.parchat.view.configuraciones.Configuraciones;
 import com.developers.parchat.view.info_extra_sitio.InformacionExtraSitio;
 import com.developers.parchat.view.main.MainActivity;
 import com.developers.parchat.view.seleccionar_actividad.SeleccionarActividad;
+import com.directions.route.AbstractRouting;
+import com.directions.route.Route;
+import com.directions.route.RouteException;
+import com.directions.route.Routing;
+import com.directions.route.RoutingListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -58,6 +67,8 @@ import java.util.List;
 import java.util.Objects;
 
 import com.developers.parchat.R;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -66,7 +77,8 @@ import com.google.firebase.database.DatabaseError;
 import com.squareup.picasso.Picasso;
 
 public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.View,
-        ActivityCompat.OnRequestPermissionsResultCallback {
+        ActivityCompat.OnRequestPermissionsResultCallback,
+        TaskLoadedCallback {
 
     // Variables modelo MVP
     FragmentShowMapsMVP.Presenter presentador;
@@ -90,7 +102,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
 
     private List<Marker> marcadoresMapa;
 
-    private static final int PERMISSION_REQUEST = 12345;
+    //private static final int PERMISSION_REQUEST = 12345;
 
     private View viewFragmentMaps;
 
@@ -118,6 +130,12 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
     private TextView tV_bsd_main_activity_nombreLugar, tV_bsd_main_activity_direccion, tV_bsd_main_activity_moreInfo;
     private String nombreLugar, direccion, sitioWeb, urlImagen;
     private ImageView imgV_main_activity_lugar;
+    private Button b_bsd_main_activity_calcularRuta;
+
+    private List<Polyline> polylines;
+
+    private Polyline polylineRutaALugar;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,7 +147,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         // Hacemos la conexion con el objeto Fragment en el archivo de vista cotenido_fragmet_activity_main
         mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mapView_ActivityMain);
-        IniciarVista(v);
+        //IniciarVista();
         viewFragmentMaps = v;
         return v;
     }
@@ -168,6 +186,9 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
 
     @Override
     public void onResume() {
+
+        IniciarVista();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             if (getContext() != null && getActivity() != null) {
@@ -185,21 +206,25 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
                             VerificarPermisos(getViewFragmentMaps());
                         }
                     }
-                }else {
+                } else {
                     VerificarPermisos(getViewFragmentMaps());
                 }
             }
         }
 
+
+
         super.onResume();
     }
 
-    private void IniciarVista(View view) {
+    private void IniciarVista() {
 
         rangoMapa = null;
         latLngUbicacionMarker = null;
         marcadoresMapa = new ArrayList<>();
         nombreUsuarioLogueado = "";
+        polylines = null;
+        polylineRutaALugar = null;
         //cargaUbicacionInicial = new LatLng(4.657160262597251, -74.05605940861399);
 
         Bundle bundle = this.getArguments();
@@ -236,6 +261,8 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
                         NuevaBusquedaAlDarClickSobreElMapa();
                     }
                 }
+
+
             }
         });
     }
@@ -278,6 +305,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
                 NuevaBusquedaEnMiUbicacion();
             }
         }
+
         @Override
         public void onProviderEnabled(@NonNull String provider) {
             if (getContext() != null) {
@@ -385,7 +413,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
 
 
                 } else if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                        Manifest.permission.ACCESS_FINE_LOCATION) ) {
+                        Manifest.permission.ACCESS_FINE_LOCATION)) {
                     // In an educational UI, explain to the user why your app requires this
                     // permission for a specific feature to behave as expected. In this UI,
                     // include a "cancel" or "no thanks" button that allows the user to
@@ -453,9 +481,9 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
                 builder.setMessage(R.string.msgAlertDiag_MainActivity_1)
                         .setPositiveButton(R.string.msgAlertDiag_MainActivity_1_positive,
                                 (dialog, id) -> {
-                                        startActivity(
-                                        new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                        })
+                                    startActivity(
+                                            new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                })
                         .setNegativeButton(R.string.msgAlertDiag_MainActivity_1_negative,
                                 (dialog, id) -> {
                                     irAlActivitySeleccionarActividad(SeleccionarActividad.class);
@@ -477,7 +505,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
     private void CargarMarcadorUbicacionInicial(LatLng cargaUbicacionInicial) {
         // Marcador inicial
         marcadorPosicion = mMap.addMarker(new MarkerOptions()
-                .position(latLngUbicacionMarker)
+                .position(cargaUbicacionInicial)
                 .title(nombreUsuarioLogueado)
                 .visible(true)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
@@ -486,7 +514,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         //
         //latLngUbicacionMarker = cargaUbicacionInicial;
         if (rangoBusquedaVisible) {
-            drawRangoMapa(latLngUbicacionMarker);
+            drawRangoMapa(cargaUbicacionInicial);
         }
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cargaUbicacionInicial,
@@ -547,7 +575,16 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         infoLugarSeleccionado_sorprendeme = null;
     }
 
-    private void showBottomSheetDialog(InfoLugar infoLugar) {
+    private void showBottomSheetDialog(InfoLugar infoLugar, LatLng ubicacionUsuario_Marker, LatLng ubicacionSitio) {
+
+        if (polylines != null) {
+            polylines.clear();
+        }
+        if (polylineRutaALugar != null) {
+            polylineRutaALugar.remove();
+        }
+
+
         if (getContext() != null) {
             bSDPersonalizado = new BottomSheetDialog(getContext(),
                     R.style.TransparentBottomSheetDialog);
@@ -559,6 +596,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
             tV_bsd_main_activity_direccion = bSDPersonalizado.findViewById(R.id.tV_bsd_main_activity_direccion);
             imgV_main_activity_lugar = bSDPersonalizado.findViewById(R.id.imgV_main_activity_lugar);
             tV_bsd_main_activity_moreInfo = bSDPersonalizado.findViewById(R.id.tV_bsd_main_activity_moreInfo);
+            b_bsd_main_activity_calcularRuta = bSDPersonalizado.findViewById(R.id.b_bsd_main_activity_calcularRuta);
             //
             if (infoLugar != null) {
                 nombreLugar = infoLugar.getNombre();
@@ -573,11 +611,15 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
             }
 
             tV_bsd_main_activity_nombreLugar.setText(nombreLugar);
+
             tV_bsd_main_activity_direccion.setText(direccion);
-            Picasso.get()
-                    .load(urlImagen)
-                    .error(R.drawable.ic_actividades_comida)
-                    .into(imgV_main_activity_lugar);
+            if ( !urlImagen.isEmpty()) {
+                Picasso.get()
+                        .load(urlImagen)
+                        .error(R.drawable.ic_actividades_comida)
+                        .into(imgV_main_activity_lugar);
+            }
+
 
             tV_bsd_main_activity_moreInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -589,10 +631,37 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
                     startActivity(deMainActivityAInformacionExtraSitio);
                 }
             });
+            b_bsd_main_activity_calcularRuta.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //CalculaRuta(ubicacionUsuario_Marker, ubicacionSitio);
+                }
+            });
             bSDPersonalizado.show();
         }
 
     }
+
+    private void CalculaRuta(LatLng ubicacionUsuario_marker, LatLng ubicacionSitio) {
+        if ((ubicacionUsuario_marker != null) && (ubicacionSitio != null) && (getContext() != null)) {
+            String url = getUrl(ubicacionUsuario_marker,
+                    ubicacionSitio,
+                    "driving");
+            Log.e("url", url);
+            new FetchURL(getContext()).execute(url,
+                    "driving");
+            /*Routing routing = new Routing.Builder()
+                    .travelMode(AbstractRouting.TravelMode.WALKING)
+                    .withListener(this)
+                    .alternativeRoutes(true)
+                    .waypoints(ubicacionUsuario_marker, ubicacionSitio)
+                    .key(getResources().getString(R.string.google_directions_api_key))
+                    .build();
+
+            routing.execute();*/
+        }
+    }
+
 
     private void AbrirBSDdeInformacionSitio() {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -612,19 +681,67 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
                     infoLugarSeleccionado_sorprendeme = presentador_sorprendeme.getInfoLugarSeleccionadoEnMapa(tituloMarcador);
 
                     if (infoLugarSeleccionado_areasverdes != null) {
-                        showBottomSheetDialog(infoLugarSeleccionado_areasverdes);
+                        if (modoBusquedaGPS && !modoBusquedaMarcador) {
+                            showBottomSheetDialog(infoLugarSeleccionado_areasverdes,
+                                    latLngUbicacionUsuario,
+                                    infoLugarSeleccionado_areasverdes.getLatLong());
+                        } else if (!modoBusquedaGPS && modoBusquedaMarcador) {
+                            showBottomSheetDialog(infoLugarSeleccionado_areasverdes,
+                                    latLngUbicacionMarker,
+                                    infoLugarSeleccionado_areasverdes.getLatLong());
+                        }
                     } else if (infoLugarSeleccionado_arte != null) {
-                        showBottomSheetDialog(infoLugarSeleccionado_arte);
+                        if (modoBusquedaGPS && !modoBusquedaMarcador) {
+                            showBottomSheetDialog(infoLugarSeleccionado_arte,
+                                    latLngUbicacionUsuario,
+                                    infoLugarSeleccionado_arte.getLatLong());
+                        } else if (!modoBusquedaGPS && modoBusquedaMarcador) {
+                            showBottomSheetDialog(infoLugarSeleccionado_arte,
+                                    latLngUbicacionMarker,
+                                    infoLugarSeleccionado_arte.getLatLong());
+                        }
                     } else if (infoLugarSeleccionado_cine != null) {
-                        showBottomSheetDialog(infoLugarSeleccionado_cine);
+                        if (modoBusquedaGPS && !modoBusquedaMarcador) {
+                            showBottomSheetDialog(infoLugarSeleccionado_cine,
+                                    latLngUbicacionUsuario,
+                                    infoLugarSeleccionado_cine.getLatLong());
+                        } else if (!modoBusquedaGPS && modoBusquedaMarcador) {
+                            showBottomSheetDialog(infoLugarSeleccionado_cine,
+                                    latLngUbicacionMarker,
+                                    infoLugarSeleccionado_cine.getLatLong());
+                        }
                     } else if (infoLugarSeleccionado_musica != null) {
-                        showBottomSheetDialog(infoLugarSeleccionado_musica);
+                        if (modoBusquedaGPS && !modoBusquedaMarcador) {
+                            showBottomSheetDialog(infoLugarSeleccionado_musica,
+                                    latLngUbicacionUsuario,
+                                    infoLugarSeleccionado_musica.getLatLong());
+                        } else if (!modoBusquedaGPS && modoBusquedaMarcador) {
+                            showBottomSheetDialog(infoLugarSeleccionado_musica,
+                                    latLngUbicacionMarker,
+                                    infoLugarSeleccionado_musica.getLatLong());
+                        }
                     } else if (infoLugarSeleccionado_restaurantes != null) {
-                        showBottomSheetDialog(infoLugarSeleccionado_restaurantes);
+                        if (modoBusquedaGPS && !modoBusquedaMarcador) {
+                            showBottomSheetDialog(infoLugarSeleccionado_restaurantes,
+                                    latLngUbicacionUsuario,
+                                    infoLugarSeleccionado_restaurantes.getLatLong());
+                        } else if (!modoBusquedaGPS && modoBusquedaMarcador) {
+                            showBottomSheetDialog(infoLugarSeleccionado_restaurantes,
+                                    latLngUbicacionMarker,
+                                    infoLugarSeleccionado_restaurantes.getLatLong());
+                        }
                     } else if (infoLugarSeleccionado_sorprendeme != null) {
-                        showBottomSheetDialog(infoLugarSeleccionado_sorprendeme);
+                        if (modoBusquedaGPS && !modoBusquedaMarcador) {
+                            showBottomSheetDialog(infoLugarSeleccionado_sorprendeme,
+                                    latLngUbicacionUsuario,
+                                    infoLugarSeleccionado_sorprendeme.getLatLong());
+                        } else if (!modoBusquedaGPS && modoBusquedaMarcador) {
+                            showBottomSheetDialog(infoLugarSeleccionado_sorprendeme,
+                                    latLngUbicacionMarker,
+                                    infoLugarSeleccionado_sorprendeme.getLatLong());
+                        }
                     } else {
-                        showBottomSheetDialog(null);
+                        showBottomSheetDialog(null, null, null);
                     }
                 }
                 return false;
@@ -701,7 +818,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         });
     }
 
-    private void  NuevaBusquedaEnMiUbicacion() {
+    private void NuevaBusquedaEnMiUbicacion() {
 
         BorrarMarcadores();
         marcadoresMapa.clear();
@@ -748,7 +865,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         }
     }
 
-    private void BorrarMarcadores () {
+    private void BorrarMarcadores() {
         if (marcadoresMapa.size() != 0) {
             for (int x = 0; x < marcadoresMapa.size(); x++) {
                 Marker m = marcadoresMapa.get(x);
@@ -840,8 +957,6 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
                 }
 
 
-
-
             }
             // De lo contrario
             else {
@@ -896,11 +1011,11 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
                     Snackbar.LENGTH_LONG)
                     .setAction(R.string.msgSnackbar_MainActivity_1_irButton
                             , new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            irAlActivityConfiguraciones(Configuraciones.class);
-                        }
-                    }).show();
+                                @Override
+                                public void onClick(View v) {
+                                    irAlActivityConfiguraciones(Configuraciones.class);
+                                }
+                            }).show();
         }
         if (rangoMapa != null) {
             rangoMapa.setVisible(false);
@@ -919,10 +1034,10 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
     @Override
     public void addMarkerUbicacionGPS(LatLng ubicacionActualLatLong) {
 
-         marcadorGPS = mMap.addMarker(new MarkerOptions()
-                 .position(ubicacionActualLatLong)
-                 .title(nombreUsuarioLogueado)
-                 .visible(true));
+        marcadorGPS = mMap.addMarker(new MarkerOptions()
+                .position(ubicacionActualLatLong)
+                .title(nombreUsuarioLogueado)
+                .visible(true));
 
     }
 
@@ -946,9 +1061,10 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
     }
 
     @Override
-    public void saveBusquedaEncontrada (boolean unaBusqueda) {
+    public void saveBusquedaEncontrada(boolean unaBusqueda) {
         busquedaEncontrada.add(unaBusqueda);
     }
+
     @Override
     public boolean verificarBusquedaEncontrada() {
         if (busquedaEncontrada.size() != 0) {
@@ -970,6 +1086,30 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         } else {
             return false;
         }
+    }
+
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getResources().getString(R.string.google_maps_api_key);
+        return url;
+    }
+
+
+    @Override
+    public void onTaskDone(Object... values) {
+        if (polylineRutaALugar != null)
+            polylineRutaALugar.remove();
+        polylineRutaALugar = mMap.addPolyline((PolylineOptions) values[0]);
     }
 }
 

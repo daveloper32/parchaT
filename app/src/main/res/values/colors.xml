@@ -16,4 +16,5 @@
     <color name="blue_light">#729DCC</color>
     <color name="ghost">#00FFFFFF</color>
     <color name="cardview_color">#C7C7C7</color>
+    <color name="cardview_tick_color">#8DECF0F1</color>
 </resources>

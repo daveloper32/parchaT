@@ -241,6 +241,9 @@
 
     <!---End InformacionExtraSitio  Strings-->
 
+    <string name="google_maps_api_key">AIzaSyDihQEGTP5T7LlWV7VT7jhnULw8UhZ_2Kk</string>
+    <string name="google_directions_api_key">AIzaSyD4L-SJAuVj3alhR3slvQY9drgQqvj_Y0c</string>
+
 </resources>
 
     <!---Start Login Mensajes Emergentes Strings-->

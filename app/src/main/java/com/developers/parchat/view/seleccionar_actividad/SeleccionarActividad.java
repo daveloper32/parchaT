@@ -89,12 +89,12 @@ public class SeleccionarActividad extends AppCompatActivity implements View.OnCl
             restaurantesSelected = false;
             cV_SeleccionarActividad_restaurantes
                     .setCardBackgroundColor(this.getResources().getColor(R.color.white));
-            LL_SeleccionarActividad_restaurantes.setForeground(null);
+            cV_SeleccionarActividad_restaurantes.setForeground(null);
         } else {
             restaurantesSelected = true;
             cV_SeleccionarActividad_restaurantes
                     .setCardBackgroundColor(this.getResources().getColor(R.color.cardview_color));
-            LL_SeleccionarActividad_restaurantes.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
+            cV_SeleccionarActividad_restaurantes.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
         }
     }
 
@@ -105,12 +105,12 @@ public class SeleccionarActividad extends AppCompatActivity implements View.OnCl
             musicaSelected = false;
             cV_SeleccionarActividad_musica
                     .setCardBackgroundColor(this.getResources().getColor(R.color.white));
-            LL_SeleccionarActividad_musica.setForeground(null);
+            cV_SeleccionarActividad_musica.setForeground(null);
         } else {
             musicaSelected = true;
             cV_SeleccionarActividad_musica
                     .setCardBackgroundColor(this.getResources().getColor(R.color.cardview_color));
-            LL_SeleccionarActividad_musica.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
+            cV_SeleccionarActividad_musica.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
         }
     }
 
@@ -121,12 +121,12 @@ public class SeleccionarActividad extends AppCompatActivity implements View.OnCl
             cineSelected = false;
             cV_SeleccionarActividad_cine
                     .setCardBackgroundColor(this.getResources().getColor(R.color.white));
-            LL_SeleccionarActividad_cine.setForeground(null);
+            cV_SeleccionarActividad_cine.setForeground(null);
         } else {
             cineSelected = true;
             cV_SeleccionarActividad_cine
                     .setCardBackgroundColor(this.getResources().getColor(R.color.cardview_color));
-            LL_SeleccionarActividad_cine.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
+            cV_SeleccionarActividad_cine.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
         }
     }
 
@@ -137,12 +137,12 @@ public class SeleccionarActividad extends AppCompatActivity implements View.OnCl
             areasVerdesSelected = false;
             cV_SeleccionarActividad_areasVerdes
                     .setCardBackgroundColor(this.getResources().getColor(R.color.white));
-            LL_SeleccionarActividad_areasVerdes.setForeground(null);
+            cV_SeleccionarActividad_areasVerdes.setForeground(null);
         } else {
             areasVerdesSelected = true;
             cV_SeleccionarActividad_areasVerdes
                     .setCardBackgroundColor(this.getResources().getColor(R.color.cardview_color));
-            LL_SeleccionarActividad_areasVerdes.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
+            cV_SeleccionarActividad_areasVerdes.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
         }
     }
 
@@ -153,12 +153,12 @@ public class SeleccionarActividad extends AppCompatActivity implements View.OnCl
             arteSelected = false;
             cV_SeleccionarActividad_arte
                     .setCardBackgroundColor(this.getResources().getColor(R.color.white));
-            LL_SeleccionarActividad_arte.setForeground(null);
+            cV_SeleccionarActividad_arte.setForeground(null);
         } else {
             arteSelected = true;
             cV_SeleccionarActividad_arte
                     .setCardBackgroundColor(this.getResources().getColor(R.color.cardview_color));
-            LL_SeleccionarActividad_arte.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
+            cV_SeleccionarActividad_arte.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
         }
     }
 
@@ -169,12 +169,12 @@ public class SeleccionarActividad extends AppCompatActivity implements View.OnCl
             sorprendemeSelected = false;
             cV_SeleccionarActividad_sorpresa
                     .setCardBackgroundColor(this.getResources().getColor(R.color.white));
-            LL_SeleccionarActividad_sorpresa.setForeground(null);
+            cV_SeleccionarActividad_sorpresa.setForeground(null);
         } else {
             sorprendemeSelected = true;
             cV_SeleccionarActividad_sorpresa
                     .setCardBackgroundColor(this.getResources().getColor(R.color.cardview_color));
-            LL_SeleccionarActividad_sorpresa.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
+            cV_SeleccionarActividad_sorpresa.setForeground(this.getResources().getDrawable(R.drawable.ic_tick_light_grey));
         }
     }
 

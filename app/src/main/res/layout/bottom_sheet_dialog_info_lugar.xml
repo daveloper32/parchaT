@@ -100,6 +100,16 @@
                 android:textColor="@color/orange"
                 android:textSize="12sp"
                 android:textStyle="italic" />
+
+            <Button
+                android:id="@+id/b_bsd_main_activity_calcularRuta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-smallcaps"
+                android:text="Calcular Ruta"
+                android:textSize="12sp"
+                app:backgroundTint="@color/grey_light3" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
