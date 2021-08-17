@@ -6,7 +6,8 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/ic_logo_parchat"/>
+            android:src="@drawable/ic_logo_parchat_xxxhdpi"
+            />
     </item>
 
 </layer-list>
