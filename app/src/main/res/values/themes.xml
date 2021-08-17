@@ -24,5 +24,10 @@
             sans-serif-smallcaps
         </item>
     </style>
+    <style name="Splash_Screen_Theme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">
+            @drawable/splash_screen
+        </item>
+    </style>
 
 </resources>

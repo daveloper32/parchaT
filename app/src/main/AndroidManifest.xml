@@ -25,6 +25,7 @@
 
         <activity
             android:name=".view.login.Login"
+            android:theme="@style/Splash_Screen_Theme"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

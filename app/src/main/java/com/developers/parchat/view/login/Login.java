@@ -69,6 +69,7 @@ public class Login extends AppCompatActivity implements LoginMVP.View, View.OnCl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_ParchaT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Iniciamos los objetos de la vista
