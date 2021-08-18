@@ -260,7 +260,7 @@
                             <TextView
                                 android:id="@+id/tV_SeleccionarActividad_areasVerdes"
                                 android:layout_width="wrap_content"
-                                android:layout_height="0dp"
+                                android:layout_height="32dp"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="10dp"
                                 android:layout_weight="1"
