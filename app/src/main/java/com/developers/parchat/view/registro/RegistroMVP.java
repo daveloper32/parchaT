@@ -92,6 +92,7 @@ public interface RegistroMVP {
         void showEmptyPasswordError();
         // TextInputEditText de password ayor a 6 caracteres
         void showLengthPasswordError();
+        void showInvalidPasswordError();
         //
         void showProgressBar();
         void hideProgressBar();

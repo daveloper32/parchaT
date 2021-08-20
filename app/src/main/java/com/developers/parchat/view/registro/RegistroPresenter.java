@@ -58,12 +58,22 @@ public class RegistroPresenter implements RegistroMVP.Presenter {
             vista.showEmptyPasswordError();
             return;
         }
-        if (datosUsuario.getPassword().length() < 6 ) {
+        if (datosUsuario.getPassword().length() < 10 ) {
             vista.showLengthPasswordError();
             return;
         }
         // Validacion extra contraseña una mayuscula? cuantos caracteres minimo?
         // un simbolo como minimo
+        // debe tener numeros
+        if (!datosUsuario.getPassword().matches(".*\\d.*")) {
+            vista.showInvalidPasswordError();
+            return;
+        }
+        // Debe tener letras minusculas
+        if (!datosUsuario.getPassword().matches(".*[a-z].*")) {
+            vista.showInvalidPasswordError();
+            return;
+        }
 
         // Creamos un objeto de la clase Usuario y guardamos nombre, email y contraseña
         Usuario usuarioAGuardar = new Usuario(datosUsuario.getNombreCompleto(),

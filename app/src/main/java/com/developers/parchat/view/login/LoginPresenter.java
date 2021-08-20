@@ -63,7 +63,7 @@ public class LoginPresenter implements LoginMVP.Presenter {
         }
         // Validacion extra contraseña una mayuscula? cuantos caracteres minimo?
         // un simbolo como minimo
-        if (credentialsUsuario.getPassword().length() < 6 ) {
+        if (credentialsUsuario.getPassword().length() < 10 ) {
             vista.showLengthPasswordError();
             return;
         }

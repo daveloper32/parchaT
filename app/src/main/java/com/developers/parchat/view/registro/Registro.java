@@ -167,6 +167,11 @@ public class Registro extends AppCompatActivity implements RegistroMVP.View,
         return;
     }
 
+    @Override
+    public void showInvalidPasswordError() {
+        eT_usuario_contrasena.setError(getText(R.string.eT_Error_registro_6));
+        eT_usuario_contrasena.requestFocus();
+    }
 
 
     @Override

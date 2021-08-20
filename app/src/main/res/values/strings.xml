@@ -19,7 +19,7 @@
     <string name="eT_Error_login_1">¡Ingresa tu e-mail por favor!</string>
     <string name="eT_Error_login_2">¡Ingresa un e-mail valido!</string>
     <string name="eT_Error_login_3">¡Ingresa tu contraseña por favor!</string>
-    <string name="eT_Error_login_4">!La contraseña debe tener más de 6 caracteres!</string>
+    <string name="eT_Error_login_4">!La contraseña registrada tiene más de 10 caracteres!</string>
     <!---End Login Errores EditText Strings-->
     <!---Start Login Mensajes Emergentes Strings-->
     <string name="msgToast_login_1">!El correo ingresado no esta registrado o es incorrecto!</string>
@@ -45,11 +45,12 @@
     <string name="eT_Error_registro_2">¡Ingresa tu e-mail por favor!</string>
     <string name="eT_Error_registro_3">¡Ingresa un e-mail valido!</string>
     <string name="eT_Error_registro_4">¡Ingresa tu contraseña por favor!</string>
-    <string name="eT_Error_registro_5">!La contraseña debe tener más de 6 caracteres!</string>
+    <string name="eT_Error_registro_5">!La contraseña debe tener más de 10 caracteres!</string>
+    <string name="eT_Error_registro_6">!Para mayor seguridad, la contraseña debe contener letras y números!</string>
     <!---End Login Errores EditText Strings-->
     <!---Start Login Mensajes Emergentes Strings-->
     <string name="msgToast_registro_1">¡Registro completado con exito!
-        \n\nHemos enviado un correo para que confirmes tu registro.</string>
+        </string>
     <string name="msgToast_registro_2">¡El correo ingresado ya se encuentra registrado!
         </string>
     <string name="msgToast_registro_3">¡Algo salio mal!

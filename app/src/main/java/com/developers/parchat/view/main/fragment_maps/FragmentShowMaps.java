@@ -217,6 +217,27 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         super.onResume();
     }
 
+    @Override
+    public void onPause() {
+
+        if (marcadorGPS != null) {
+            marcadorGPS.remove();
+        }
+
+        if (marcadorPosicion != null) {
+            marcadorPosicion.remove();
+
+        }
+        if (marcadoresMapa != null) {
+            BorrarMarcadores();
+            marcadoresMapa.clear();
+        }
+        if (rangoMapa != null) {
+            rangoMapa.remove();
+        }
+        super.onPause();
+    }
+
     private void IniciarVista() {
 
         rangoMapa = null;
@@ -503,6 +524,7 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
     }
 
     private void CargarMarcadorUbicacionInicial(LatLng cargaUbicacionInicial) {
+
         // Marcador inicial
         marcadorPosicion = mMap.addMarker(new MarkerOptions()
                 .position(cargaUbicacionInicial)
@@ -556,6 +578,8 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
         if (!sorprendemeSelected) {
             presentador_sorprendeme.busquedaSitiosCercanosAMarkerPositionNoEncontrados();
         }
+
+
     }
 
     private void drawRangoMapa(LatLng latLngUbicacionMarkerOUsuario) {
@@ -755,6 +779,8 @@ public class FragmentShowMaps extends Fragment implements FragmentShowMapsMVP.Vi
             public void onMapLongClick(@NonNull @NotNull LatLng latLngMarker) {
                 if (marcadorPosicion != null) {
                     marcadorPosicion.remove();
+                    BorrarMarcadores();
+                    marcadoresMapa.clear();
                 }
                 marcadorPosicion = mMap.addMarker(new MarkerOptions()
                         .position(latLngMarker)

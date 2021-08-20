@@ -109,6 +109,7 @@
                 android:fontFamily="sans-serif-smallcaps"
                 android:text="Calcular Ruta"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:backgroundTint="@color/grey_light3" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
